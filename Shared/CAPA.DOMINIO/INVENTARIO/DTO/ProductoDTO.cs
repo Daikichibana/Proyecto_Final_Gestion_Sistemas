@@ -11,5 +11,7 @@ namespace CAPAS.CAPA.DOMINIO.INVENTARIO.DTO
 
         // Datos Tipo Producto
         public TipoProductoDTO TipoProducto { get; set; }
+
+        public Guid TipoProductoId { get; set; }
     }
 }

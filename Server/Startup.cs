@@ -44,12 +44,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
 
             //Aplicacion
             services.AddScoped(typeof(IAdministrarRubroService), typeof(AdministrarRubroService));
-            services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
+            services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));   
+            services.AddScoped(typeof(IAdministrarProductoService), typeof(AdministrarProductoService));   
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
             services.AddScoped(typeof(IRubroRepository), typeof(RubroRepository));
+            services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>
