@@ -1,0 +1,31 @@
+﻿@page "/RegistrarTipoProducto"
+
+<h3>Registrar Tipo Producto</h3>
+
+<!-- Formulario Registro -->
+<div style="display: flex; justify-content: center;">
+    <form style="width: 70%;">
+        <!-- Informacion del responsable -->
+        <fieldset class="form-group">
+            <div class="form-group">
+                <label for="NombreRubro" class="form-label mt-4">Nombre del tipo de producto</label>
+                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del tipo de producto.">
+            </div>
+            <div class="form-group">
+                <label for="NombreRubro" class="form-label mt-4">Descripcion del tipo de producto</label>
+                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del tipo de producto.">
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<!-- Boton enviar -->
+
+<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+    <button type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
+</div>
+
+@code {
+
+}

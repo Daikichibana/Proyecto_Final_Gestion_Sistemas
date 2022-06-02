@@ -1,0 +1,38 @@
+﻿@page "/AdministrarConductor"
+
+<h3>Administrar Conductor</h3>
+
+<div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
+    <div style="width: 70%;">
+        <table class="table table-bordered" style="width: 100%">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">CI</th>
+                    <th scope="col">Licencia de conducir</th>
+                    <th scope="col">Opcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="fila1" class="filaTabla">
+                    <td>Francisco</td>
+                    <td>Alves</td>
+                    <td>8vo anillo</td>
+                    <td>298392 SC</td>
+                    <td>7894561</td>
+                    <td><a href="#">Editar</a> / <a href="#" class="txtElim" id="txtEliminar1">Eliminar</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="display: flex; justify-content: center;">
+    <button type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">Registrar nuevo</button>
+</div>
+
+@code {
+
+}

@@ -1,0 +1,68 @@
+﻿@page "/AdministrarTipoProducto"
+@using CAPAS.CAPA.DOMINIO
+@using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO
+@inject IInventarioServices _inventarioService
+
+<h3>Administrar Tipo Producto</h3>
+
+<!-- Implementacion -->
+@if (ListaTipoProducto != null && ListaTipoProducto.Success == true)
+{
+    <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
+        <div style="width: 70%;">
+
+            @if (ListaTipoProducto.Data.Count > 0)
+            {
+                <table class="table table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre del tipo de producto</th>
+                            <th scope="col">Descripcion del tipo de producto</th>
+                            <th scope="col">Opcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in ListaTipoProducto.Data)
+                        {
+                            <tr id="fila1" class="filaTabla">
+                                <td>@item.Nombre</td>
+                                <td>@item.Descripcion</td>
+                                <td>
+                                    <a href="#">Editar</a> /
+                                    <a href="#" class="txtElim" id="txtEliminar1">Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No existen rubros registrados.</p>
+            }
+
+
+        </div>
+
+        <!-- Boton  -->
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <button type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">
+            <a href="RegistrarTipoProducto">Registrar nuevo</a>
+        </button>
+    </div>
+}
+else
+{
+    <p>@Loading</p>
+}
+@code {
+    public ServiceResponse<List<TipoProductoDTO>> ListaTipoProducto { get; set; }
+    public string Loading = "Cargando...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
+    }
+}

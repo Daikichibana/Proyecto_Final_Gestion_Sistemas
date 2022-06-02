@@ -1,0 +1,19 @@
+﻿@page "/Inventario" 
+@inject IInventarioServices _inventarioService
+
+<h1>Inventario</h1>
+
+<div style="padding: 20px; display: flex; flex-wrap: wrap; justify-content: left;">  
+    <ContenedorCasosUsoComponent 
+        Titulo="Administrar Producto" 
+        Descripcion="Administre la informacion de los productos de la empresa."
+        Enlace="AdministrarProducto"/>
+    <ContenedorCasosUsoComponent 
+        Titulo="Administrar tipo de producto" 
+        Descripcion="Administre la informacion de los tipos de productos de la empresa."
+        Enlace="AdministrarTipoProducto"/>
+</div>
+
+@code {
+
+}

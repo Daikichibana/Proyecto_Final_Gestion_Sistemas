@@ -1,0 +1,38 @@
+﻿@page "/RegistrarVehiculo"
+
+<h3>Registrar Vehiculo</h3>
+
+<!-- Formulario Registro -->
+<div style="display: flex; justify-content: center;">
+    <form style="width: 70%;">
+        <!-- Informacion del responsable -->
+
+        <fieldset class="form-group">
+            <legend>Registrar Vehiculo</legend>
+            <div class="form-group">
+                <label for="NombreRubro" class="form-label mt-4">Placa del vehiculo</label>
+                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Placa del vehiculo">
+            </div>
+            <div class="form-group">
+                <label for="NombreRubro" class="form-label mt-4">Modelo del vehiculo</label>
+                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Modelo del vehiculo.">
+            </div>
+            <div class="form-group">
+                <label for="NombreRubro" class="form-label mt-4">Marca del vehiculo</label>
+                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Marca del vehiculo.">
+            </div>
+        </fieldset>
+        <!-- Boton enviar -->
+    </form>
+</div>
+
+<!-- Boton enviar -->
+
+<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+    <button type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
+</div>
+
+@code {
+
+}

@@ -1,0 +1,36 @@
+﻿@page "/AdministrarVechiculo"
+
+<h3>Administrar Vechiculo</h3>
+
+<div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
+    <div style="width: 70%;">
+        <table class="table table-bordered" style="width: 100%">
+            <thead>
+                <tr>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Opcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="fila1" class="filaTabla">
+                    <td>321tds</td>
+                    <td>Vitara</td>
+                    <td>Suzuki</td>
+                    <td><a href="./ModificarVehiculo.html">Editar</a> / <a href="#" class="txtElim" id="txtEliminar1">Eliminar</a></td>
+                </tr>
+                <tr id="fila2" class="filaTabla">
+                    <td>312sda</td>
+                    <td>Hilux</td>
+                    <td>Toyota</td>
+                    <td><a href="./ModificarVehiculo.html">Editar</a> / <a href="#" class="txtElim" id="txtEliminar2">Eliminar</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+
+}
