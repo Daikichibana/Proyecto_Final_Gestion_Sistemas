@@ -8,7 +8,7 @@ namespace CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES
     {
         void Eliminar(Guid id);
         IList<Rubro> ObtenerTodo();
-        Rubro ObtenerPorId(int id);
+        Rubro ObtenerPorId(Guid id);
         Rubro Guardar(Rubro entity);
         Rubro Actualizar(Rubro entity);
     }

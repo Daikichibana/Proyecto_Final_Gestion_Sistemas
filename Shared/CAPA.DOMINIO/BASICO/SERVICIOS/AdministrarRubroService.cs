@@ -30,7 +30,7 @@ namespace CAPAS.CAPA.DOMINIO.BASICO.SERVICIOS
             return _rubroRepository.Guardar(entity);
         }
 
-        public Rubro ObtenerPorId(int id)
+        public Rubro ObtenerPorId(Guid id)
         {
             return _rubroRepository.ObtenerPorId(id);
         }

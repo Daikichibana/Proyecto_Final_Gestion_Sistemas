@@ -11,7 +11,7 @@ namespace CAPAS.CAPA.TECNICA
     {
         void Eliminar(Guid id);
         IList<T> ObtenerTodo();
-        T ObtenerPorId(int id);
+        T ObtenerPorId(Guid id);
         T Guardar(T entity);
         T Actualizar(T entity);
     }
@@ -43,7 +43,7 @@ namespace CAPAS.CAPA.TECNICA
             return _tabla.ToList();
         }
 
-        public T ObtenerPorId(int id)
+        public T ObtenerPorId(Guid id)
         {
             return _tabla.Find(id);
         }
