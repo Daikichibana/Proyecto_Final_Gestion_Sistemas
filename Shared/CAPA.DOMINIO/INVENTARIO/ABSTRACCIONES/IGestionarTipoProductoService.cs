@@ -8,7 +8,7 @@ namespace CAPAS.CAPA.DOMINIO.INVENTARIO.ABSTRACCIONES
     {
         void Eliminar(Guid id);
         IList<TipoProducto> ObtenerTodo();
-        TipoProducto ObtenerPorId(int id);
+        TipoProducto ObtenerPorId(Guid id);
         TipoProducto Guardar(TipoProducto entity);
         TipoProducto Actualizar(TipoProducto entity);
     }

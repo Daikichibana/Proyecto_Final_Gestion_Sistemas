@@ -30,7 +30,7 @@ namespace CAPAS.CAPA.DOMINIO.INVENTARIO.SERVICIOS
             return _tipoProductoRepository.Guardar(entity);
         }
 
-        public TipoProducto ObtenerPorId(int id)
+        public TipoProducto ObtenerPorId(Guid id)
         {
             throw new NotImplementedException();
         }
