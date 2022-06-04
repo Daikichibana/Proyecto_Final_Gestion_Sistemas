@@ -5,6 +5,7 @@ using CAPAS.CAPA.DOMINIO.BASICO.DTO;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 
 namespace CAPA.APLICACION.Controllers.Basico
 {
@@ -23,12 +24,12 @@ namespace CAPA.APLICACION.Controllers.Basico
         [HttpGet]
         public IActionResult ObtenerTodosLosRubros()
         {
-            ServiceResponse<RubroDTO> result = new ServiceResponse<RubroDTO>();
+            ServiceResponse<List<RubroDTO>> result = new ServiceResponse<List<RubroDTO>>();
             try
             { 
                 var response = _administrarRubroService.ObtenerTodo();
 
-                result.Data = _mapper.Map<RubroDTO>(response);
+                result.Data = _mapper.Map<List<RubroDTO>>(response);
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);

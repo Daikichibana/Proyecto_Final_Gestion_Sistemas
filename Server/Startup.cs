@@ -14,6 +14,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server
 {
@@ -61,6 +65,20 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddSingleton(mapper);
             services.AddMvc();
 
+            //Configuracion del Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Swagger Demo in Core 3.1",
+                    Version = "v1",
+                    Description = "Swagger Demo for .NET Core 3.1",
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,6 +102,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
 
             app.UseRouting();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+                c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "Demo swagger V1");
+                c.DocumentTitle = "Demo - Swagger in Core";
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

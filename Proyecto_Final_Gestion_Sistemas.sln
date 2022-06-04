@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proyecto_Final_Gestion_Sistemas.Server", "Server\Proyecto_Final_Gestion_Sistemas.Server.csproj", "{FF8AF35F-007F-4981-8732-142C76FFFAB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proyecto_Final_Gestion_Sistemas.Server", "Server\Proyecto_Final_Gestion_Sistemas.Server.csproj", "{FF8AF35F-007F-4981-8732-142C76FFFAB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proyecto_Final_Gestion_Sistemas.Client", "Client\Proyecto_Final_Gestion_Sistemas.Client.csproj", "{E613109F-E65E-48E5-ABAD-E1DB2B17FF2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proyecto_Final_Gestion_Sistemas.Client", "Client\Proyecto_Final_Gestion_Sistemas.Client.csproj", "{E613109F-E65E-48E5-ABAD-E1DB2B17FF2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAPAS", "Shared\CAPAS.csproj", "{35E47DB1-A7CD-4E9C-BA2A-4244190650C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CAPAS", "Shared\CAPAS.csproj", "{35E47DB1-A7CD-4E9C-BA2A-4244190650C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

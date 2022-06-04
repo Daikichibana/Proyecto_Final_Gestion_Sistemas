@@ -15,6 +15,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<ProductoDTO, Producto>();
             CreateMap<Producto, ProductoDTO>();
             CreateMap<RubroDTO, Rubro>();
+            CreateMap<Rubro, RubroDTO> ();
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿@page "/AdministrarTipoProducto"
 @using CAPAS.CAPA.DOMINIO
 @using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO
+@using System.Reflection
 @inject IInventarioServices _inventarioService
+@inject NavigationManager NavManager
 
 <h3>Administrar Tipo Producto</h3>
 
@@ -22,15 +24,14 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach (var item in ListaTipoProducto.Data)
                         {
                             <tr id="fila1" class="filaTabla">
                                 <td>@item.Nombre</td>
                                 <td>@item.Descripcion</td>
                                 <td>
-                                    <a href="#">Editar</a> /
-                                    <a href="#" class="txtElim" id="txtEliminar1">Eliminar</a>
+                                    <button @onclick="() => RedireccionarPagina(EnlaceModificar)">Modificar</button>
+                                    <button @onclick="() => EliminarTipoProducto(item)" class="txtElim" id="txtEliminar1">Eliminar</button>
                                 </td>
                             </tr>
                         }
@@ -39,7 +40,7 @@
             }
             else
             {
-                <p>No existen rubros registrados.</p>
+                <p>No existen Tipos Productos registrados.</p>
             }
 
 
@@ -49,20 +50,50 @@
     </div>
     <div style="display: flex; justify-content: center;">
         <button type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">
-            <a href="RegistrarTipoProducto">Registrar nuevo</a>
+            <a style="" href="@EnlaceRegistro">Registrar nuevo</a>
         </button>
     </div>
+
+    <button @onclick=InsertarTipoProducto>
+        Hazme Click
+    </button>
 }
 else
 {
     <p>@Loading</p>
 }
+
+
 @code {
+    public readonly string EnlaceRegistro = "RegistrarTipoProducto";
+    public readonly string EnlaceModificar = "ModificarTipoProducto";
     public ServiceResponse<List<TipoProductoDTO>> ListaTipoProducto { get; set; }
     public string Loading = "Cargando...";
 
     protected override async Task OnInitializedAsync()
     {
         ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
+    }
+
+    public void RedireccionarPagina(string enlace)
+    {
+        NavManager.NavigateTo(enlace);
+    }
+
+    public async void EliminarTipoProducto(TipoProductoDTO _tipoProducto)
+    {
+        var response = await _inventarioService.EliminarTipoProducto(_tipoProducto);
+        ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
+
+        StateHasChanged();
+    }
+
+    public void InsertarTipoProducto()
+    {
+        TipoProductoDTO tipo = new TipoProductoDTO();
+        tipo.Nombre = "Ejemplo2";
+        tipo.Descripcion = "Descripcion";
+
+        _inventarioService.CrearTipoProducto(tipo);
     }
 }

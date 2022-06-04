@@ -1,6 +1,9 @@
 ﻿namespace Proyecto_Final_Gestion_Sistemas.Client.Services
 {
-    public class ClientesServices
+    public interface IClientesServices
+    {
+    }
+    public class ClientesServices : IClientesServices
     {
     }
 }
