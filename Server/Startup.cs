@@ -67,6 +67,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService)) ;
             services.AddScoped(typeof(IAdministrarEmpresaClienteService), typeof(AdministrarEmpresaClienteService)) ;
             services.AddScoped(typeof(IAdministrarDistribuidoraService), typeof(AdministrarDistribuidoraService)) ;
+            services.AddScoped(typeof(IAdministrarConductorService), typeof(AdministrarConductorService)) ;
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -80,6 +81,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(ITarjetaClienteRepository), typeof(TarjetaClienteRepository));
             services.AddScoped(typeof(IEmpresaClienteRepository), typeof(EmpresaClienteRepository));
             services.AddScoped(typeof(IEmpresaDistribuidoraRepository), typeof(EmpresaDistribuidoraRepository));
+            services.AddScoped(typeof(IConductorRepository), typeof(ConductorRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>
