@@ -21,17 +21,18 @@
 </EditForm>
 
 @code {
-    private UsuarioDTO user = new UsuarioDTO();
+    private ValidarUsuarioDTO user = new ValidarUsuarioDTO();
 
     private async void HandleLogin()
     {
-        var usuarioValido = usuariosServices.ValidarUsuario(user).Data;
+        var usuarioValido = await usuariosServices.ValidarUsuario(user);
+        var usuarioDetalle = await usuariosServices.ObtenerUsuarioPorNombre(user.NombreUsuario);
 
-        if (usuarioValido)
+        if (usuarioValido.Data)
         {
             Console.WriteLine("Log me in!");
-            await LocalStorage.SetItemAsync<string>("username", user.NombreUsuario);
-            await LocalStorage.SetItemAsync<string>("rol", "Administrador");
+            await LocalStorage.SetItemAsync<string>("username", usuarioDetalle.Data.NombreUsuario);
+            await LocalStorage.SetItemAsync<string>("rol", usuarioDetalle.Data.RolId.ToString());
             await AuthStateProvider.GetAuthenticationStateAsync();
             NavigationManager.NavigateTo("");
         }
