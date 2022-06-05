@@ -8,7 +8,7 @@ namespace CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES
     {
         void Eliminar(Guid id);
         IList<TarjetaCliente> ObtenerTodo();
-        TarjetaCliente ObtenerPorId(int id);
+        TarjetaCliente ObtenerPorId(Guid id);
         TarjetaCliente Guardar(TarjetaCliente entity);
         TarjetaCliente Actualizar(TarjetaCliente entity);
     }

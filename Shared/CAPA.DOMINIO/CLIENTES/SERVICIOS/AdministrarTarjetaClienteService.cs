@@ -29,7 +29,7 @@ namespace CAPAS.CAPA.DOMINIO.CLIENTES.SERVICIOS
             return _TarjetaClienteRepository.Guardar(entity);
         }
 
-        public TarjetaCliente ObtenerPorId(int id)
+        public TarjetaCliente ObtenerPorId(Guid id)
         {
             return _TarjetaClienteRepository.ObtenerPorId(id);
         }

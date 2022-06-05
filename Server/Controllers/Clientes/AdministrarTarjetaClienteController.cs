@@ -19,6 +19,9 @@ namespace CAPA.APLICACION.Controllers.Clientes
     {
         IMapper _mapper;
         IAdministrarTarjetaClienteService _administrarTarjetaClienteService;
+        /// <summary>
+        ///  
+        /// </summary>
         public AdministrarTarjetaClienteController(IMapper mapper, IAdministrarTarjetaClienteService administrarTarjetaClienteService)
         {
             _mapper = mapper;
@@ -113,11 +116,6 @@ namespace CAPA.APLICACION.Controllers.Clientes
                 result.Success = false;
                 return BadRequest(result);
             }
-        /// <summary>
-        ///  
-        /// </summary>
-        public AdministrarTarjetaClienteController()
-        {
         }
     }
 }
