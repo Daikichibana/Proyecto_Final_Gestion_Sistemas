@@ -58,8 +58,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(INITService), typeof(AdministrarNITService));   
             services.AddScoped(typeof(IResponsableEmpresaService), typeof(AdministrarResponsableEmpresaService));   
             services.AddScoped(typeof(IAdministrarUsuarioService), typeof(AdministrarUsuarioService));   
-            services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));   
-            services.AddScoped(typeof(IIniciarSesionService), typeof(IniciarSesionService));   
+            services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));     
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
             services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService)) ;
 

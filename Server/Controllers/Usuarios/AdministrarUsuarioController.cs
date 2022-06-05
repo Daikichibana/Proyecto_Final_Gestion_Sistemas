@@ -13,7 +13,8 @@ namespace CAPA.APLICACION.Controllers.Usuarios
     /// <summary>
     ///  
     /// </summary>
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarUsuarioController : ControllerBase
     {
@@ -147,6 +148,62 @@ namespace CAPA.APLICACION.Controllers.Usuarios
                 result.Data = null;
                 result.Message = error.Message;
                 result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        [HttpPost]
+        public IActionResult ValidarUsuario(ValidarUsuarioDTO user)
+        {
+            var result = new ServiceResponse<bool>();
+
+            try
+            {
+                bool response = _usuarioService.ValidarUsuario(user.NombreUsuario, user.Clave);
+
+                result.Data = response;
+                result.Success = true;
+                result.Message = "Se ha realizado la operacion correctamente.";
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = false;
+                result.Success = false;
+                result.Message = error.Message;
+
+                return BadRequest(result);
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        [HttpGet]
+        public IActionResult ObtenerUsuarioPorNombre(string nombre)
+        {
+            var result = new ServiceResponse<UsuarioDTO>();
+
+            try
+            {
+                Usuario response = _usuarioService.ObtenerUsuarioPorNombre(nombre);
+
+                result.Data = _mapper.Map<UsuarioDTO>(response);
+                result.Success = true;
+                result.Message = "Se ha realizado la operacion correctamente.";
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Success = false;
+                result.Message = error.Message;
 
                 return BadRequest(result);
             }

@@ -38,5 +38,21 @@ namespace CAPAS.CAPA.DOMINIO.USUARIOS.SERVICIOS
         {
             return _usuarioRepository.ObtenerTodo();
         }
+
+        public bool ValidarUsuario(string nombreUsuario, string clave)
+        {
+            Usuario usuarioTemporal = _usuarioRepository.ObtenerUsuarioPorNombre(nombreUsuario);
+
+            if (usuarioTemporal != null)
+                if (usuarioTemporal.NombreUsuario == nombreUsuario && usuarioTemporal.Clave == clave)
+                    return true;
+
+            return false;
+        }
+
+        public Usuario ObtenerUsuarioPorNombre(string nombreUsuario)
+        {
+            return _usuarioRepository.ObtenerUsuarioPorNombre(nombreUsuario);
+        }
     }
 }

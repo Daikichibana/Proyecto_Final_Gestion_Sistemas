@@ -11,5 +11,7 @@ namespace CAPAS.CAPA.DOMINIO.USUARIOS.ABSTRACCIONES
         Usuario ObtenerPorId(Guid id);
         Usuario Guardar(Usuario entity);
         Usuario Actualizar(Usuario entity);
+        bool ValidarUsuario(string nombreUsuario, string clave);
+        Usuario ObtenerUsuarioPorNombre(string nombreUsuario);
     }
 }
