@@ -3,6 +3,8 @@ using CAPAS.CAPA.DOMINIO.BASICO.DTO;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.ENTIDADES;
+using CAPAS.CAPA.DOMINIO.USUARIOS.DTO;
+using CAPAS.CAPA.DOMINIO.USUARIOS.ENTIDADES;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server
 {
@@ -16,6 +18,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<Producto, ProductoDTO>();
             CreateMap<RubroDTO, Rubro>();
             CreateMap<Rubro, RubroDTO> ();
+            CreateMap<Rol, RolDTO> ();
+            CreateMap<RolDTO, Rol> ();
+            CreateMap<Usuario, UsuarioDTO> ();
+            CreateMap<UsuarioDTO, Usuario> ();
         }
     }
 }

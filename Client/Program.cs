@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Proyecto_Final_Gestion_Sistemas.Client.Services;
@@ -25,6 +27,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Client
             builder.Services.AddScoped<IProveedoresServices, ProveedoresServices>();
             builder.Services.AddScoped<IUsuariosServices, UsuariosServices>();
 
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
             await builder.Build().RunAsync();
         }
     }

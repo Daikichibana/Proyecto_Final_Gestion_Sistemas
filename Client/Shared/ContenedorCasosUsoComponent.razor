@@ -1,13 +1,13 @@
-﻿<div class="card text-white bg-primary mb-3 ms-3" style="width: 350px; margin-right: 30px;">
+﻿@inject NavigationManager NavManager
+
+<div class="card text-white bg-primary mb-3 ms-3" style="width: 350px; margin-right: 30px;">
     <div class="card-header">@Titulo</div>
     <div class="card-body">
         <h4 class="card-title"></h4>
         <p class="card-text">@Descripcion</p>
         <div class="d-flex flex-row-reverse">
-            <button type="button" class="btn btn-light">
-                <a href="@Enlace" style="text-decoration: none;">
-                    Ir ahora
-                </a>
+            <button @onclick="() => Redireccionar(Enlace)" type="button" class="btn btn-light">
+                Ir ahora
             </button>
         </div>
     </div>
@@ -20,4 +20,11 @@
     public string Descripcion { get; set; }
     [Parameter]
     public string Enlace { get; set; }
+
+
+    public void Redireccionar(string enlace)
+    {
+        NavManager.NavigateTo(enlace);
+    }
+
 }

@@ -9,18 +9,27 @@ using System.Collections.Generic;
 
 namespace CAPA.APLICACION.Controllers.Basico
 {
+    /// <summary>
+    ///  
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AdministrarRubroController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarRubroService _administrarRubroService;
+        /// <summary>
+        ///  
+        /// </summary>
         public AdministrarRubroController(IMapper mapper, IAdministrarRubroService administrarRubroService)
         {
             _mapper = mapper;
             _administrarRubroService = administrarRubroService;
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpGet]
         public IActionResult ObtenerTodosLosRubros()
         {
@@ -43,6 +52,9 @@ namespace CAPA.APLICACION.Controllers.Basico
             }
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpPost]
         public IActionResult InsertarRubro(RubroDTO _RubroDTO)
         {
@@ -66,6 +78,9 @@ namespace CAPA.APLICACION.Controllers.Basico
             }
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpPut]
         public IActionResult ActualizarRubro(RubroDTO RubroDTO)
         {
@@ -89,6 +104,9 @@ namespace CAPA.APLICACION.Controllers.Basico
             }
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpDelete]
         public IActionResult EliminarRubro(Guid id)
         {

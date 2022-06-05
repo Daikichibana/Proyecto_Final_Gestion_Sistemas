@@ -4,10 +4,13 @@ using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.BASICO.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.SERVICIOS;
+using CAPAS.CAPA.DOMINIO.USUARIOS.ABSTRACCIONES;
+using CAPAS.CAPA.DOMINIO.USUARIOS.SERVICIOS;
 using CAPAS.CAPA.TECNICA;
 using CAPAS.CAPA.TECNICA.BASICO;
 using CAPAS.CAPA.TECNICA.INVENTARIO;
 using CAPAS.CAPA.TECNICA.PERSISTENCIA;
+using CAPAS.CAPA.TECNICA.USUARIOS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -50,12 +53,17 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarRubroService), typeof(AdministrarRubroService));
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));   
             services.AddScoped(typeof(IAdministrarProductoService), typeof(AdministrarProductoService));   
+            services.AddScoped(typeof(IAdministrarUsuarioService), typeof(AdministrarUsuarioService));   
+            services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));   
+            services.AddScoped(typeof(IIniciarSesionService), typeof(IniciarSesionService));   
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
             services.AddScoped(typeof(IRubroRepository), typeof(RubroRepository));
             services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));
+            services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
+            services.AddScoped(typeof(IRolRepository), typeof(RolRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>

@@ -3,10 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CAPA.APLICACION.Controllers.Pedidos
 {
+    /// <summary>
+    ///  
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AsignarEntregaAConductorController : ControllerBase
     {
+        /// <summary>
+        ///  
+        /// </summary>
         public AsignarEntregaAConductorController()
         {
         }

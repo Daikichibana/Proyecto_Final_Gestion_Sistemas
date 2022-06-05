@@ -10,18 +10,27 @@ using System.Collections.Generic;
 
 namespace CAPA.APLICACION.Controllers.Inventario
 {
+    /// <summary>
+    ///  
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class GestionarTipoProductoController : ControllerBase
     {
         IMapper _mapper;
         IGestionarTipoProductoService _tipoProductoService;
+        /// <summary>
+        ///  
+        /// </summary>
         public GestionarTipoProductoController(IMapper mapper, IGestionarTipoProductoService tipoProductoService)
         {
             _mapper = mapper;
             _tipoProductoService = tipoProductoService;
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpGet]
         public IActionResult ObtenerTodosLosTipoProducto() {
 
@@ -53,6 +62,9 @@ namespace CAPA.APLICACION.Controllers.Inventario
             }
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpPost]
         public IActionResult InsertarTipoProducto(TipoProductoDTO _tipoProductoDTO) {
 
@@ -79,6 +91,9 @@ namespace CAPA.APLICACION.Controllers.Inventario
             }
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpPut]
         public IActionResult ActualizarTipoProducto(TipoProductoDTO tipoProductoDTO)
         {
@@ -105,6 +120,9 @@ namespace CAPA.APLICACION.Controllers.Inventario
             }
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
         [HttpDelete]
         public IActionResult EliminarTipoProducto(Guid id)
         {

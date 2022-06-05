@@ -1,49 +1,52 @@
 ﻿using AutoMapper;
 using CAPAS.CAPA.DOMINIO;
-using CAPAS.CAPA.DOMINIO.INVENTARIO.ABSTRACCIONES;
-using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO;
-using CAPAS.CAPA.DOMINIO.INVENTARIO.ENTIDADES;
+using CAPAS.CAPA.DOMINIO.USUARIOS.ABSTRACCIONES;
+using CAPAS.CAPA.DOMINIO.USUARIOS.DTO;
+using CAPAS.CAPA.DOMINIO.USUARIOS.ENTIDADES;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
-namespace CAPA.APLICACION.Controllers.Inventario
+
+namespace Proyecto_Final_Gestion_Sistemas.Server.Controllers.Usuarios
 {
     /// <summary>
     ///  
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class AdministrarProductoController : ControllerBase
+    public class AdministrarRolesController : ControllerBase
     {
         IMapper _mapper;
-        IAdministrarProductoService _productoService;
+        IAdministrarRolService _rolService;
+
         /// <summary>
         ///  
         /// </summary>
-        public AdministrarProductoController(IMapper mapper, IAdministrarProductoService productoService)
+        public AdministrarRolesController(IMapper mapper, IAdministrarRolService rolService)
         {
             _mapper = mapper;
-            _productoService = productoService;
+            _rolService = rolService;
         }
 
         /// <summary>
         ///  
         /// </summary>
         [HttpGet]
-        public IActionResult ObtenerTodosProductos()
+        public IActionResult ObtenerTodoRoles()
         {
 
-            var result = new ServiceResponse<List<ProductoDTO>>();
+            var result = new ServiceResponse<List<RolDTO>>();
 
             try
             {
-                IList<Producto> Productos = _productoService.ObtenerTodo();
-                List<ProductoDTO> response = new List<ProductoDTO>();
+                IList<Rol> roles = _rolService.ObtenerTodo();
+                List<RolDTO> response = new List<RolDTO>();
 
-                foreach (var Producto in Productos)
+                foreach (var rol in roles)
                 {
-                    response.Add(_mapper.Map<ProductoDTO>(Producto));
+                    response.Add(_mapper.Map<RolDTO>(rol));
                 }
 
                 result.Data = response;
@@ -66,18 +69,18 @@ namespace CAPA.APLICACION.Controllers.Inventario
         ///  
         /// </summary>
         [HttpPost]
-        public IActionResult InsertarProducto(ProductoDTO _productoDTO)
+        public IActionResult InsertarUsuario(RolDTO _rolDTO)
         {
 
-            var result = new ServiceResponse<ProductoDTO>();
+            var result = new ServiceResponse<RolDTO>();
 
             try
             {
-                Producto nuevoProducto = _mapper.Map<Producto>(_productoDTO);
+                Rol nuevoRol = _mapper.Map<Rol>(_rolDTO);
 
-                var response = _productoService.Guardar(nuevoProducto);
+                var response = _rolService.Guardar(nuevoRol);
 
-                result.Data = _mapper.Map<ProductoDTO>(response);
+                result.Data = _mapper.Map<RolDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -97,16 +100,16 @@ namespace CAPA.APLICACION.Controllers.Inventario
         ///  
         /// </summary>
         [HttpPut]
-        public IActionResult ActualizarProducto(ProductoDTO ProductoDTO)
+        public IActionResult ActualizarUsuario(RolDTO _rolDTO)
         {
-            var result = new ServiceResponse<ProductoDTO>();
+            var result = new ServiceResponse<RolDTO>();
 
             try
             {
-                Producto nuevoProducto = _mapper.Map<Producto>(ProductoDTO);
-                var response = _productoService.Actualizar(nuevoProducto);
+                Rol nuevoRol = _mapper.Map<Rol>(_rolDTO);
+                var response = _rolService.Actualizar(nuevoRol);
 
-                result.Data = _mapper.Map<ProductoDTO>(response);
+                result.Data = _mapper.Map<RolDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -126,13 +129,13 @@ namespace CAPA.APLICACION.Controllers.Inventario
         ///  
         /// </summary>
         [HttpDelete]
-        public IActionResult EliminarProducto(Guid id)
+        public IActionResult EliminarUsuario(Guid id)
         {
-            var result = new ServiceResponse<ProductoDTO>();
+            var result = new ServiceResponse<UsuarioDTO>();
 
             try
             {
-                _productoService.Eliminar(id);
+                _rolService.Eliminar(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -150,5 +153,6 @@ namespace CAPA.APLICACION.Controllers.Inventario
                 return BadRequest(result);
             }
         }
+
     }
 }

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace CAPAS.CAPA.DOMINIO.USUARIOS.DTO
 {
-    internal class Class1
+    public class RolDTO
     {
+        public Guid Id { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
     }
 }
