@@ -85,7 +85,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
 
         public async Task<ServiceResponse<ProductoDTO>> EliminarProducto(ProductoDTO Producto)
         {
-            var result = await _http.DeleteAsync($"{EnlaceProducto}/{Producto.Id}");
+            var result = await _http.DeleteAsync($"{EnlaceProducto}/?Id={Producto.Id}");
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
 
             return content;

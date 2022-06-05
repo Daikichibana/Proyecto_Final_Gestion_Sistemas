@@ -1,4 +1,8 @@
 ﻿@page "/ModificarProducto"
+@using CAPAS.CAPA.DOMINIO
+@using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO
+@inject IInventarioServices _inventarioService
+
 <h3>Modificar Producto</h3>
 
 <!-- Formulario Registro -->
@@ -9,17 +13,26 @@
         <fieldset class="form-group">
             <div class="form-group">
                 <label for="NombreRubro" class="form-label mt-4">Nombre del producto</label>
-                <input value="Limpieza" type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del producto.">
+                <input @bind=Producto.Nombre type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del producto.">
             </div>
             <div class="form-group">
                 <label for="NombreRubro" class="form-label mt-4">Descripcion del producto</label>
-                <input value="Productos de limpieza para el hogar" type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del producto.">
+                <input @bind=Producto.Descripcion type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del producto.">
             </div>
             <div class="form-group">
                 <label for="NombreRubro" class="form-label mt-4">Tipo producto</label>
-                <select class="form-select" id="rubroNegocio">
-                    <option>Limpieza</option>
-                    <option>Cosmetico</option>
+                <select @bind=Producto.TipoProductoId class="form-select" id="rubroNegocio">
+                    @foreach (TipoProductoDTO tipoProducto in ListaTipoProducto)
+                    {
+                        @if (tipoProducto.Id == Producto.TipoProductoId)
+                        {
+                            <option value="@tipoProducto.Id" selected="selected">@tipoProducto.Nombre</option>
+                        }
+                        else
+                        {
+                            <option value="@tipoProducto.Id">@tipoProducto.Nombre</option>
+                        }
+                    }
                 </select>
             </div>
         </fieldset>
@@ -29,9 +42,31 @@
 <!-- Boton enviar -->
 
 <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-    <button type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
-    <button type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
+    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button @onclick=Modificar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
 </div>
-@code {
 
+@code {
+    [Parameter]
+    public ProductoDTO Producto { get; set; }
+    
+    [Parameter]
+    public List<TipoProductoDTO> ListaTipoProducto { get; set; }
+    
+    [Parameter]
+    public EventCallback<bool> MostrarModificar { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> MostrarListado { get; set; }
+
+    public ServiceResponse<ProductoDTO> ResponseProducto { get; set; }
+
+
+    public async void Modificar()
+    {
+        ResponseProducto = await _inventarioService.ActualizarProducto(Producto);
+
+        if (ResponseProducto.Success)
+            await this.MostrarListado.InvokeAsync();
+    }
 }

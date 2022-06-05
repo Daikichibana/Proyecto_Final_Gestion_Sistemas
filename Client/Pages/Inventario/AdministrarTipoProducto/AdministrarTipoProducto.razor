@@ -8,11 +8,10 @@
 <h3>Administrar Tipo Producto</h3>
 
 <!-- Implementacion -->
-@if (ListaTipoProducto != null && ListaTipoProducto.Success == true)
+@if (ListaTipoProducto != null && ListaTipoProducto.Success == true && VisibleListado == true)
 {
     <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
         <div style="width: 70%;">
-
             @if (ListaTipoProducto.Data.Count > 0)
             {
                 <table class="table table-bordered" style="width: 100%">
@@ -30,7 +29,7 @@
                                 <td>@item.Nombre</td>
                                 <td>@item.Descripcion</td>
                                 <td>
-                                    <button @onclick="() => RedireccionarPagina(EnlaceModificar)">Modificar</button>
+                                    <button @onclick="() => MostrarModificar(item)">Modificar</button>
                                     <button @onclick="() => EliminarTipoProducto(item)" class="txtElim" id="txtEliminar1">Eliminar</button>
                                 </td>
                             </tr>
@@ -42,21 +41,28 @@
             {
                 <p>No existen Tipos Productos registrados.</p>
             }
-
-
         </div>
 
         <!-- Boton  -->
     </div>
     <div style="display: flex; justify-content: center;">
-        <button type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">
-            <a style="" href="@EnlaceRegistro">Registrar nuevo</a>
+        <button @onclick="MostrarRegistrar" type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">
+            Registrar nuevo
         </button>
     </div>
-
-    <button @onclick=InsertarTipoProducto>
-        Hazme Click
-    </button>
+}
+else if (VisibleEditar == true && TipoProductoSeleccionado != null)
+{
+    <ModificarTipoProducto 
+        TipoProducto="@TipoProductoSeleccionado"
+        MostrarListado="() => MostrarListado()"
+        MostrarModificar="() => MostrarModificar(TipoProductoSeleccionado)" />
+}
+else if (VisibleRegistrar == true)
+{
+    <RegistrarTipoProducto 
+        MostrarListado="() => MostrarListado()"
+        MostrarRegistrar="() => MostrarRegistrar()" />
 }
 else
 {
@@ -64,36 +70,68 @@ else
 }
 
 
+
 @code {
     public readonly string EnlaceRegistro = "RegistrarTipoProducto";
     public readonly string EnlaceModificar = "ModificarTipoProducto";
-    public ServiceResponse<List<TipoProductoDTO>> ListaTipoProducto { get; set; }
     public string Loading = "Cargando...";
+
+    public ServiceResponse<List<TipoProductoDTO>> ListaTipoProducto { get; set; }
+    public TipoProductoDTO TipoProductoSeleccionado { get; set; }
+
+    public bool VisibleRegistrar { get; set; }
+    public bool VisibleEditar { get; set; }
+    public bool VisibleListado { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
         ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
     }
 
     public void RedireccionarPagina(string enlace)
     {
         NavManager.NavigateTo(enlace);
+        StateHasChanged();
     }
 
-    public async void EliminarTipoProducto(TipoProductoDTO _tipoProducto)
+    public async void MostrarListado()
     {
-        var response = await _inventarioService.EliminarTipoProducto(_tipoProducto);
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
         ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
 
         StateHasChanged();
     }
 
-    public void InsertarTipoProducto()
+    public void MostrarRegistrar()
     {
-        TipoProductoDTO tipo = new TipoProductoDTO();
-        tipo.Nombre = "Ejemplo2";
-        tipo.Descripcion = "Descripcion";
+        VisibleListado = false;
+        VisibleEditar = false;
+        VisibleRegistrar = true;
 
-        _inventarioService.CrearTipoProducto(tipo);
+        StateHasChanged();
     }
+
+    public void MostrarModificar(TipoProductoDTO tipoProducto)
+    {
+        VisibleListado = false;
+        VisibleEditar = true;
+        VisibleRegistrar = false;
+        TipoProductoSeleccionado = tipoProducto;
+
+        StateHasChanged();
+    }
+
+    public async void EliminarTipoProducto(TipoProductoDTO tipoProducto)
+    {
+        var response = await _inventarioService.EliminarTipoProducto(tipoProducto);
+        
+        this.MostrarListado();
+    }
+
 }
