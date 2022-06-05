@@ -32,6 +32,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<UsuarioDTO, Usuario> ();
             CreateMap<TarjetaCliente, TarjetaClienteDTO>();
             CreateMap<TarjetaClienteDTO, TarjetaCliente>();
+            CreateMap<EmpresaCliente, EmpresaClienteDTO>();
+            CreateMap<EmpresaClienteDTO, EmpresaCliente>();
             CreateMap<EmpresaDistribuidoraDTO, EmpresaDistribuidora>();
             CreateMap<EmpresaDistribuidora, EmpresaDistribuidoraDTO>();
         }

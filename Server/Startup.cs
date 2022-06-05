@@ -2,6 +2,7 @@ using AutoMapper;
 using CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.BASICO.SERVICIOS;
+using CAPAS.CAPA.DOMINIO.CLIENTES.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.CLIENTES.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.SERVICIOS;
@@ -64,6 +65,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));     
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
             services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService)) ;
+            services.AddScoped(typeof(IAdministrarEmpresaClienteService), typeof(AdministrarEmpresaClienteService)) ;
             services.AddScoped(typeof(IAdministrarDistribuidoraService), typeof(AdministrarDistribuidoraService)) ;
 
             //Repositorios
@@ -76,6 +78,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
             services.AddScoped(typeof(IRolRepository), typeof(RolRepository));
             services.AddScoped(typeof(ITarjetaClienteRepository), typeof(TarjetaClienteRepository));
+            services.AddScoped(typeof(IEmpresaClienteRepository), typeof(EmpresaClienteRepository));
             services.AddScoped(typeof(IEmpresaDistribuidoraRepository), typeof(EmpresaDistribuidoraRepository));
 
             //Configuracion del Mapeador
