@@ -29,7 +29,7 @@ namespace CAPAS.CAPA.DOMINIO.INVENTARIO.SERVICIOS
         }
         public Producto ObtenerPorId(Guid id)
         {
-            throw new NotImplementedException();
+            return _productoRepository.ObtenerPorId(id);
         }
         public IList<Producto> ObtenerTodo()
         {

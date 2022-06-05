@@ -3,6 +3,8 @@ using CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.BASICO.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.CLIENTES.SERVICIOS;
+using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ABSTRACCIONES;
+using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.USUARIOS.ABSTRACCIONES;
@@ -10,6 +12,7 @@ using CAPAS.CAPA.DOMINIO.USUARIOS.SERVICIOS;
 using CAPAS.CAPA.TECNICA;
 using CAPAS.CAPA.TECNICA.BASICO;
 using CAPAS.CAPA.TECNICA.CLIENTES;
+using CAPAS.CAPA.TECNICA.DISTRIBUIDORAS;
 using CAPAS.CAPA.TECNICA.INVENTARIO;
 using CAPAS.CAPA.TECNICA.PERSISTENCIA;
 using CAPAS.CAPA.TECNICA.USUARIOS;
@@ -62,6 +65,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IIniciarSesionService), typeof(IniciarSesionService));   
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
             services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService)) ;
+            services.AddScoped(typeof(IAdministrarDistribuidoraService), typeof(AdministrarDistribuidoraService)) ;
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -73,6 +77,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
             services.AddScoped(typeof(IRolRepository), typeof(RolRepository));
             services.AddScoped(typeof(ITarjetaClienteRepository), typeof(TarjetaClienteRepository));
+            services.AddScoped(typeof(IEmpresaDistribuidoraRepository), typeof(EmpresaDistribuidoraRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>

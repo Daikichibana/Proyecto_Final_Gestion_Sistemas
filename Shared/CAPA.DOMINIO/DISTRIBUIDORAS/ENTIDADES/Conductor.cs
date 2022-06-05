@@ -12,6 +12,7 @@ namespace CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES
         public string Email { get; set; }
         public string Telefono { get; set; }
 
+
         public Conductor(string nombre, string apellido, string ci, DateTime fechaNacimiento, string email, string telefono)
         {
             Nombre = nombre;
