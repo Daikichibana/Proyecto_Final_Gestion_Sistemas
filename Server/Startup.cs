@@ -2,10 +2,12 @@ using AutoMapper;
 using CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.BASICO.SERVICIOS;
+using CAPAS.CAPA.DOMINIO.CLIENTES.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.SERVICIOS;
 using CAPAS.CAPA.TECNICA;
 using CAPAS.CAPA.TECNICA.BASICO;
+using CAPAS.CAPA.TECNICA.CLIENTES;
 using CAPAS.CAPA.TECNICA.INVENTARIO;
 using CAPAS.CAPA.TECNICA.PERSISTENCIA;
 using Microsoft.AspNetCore.Builder;
@@ -45,11 +47,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             //Aplicacion
             services.AddScoped(typeof(IAdministrarRubroService), typeof(AdministrarRubroService));
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
+            services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService)) ;
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
             services.AddScoped(typeof(IRubroRepository), typeof(RubroRepository));
+            services.AddScoped(typeof(ITarjetaClienteRepository), typeof(TarjetaClienteRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>
