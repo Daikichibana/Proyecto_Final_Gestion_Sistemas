@@ -17,6 +17,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<ProductoDTO, Producto>();
             CreateMap<Producto, ProductoDTO>();
             CreateMap<RubroDTO, Rubro>();
+            CreateMap<NITDTO, NIT>();
+            CreateMap<NIT, NITDTO>();
+            CreateMap<ResponsableEmpresaDTO, ResponsableEmpresa>();
+            CreateMap<ResponsableEmpresa, ResponsableEmpresaDTO>();
             CreateMap<Rubro, RubroDTO> ();
             CreateMap<Rol, RolDTO> ();
             CreateMap<RolDTO, Rol> ();
