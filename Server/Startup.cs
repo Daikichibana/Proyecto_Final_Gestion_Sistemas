@@ -2,12 +2,14 @@ using AutoMapper;
 using CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.BASICO.SERVICIOS;
+using CAPAS.CAPA.DOMINIO.CLIENTES.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.SERVICIOS;
 using CAPAS.CAPA.DOMINIO.USUARIOS.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.USUARIOS.SERVICIOS;
 using CAPAS.CAPA.TECNICA;
 using CAPAS.CAPA.TECNICA.BASICO;
+using CAPAS.CAPA.TECNICA.CLIENTES;
 using CAPAS.CAPA.TECNICA.INVENTARIO;
 using CAPAS.CAPA.TECNICA.PERSISTENCIA;
 using CAPAS.CAPA.TECNICA.USUARIOS;
@@ -58,6 +60,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarUsuarioService), typeof(AdministrarUsuarioService));   
             services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));   
             services.AddScoped(typeof(IIniciarSesionService), typeof(IniciarSesionService));   
+            services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
+            services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService)) ;
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -68,6 +72,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IResponsableEmpresaRepository), typeof(ResponsableEmpresaRepository));
             services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
             services.AddScoped(typeof(IRolRepository), typeof(RolRepository));
+            services.AddScoped(typeof(ITarjetaClienteRepository), typeof(TarjetaClienteRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>

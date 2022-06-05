@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CAPAS.CAPA.DOMINIO.BASICO.DTO;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
+using CAPAS.CAPA.DOMINIO.CLIENTES.DTO;
+using CAPAS.CAPA.DOMINIO.CLIENTES.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO;
 using CAPAS.CAPA.DOMINIO.INVENTARIO.ENTIDADES;
 using CAPAS.CAPA.DOMINIO.USUARIOS.DTO;
@@ -26,6 +28,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<RolDTO, Rol> ();
             CreateMap<Usuario, UsuarioDTO> ();
             CreateMap<UsuarioDTO, Usuario> ();
+            CreateMap<TarjetaCliente, TarjetaClienteDTO>();
+            CreateMap<TarjetaClienteDTO, TarjetaCliente>();
         }
     }
 }
