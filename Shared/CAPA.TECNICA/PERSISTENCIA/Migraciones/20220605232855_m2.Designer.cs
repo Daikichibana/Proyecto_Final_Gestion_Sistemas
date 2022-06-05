@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
 {
     [DbContext(typeof(BaseDatosContext))]
-    [Migration("20220602123010_PrimeraMigracion")]
-    partial class PrimeraMigracion
+    [Migration("20220605232855_m2")]
+    partial class m2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -114,7 +114,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("EmailEmpresa")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("NITId")
+                    b.Property<Guid>("NITId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NombreEmpresa")
@@ -123,10 +123,10 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("RazonSocial")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ResponsableId")
+                    b.Property<Guid>("ResponsableId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RubroId")
+                    b.Property<Guid>("RubroId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Updated")
@@ -184,6 +184,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("DistribuidoraId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -201,6 +204,8 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DistribuidoraId");
+
                     b.ToTable("Conductor");
                 });
 
@@ -216,7 +221,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("EmailEmpresa")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("NITId")
+                    b.Property<Guid>("NITId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NombreEmpresa")
@@ -225,10 +230,10 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("RazonSocial")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ResponsableId")
+                    b.Property<Guid>("ResponsableId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RubroId")
+                    b.Property<Guid>("RubroId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Updated")
@@ -347,7 +352,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TipoProductoId")
+                    b.Property<Guid>("TipoProductoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Updated")
@@ -395,7 +400,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("EmailEmpresa")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("NITId")
+                    b.Property<Guid>("NITId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NombreEmpresa")
@@ -404,10 +409,10 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("RazonSocial")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ResponsableId")
+                    b.Property<Guid>("ResponsableId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RubroId")
+                    b.Property<Guid>("RubroId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Updated")
@@ -492,7 +497,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("NombreUsuario")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("RolId")
+                    b.Property<Guid>("RolId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Updated")
@@ -705,15 +710,21 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 {
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.NIT", "NIT")
                         .WithMany()
-                        .HasForeignKey("NITId");
+                        .HasForeignKey("NITId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.ResponsableEmpresa", "Responsable")
                         .WithMany()
-                        .HasForeignKey("ResponsableId");
+                        .HasForeignKey("ResponsableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.Rubro", "Rubro")
                         .WithMany()
-                        .HasForeignKey("RubroId");
+                        .HasForeignKey("RubroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("NIT");
 
@@ -722,19 +733,36 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Navigation("Rubro");
                 });
 
+            modelBuilder.Entity("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.Conductor", b =>
+                {
+                    b.HasOne("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.EmpresaDistribuidora", "Distribuidora")
+                        .WithMany()
+                        .HasForeignKey("DistribuidoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Distribuidora");
+                });
+
             modelBuilder.Entity("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.EmpresaDistribuidora", b =>
                 {
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.NIT", "NIT")
                         .WithMany()
-                        .HasForeignKey("NITId");
+                        .HasForeignKey("NITId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.ResponsableEmpresa", "Responsable")
                         .WithMany()
-                        .HasForeignKey("ResponsableId");
+                        .HasForeignKey("ResponsableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.Rubro", "Rubro")
                         .WithMany()
-                        .HasForeignKey("RubroId");
+                        .HasForeignKey("RubroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("NIT");
 
@@ -747,7 +775,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 {
                     b.HasOne("CAPAS.CAPA.DOMINIO.INVENTARIO.ENTIDADES.TipoProducto", "TipoProducto")
                         .WithMany()
-                        .HasForeignKey("TipoProductoId");
+                        .HasForeignKey("TipoProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("TipoProducto");
                 });
@@ -756,15 +786,21 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 {
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.NIT", "NIT")
                         .WithMany()
-                        .HasForeignKey("NITId");
+                        .HasForeignKey("NITId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.ResponsableEmpresa", "Responsable")
                         .WithMany()
-                        .HasForeignKey("ResponsableId");
+                        .HasForeignKey("ResponsableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES.Rubro", "Rubro")
                         .WithMany()
-                        .HasForeignKey("RubroId");
+                        .HasForeignKey("RubroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("NIT");
 
@@ -792,7 +828,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 {
                     b.HasOne("CAPAS.CAPA.DOMINIO.USUARIOS.ENTIDADES.Rol", "Rol")
                         .WithMany()
-                        .HasForeignKey("RolId");
+                        .HasForeignKey("RolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Rol");
                 });
