@@ -3,34 +3,36 @@ using CAPAS.CAPA.DOMINIO;
 using CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES;
 using CAPAS.CAPA.DOMINIO.BASICO.DTO;
 using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Controllers.Basico
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdministrarNITController : ControllerBase
+    public class AdministrarResponsableEmpresaController : ControllerBase
     {
         IMapper _mapper;
-        INITService _NITService;
+        IResponsableEmpresaService _responsableEmpresaService;
 
-        public AdministrarNITController(IMapper mapper, INITService nITService)
+        public AdministrarResponsableEmpresaController(IMapper mapper, IResponsableEmpresaService responsableEmpresaService)
         {
             _mapper = mapper;
-            _NITService = nITService;
+            _responsableEmpresaService = responsableEmpresaService;
         }
 
         [HttpGet]
-        public IActionResult ObtenerTodosLosNIT()
+        public IActionResult ObtenerTodosLosResponsables()
         {
-            ServiceResponse<List<NITDTO>> result = new ServiceResponse<List<NITDTO>>();
+            ServiceResponse<List<ResponsableEmpresaDTO>> result = new ServiceResponse<List<ResponsableEmpresaDTO>>();
             try
             {
-                var response = _NITService.ObtenerTodo();
+                var response = _responsableEmpresaService.ObtenerTodo();
 
-                result.Data = _mapper.Map<List<NITDTO>>(response);
+                result.Data = _mapper.Map<List<ResponsableEmpresaDTO>>(response);
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -44,15 +46,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Controllers.Basico
             }
         }
         [HttpPost]
-        public IActionResult InsertarNIT(NITDTO _NITDTO)
+        public IActionResult InsertarNIT(ResponsableEmpresaDTO _responsableDTO)
         {
-            ServiceResponse<NITDTO> result = new ServiceResponse<NITDTO>();
+            ServiceResponse<ResponsableEmpresaDTO> result = new ServiceResponse<ResponsableEmpresaDTO>();
             try
             {
-                NIT nuevoNIT = _mapper.Map<NIT>(_NITDTO);
-                var response = _NITService.Guardar(nuevoNIT);
+                ResponsableEmpresa nuevoResponsable = _mapper.Map<ResponsableEmpresa>(_responsableDTO);
+                var response = _responsableEmpresaService.Guardar(nuevoResponsable);
 
-                result.Data = _mapper.Map<NITDTO>(response);
+                result.Data = _mapper.Map<ResponsableEmpresaDTO>(response);
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -66,15 +68,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Controllers.Basico
             }
         }
         [HttpPut]
-        public IActionResult ActualizarNIT(NITDTO NITDTO)
+        public IActionResult ActualizarResponsableEmpresa(ResponsableEmpresaDTO responsableDTO)
         {
-            ServiceResponse<NITDTO> result = new ServiceResponse<NITDTO>();
+            ServiceResponse<ResponsableEmpresaDTO> result = new ServiceResponse<ResponsableEmpresaDTO>();
             try
             {
-                NIT nuevoNIT = _mapper.Map<NIT>(NITDTO);
-                var response = _NITService.Actualizar(nuevoNIT);
+                ResponsableEmpresa nuevoResponsable = _mapper.Map<ResponsableEmpresa>(responsableDTO);
+                var response = _responsableEmpresaService.Actualizar(nuevoResponsable);
 
-                result.Data = _mapper.Map<NITDTO>(response);
+                result.Data = _mapper.Map<ResponsableEmpresaDTO>(response);
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -88,12 +90,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Controllers.Basico
             }
         }
         [HttpDelete]
-        public IActionResult EliminarNIT(Guid id)
+        public IActionResult EliminarResponsableEmpresa(Guid id)
         {
-            ServiceResponse<NITDTO> result = new ServiceResponse<NITDTO>();
+            ServiceResponse<ResponsableEmpresaDTO> result = new ServiceResponse<ResponsableEmpresaDTO>();
             try
             {
-                _NITService.Eliminar(id);
+                _responsableEmpresaService.Eliminar(id);
 
                 result.Data = null;
                 result.Message = "Ok";

@@ -47,6 +47,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));   
             services.AddScoped(typeof(IAdministrarProductoService), typeof(AdministrarProductoService));   
             services.AddScoped(typeof(INITService), typeof(AdministrarNITService));   
+            services.AddScoped(typeof(IResponsableEmpresaService), typeof(AdministrarResponsableEmpresaService));   
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -54,6 +55,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IRubroRepository), typeof(RubroRepository));
             services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));
             services.AddScoped(typeof(INITRepository), typeof(NITRepository));
+            services.AddScoped(typeof(IResponsableEmpresaRepository), typeof(ResponsableEmpresaRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>
