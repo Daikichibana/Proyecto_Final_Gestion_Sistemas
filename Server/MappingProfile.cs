@@ -38,8 +38,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<EmpresaDistribuidora, EmpresaDistribuidoraDTO>();
             CreateMap<ConductorDTO, Conductor>();
             CreateMap<Conductor, ConductorDTO>();
-            CreateMap<VehiculoDTO, Vehiculo>();
-            CreateMap<Vehiculo, VehiculoDTO>();
+            CreateMap<VehiculoDTO, Vechiculo>();
+            CreateMap<Vechiculo, VehiculoDTO>();
+            CreateMap<Sucursales, SucursalesDTO>();
+            CreateMap<SucursalesDTO, Sucursales>();
+            CreateMap<ResponsableAlmacenDTO, ResponsableAlmacen>();
+            CreateMap<ResponsableAlmacen, ResponsableAlmacenDTO>();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.SERVICIOS
         {
             _vehiculoRepository = vehiculoRepository;
         }
-        public Vehiculo Actualizar(Vehiculo entity)
+        public Vechiculo Actualizar(Vechiculo entity)
         {
             return _vehiculoRepository.Actualizar(entity);
         }
@@ -22,15 +22,15 @@ namespace CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.SERVICIOS
         {
            _vehiculoRepository.Eliminar(id);
         }
-        public Vehiculo Guardar(Vehiculo entity)
+        public Vechiculo Guardar(Vechiculo entity)
         {
             return _vehiculoRepository.Guardar(entity);
         }
-        public Vehiculo ObtenerPorId(Guid id)
+        public Vechiculo ObtenerPorId(Guid id)
         {
             return _vehiculoRepository.ObtenerPorId(id);
         }
-        public IList<Vehiculo> ObtenerTodo()
+        public IList<Vechiculo> ObtenerTodo()
         {
             return _vehiculoRepository.ObtenerTodo();
         }

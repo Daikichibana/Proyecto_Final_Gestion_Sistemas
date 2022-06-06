@@ -263,6 +263,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("DistribuidoraId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -280,6 +283,8 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DistribuidoraId");
+
                     b.ToTable("ResponsableAlmacen");
                 });
 
@@ -295,6 +300,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Property<string>("Direccion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("DistribuidoraId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("NroSucursal")
                         .HasColumnType("int");
 
@@ -306,6 +314,8 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DistribuidoraId");
+
                     b.ToTable("Sucursales");
                 });
 
@@ -313,6 +323,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ConductorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
@@ -331,6 +344,8 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConductorId");
 
                     b.ToTable("Vechiculo");
                 });
@@ -767,6 +782,39 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     b.Navigation("Responsable");
 
                     b.Navigation("Rubro");
+                });
+
+            modelBuilder.Entity("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.ResponsableAlmacen", b =>
+                {
+                    b.HasOne("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.EmpresaDistribuidora", "Distribuidora")
+                        .WithMany()
+                        .HasForeignKey("DistribuidoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Distribuidora");
+                });
+
+            modelBuilder.Entity("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.Sucursales", b =>
+                {
+                    b.HasOne("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.EmpresaDistribuidora", "Distribuidora")
+                        .WithMany()
+                        .HasForeignKey("DistribuidoraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Distribuidora");
+                });
+
+            modelBuilder.Entity("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.Vechiculo", b =>
+                {
+                    b.HasOne("CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES.Conductor", "Conductor")
+                        .WithMany()
+                        .HasForeignKey("ConductorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conductor");
                 });
 
             modelBuilder.Entity("CAPAS.CAPA.DOMINIO.INVENTARIO.ENTIDADES.Producto", b =>
