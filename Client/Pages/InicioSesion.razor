@@ -27,8 +27,8 @@
     {
         var usuarioValido = await usuariosServices.ValidarUsuario(user);
         var usuarioDetalle = await usuariosServices.ObtenerUsuarioPorNombre(user.NombreUsuario);
-
-        if (usuarioValido.Data)
+        
+        if (usuarioValido.Data && usuarioDetalle != null)
         {
             Console.WriteLine("Log me in!");
             await LocalStorage.SetItemAsync<string>("username", usuarioDetalle.Data.NombreUsuario);
@@ -40,5 +40,6 @@
         {
             await JsRuntime.InvokeVoidAsync("alert", "Usuario no valido.");
         }
+        
     }
 }

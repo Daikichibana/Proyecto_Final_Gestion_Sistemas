@@ -64,11 +64,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
 
         public async Task<ServiceResponse<UsuarioDTO>> ObtenerUsuarioPorNombre(string nombreUsuario)
         {
-            var Enlace = EnlaceUsuario + "/ObtenerUsuarioPorNombre";
-            var result = await _http.PostAsJsonAsync(Enlace, nombreUsuario);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<UsuarioDTO>>();
+            var Enlace = EnlaceUsuario + $"/ObtenerUsuarioPorNombre?nombre={nombreUsuario}";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<UsuarioDTO>>(Enlace);
 
-            return content;
+            return result;
         }
 
         public async Task<ServiceResponse<bool>> ValidarUsuario(ValidarUsuarioDTO usuario)
