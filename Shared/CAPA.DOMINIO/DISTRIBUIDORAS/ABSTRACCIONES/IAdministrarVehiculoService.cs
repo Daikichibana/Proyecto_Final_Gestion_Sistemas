@@ -7,9 +7,9 @@ namespace CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ABSTRACCIONES
     public interface IAdministrarVehiculoService
     {
         void Eliminar(Guid id);
-        IList<Vehiculo> ObtenerTodo();
-        Vehiculo ObtenerPorId(Guid id);
-        Vehiculo Guardar(Vehiculo entity);
-        Vehiculo Actualizar(Vehiculo entity);
+        IList<Vechiculo> ObtenerTodo();
+        Vechiculo ObtenerPorId(Guid id);
+        Vechiculo Guardar(Vechiculo entity);
+        Vechiculo Actualizar(Vechiculo entity);
     }
 }

@@ -69,6 +69,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarDistribuidoraService), typeof(AdministrarDistribuidoraService)) ;
             services.AddScoped(typeof(IAdministrarConductorService), typeof(AdministrarConductorService)) ;
             services.AddScoped(typeof(IAdministrarVehiculoService), typeof(AdministrarVehiculoService)) ;
+            services.AddScoped(typeof(IAdministrarSucursalesService), typeof(AdministrarSucursalesService)) ;
+            services.AddScoped(typeof(IAdministrarResponsableAlmacenService), typeof(AdministrarResponsableAlmacenService)) ;
 
             //Repositorios
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -84,6 +86,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IEmpresaDistribuidoraRepository), typeof(EmpresaDistribuidoraRepository));
             services.AddScoped(typeof(IConductorRepository), typeof(ConductorRepository));
             services.AddScoped(typeof(IVehiculoRepository), typeof(VehiculoRepository));
+            services.AddScoped(typeof(ISucursalRepository), typeof(SucursalRepository));
+            services.AddScoped(typeof(IResponsableAlmacenRepository), typeof(ResponsableAlmacenRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>

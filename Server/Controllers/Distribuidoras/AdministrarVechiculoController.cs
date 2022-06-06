@@ -37,7 +37,7 @@ namespace CAPA.APLICACION.Controllers.Distribuidoras
 
             try
             {
-                IList<Vehiculo> Vehiculos = _administrarVehiculoService.ObtenerTodo();
+                IList<Vechiculo> Vehiculos = _administrarVehiculoService.ObtenerTodo();
                 List<VehiculoDTO> response = new List<VehiculoDTO>();
 
                 foreach (var Vehiculo in Vehiculos)
@@ -71,7 +71,7 @@ namespace CAPA.APLICACION.Controllers.Distribuidoras
 
             try
             {
-                Vehiculo nuevoVehiculo = _mapper.Map<Vehiculo>(vehiculoDTO);
+                Vechiculo nuevoVehiculo = _mapper.Map<Vechiculo>(vehiculoDTO);
 
                 var response = _administrarVehiculoService.Guardar(nuevoVehiculo);
 
@@ -100,7 +100,7 @@ namespace CAPA.APLICACION.Controllers.Distribuidoras
 
             try
             {
-                Vehiculo nuevoVehiculo = _mapper.Map<Vehiculo>(vehiculoDTO);
+                Vechiculo nuevoVehiculo = _mapper.Map<Vechiculo>(vehiculoDTO);
                 var response = _administrarVehiculoService.Actualizar(nuevoVehiculo);
 
                 result.Data = _mapper.Map<VehiculoDTO>(response);

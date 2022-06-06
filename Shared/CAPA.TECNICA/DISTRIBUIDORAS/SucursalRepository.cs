@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace CAPAS.CAPA.TECNICA.DISTRIBUIDORAS
 {
-    public interface IVehiculoRepository : IRepository<Vechiculo>
+    public interface ISucursalRepository : IRepository<Sucursales>
     {
     }
-    public class VehiculoRepository : Repository<Vechiculo>, IVehiculoRepository
+    public class SucursalRepository : Repository<Sucursales>, ISucursalRepository
     {
-        public VehiculoRepository(BaseDatosContext ctx) : base(ctx)
+        public SucursalRepository(BaseDatosContext ctx) : base(ctx)
         {
         }
     }
