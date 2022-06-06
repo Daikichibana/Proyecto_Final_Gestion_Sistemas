@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
 {
-    public partial class PrimeraMigracion : Migration
+    public partial class m2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,25 +44,6 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Conductor",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ci = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Conductor", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -324,7 +305,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NombreUsuario = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Clave = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RolId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RolId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -336,7 +317,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                         column: x => x.RolId,
                         principalTable: "Rol",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -347,9 +328,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     NombreEmpresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RazonSocial = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailEmpresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RubroId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NITId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ResponsableId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RubroId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NITId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResponsableId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -361,19 +342,19 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                         column: x => x.NITId,
                         principalTable: "NIT",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmpresaCliente_ResponsableEmpresa_ResponsableId",
                         column: x => x.ResponsableId,
                         principalTable: "ResponsableEmpresa",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmpresaCliente_Rubro_RubroId",
                         column: x => x.RubroId,
                         principalTable: "Rubro",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -384,9 +365,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     NombreEmpresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RazonSocial = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailEmpresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RubroId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NITId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ResponsableId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RubroId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NITId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResponsableId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -398,19 +379,19 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                         column: x => x.NITId,
                         principalTable: "NIT",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmpresaDistribuidora_ResponsableEmpresa_ResponsableId",
                         column: x => x.ResponsableId,
                         principalTable: "ResponsableEmpresa",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmpresaDistribuidora_Rubro_RubroId",
                         column: x => x.RubroId,
                         principalTable: "Rubro",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -421,9 +402,9 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                     NombreEmpresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RazonSocial = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailEmpresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RubroId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    NITId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ResponsableId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RubroId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NITId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ResponsableId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -435,19 +416,19 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                         column: x => x.NITId,
                         principalTable: "NIT",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmpresaProveedor_ResponsableEmpresa_ResponsableId",
                         column: x => x.ResponsableId,
                         principalTable: "ResponsableEmpresa",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_EmpresaProveedor_Rubro_RubroId",
                         column: x => x.RubroId,
                         principalTable: "Rubro",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -456,8 +437,8 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TipoProductoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TipoProductoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -469,7 +450,33 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                         column: x => x.TipoProductoId,
                         principalTable: "TipoProducto",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Conductor",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ci = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DistribuidoraId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Conductor", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Conductor_EmpresaDistribuidora_DistribuidoraId",
+                        column: x => x.DistribuidoraId,
+                        principalTable: "EmpresaDistribuidora",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -538,6 +545,11 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA.Migraciones
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conductor_DistribuidoraId",
+                table: "Conductor",
+                column: "DistribuidoraId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmpresaCliente_NITId",

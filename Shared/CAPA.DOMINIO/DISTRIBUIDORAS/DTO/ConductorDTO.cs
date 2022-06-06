@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,7 @@ namespace CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.DTO
         public DateTime FechaNacimiento { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
+        public EmpresaDistribuidora EmpresaDistribuidora { get; set; }
+        public Guid EmpresaDitribuidoraId { get; set; }
     }
 }
