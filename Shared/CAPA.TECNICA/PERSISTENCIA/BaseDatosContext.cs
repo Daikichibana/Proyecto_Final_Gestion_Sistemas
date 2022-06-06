@@ -27,7 +27,7 @@ namespace CAPAS.CAPA.TECNICA.PERSISTENCIA
         public DbSet<EmpresaDistribuidora> EmpresaDistribuidora { get; set; }
         public DbSet<ResponsableAlmacen> ResponsableAlmacen { get; set; }
         public DbSet<Sucursales> Sucursales { get; set; }
-        public DbSet<Vechiculo> Vechiculo { get; set; }
+        public DbSet<Vehiculo> Vechiculo { get; set; }
 
         /* Modulo Inventario */
         public DbSet<TipoProducto> TipoProducto { get; set; }
