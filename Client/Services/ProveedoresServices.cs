@@ -3,7 +3,4 @@
     public interface IProveedoresServices
     {
     }
-    public class ProveedoresServices : IProveedoresServices
-    {
-    }
 }

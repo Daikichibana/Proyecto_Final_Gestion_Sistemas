@@ -3,7 +3,4 @@
     public interface IDistribuidorasServices
     {
     }
-    public class DistribuidorasServices : IDistribuidorasServices
-    {
-    }
 }

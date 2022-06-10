@@ -17,7 +17,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\Proyecto_Final_Gestion_Sistemas.Client.csproj" />
-    <ProjectReference Include="..\Shared\CAPAS.csproj" />
+    <ProjectReference Include="..\Compartido\Compartido.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modulos\Basico\Dominio" />
+    <Folder Include="Modulos\Clientes\Dominio" />
+    <Folder Include="Modulos\Distribuidoras\Dominio" />
+    <Folder Include="Modulos\Inventario\Dominio" />
+    <Folder Include="Modulos\Pedidos\Dominio" />
+    <Folder Include="Modulos\Usuarios\Dominio" />
   </ItemGroup>
 
 

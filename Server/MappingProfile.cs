@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using CAPAS.CAPA.DOMINIO.BASICO.DTO;
-using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
-using CAPAS.CAPA.DOMINIO.CLIENTES.DTO;
-using CAPAS.CAPA.DOMINIO.CLIENTES.ENTIDADES;
-using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.DTO;
-using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ENTIDADES;
-using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO;
-using CAPAS.CAPA.DOMINIO.INVENTARIO.ENTIDADES;
-using CAPAS.CAPA.DOMINIO.USUARIOS.DTO;
-using CAPAS.CAPA.DOMINIO.USUARIOS.ENTIDADES;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Dominio.Entidades;
+using Compartido.Modulos.Basico.Dto;
+using Compartido.Modulos.Clientes.Dto;
+using Compartido.Modulos.Distribuidoras.Dto;
+using Compartido.Modulos.Inventario.Dto;
+using Compartido.Modulos.Usuarios.Dto;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server
 {

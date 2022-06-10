@@ -1,5 +1,7 @@
-﻿@using CAPAS.CAPA.DOMINIO
-@using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO
+﻿@*
+@using Microsoft.AspNetCore.Components
+@using global::Compartido
+
 @inject IInventarioServices _inventarioService
 
 <h4>Modificar Tipo Producto</h4>
@@ -50,6 +52,5 @@
         if(Response.Success)
             await this.MostrarListado.InvokeAsync();
     }
-
-
 }
+*@

@@ -3,7 +3,4 @@
     public interface IBasicoServices
     { 
     }
-    public class BasicoServices : IBasicoServices
-    {
-    }
 }

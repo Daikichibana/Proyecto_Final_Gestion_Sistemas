@@ -1,10 +1,10 @@
 ﻿@page "/ModificarProducto"
-@using CAPAS.CAPA.DOMINIO
-@using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO
+@using Microsoft.AspNetCore.Components
+@using Compartido.Modulos.Inventario.Dto
+@using Compartido
 @inject IInventarioServices _inventarioService
 
 <h3>Modificar Producto</h3>
-
 <!-- Formulario Registro -->
 <div style="display: flex; justify-content: center;">
     <form style="width: 70%;">
@@ -46,13 +46,15 @@
     <button @onclick=Modificar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
 </div>
 
+
 @code {
+
     [Parameter]
     public ProductoDTO Producto { get; set; }
-    
+
     [Parameter]
     public List<TipoProductoDTO> ListaTipoProducto { get; set; }
-    
+
     [Parameter]
     public EventCallback<bool> MostrarModificar { get; set; }
 
@@ -69,4 +71,5 @@
         if (ResponseProducto.Success)
             await this.MostrarListado.InvokeAsync();
     }
+
 }

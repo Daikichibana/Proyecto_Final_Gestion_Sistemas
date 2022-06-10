@@ -1,22 +1,7 @@
+using System;
+using System.IO;
+using System.Reflection;
 using AutoMapper;
-using CAPAS.CAPA.DOMINIO.BASICO.ABSTRACCIONES;
-using CAPAS.CAPA.DOMINIO.BASICO.ENTIDADES;
-using CAPAS.CAPA.DOMINIO.BASICO.SERVICIOS;
-using CAPAS.CAPA.DOMINIO.CLIENTES.ABSTRACCIONES;
-using CAPAS.CAPA.DOMINIO.CLIENTES.SERVICIOS;
-using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.ABSTRACCIONES;
-using CAPAS.CAPA.DOMINIO.DISTRIBUIDORAS.SERVICIOS;
-using CAPAS.CAPA.DOMINIO.INVENTARIO.ABSTRACCIONES;
-using CAPAS.CAPA.DOMINIO.INVENTARIO.SERVICIOS;
-using CAPAS.CAPA.DOMINIO.USUARIOS.ABSTRACCIONES;
-using CAPAS.CAPA.DOMINIO.USUARIOS.SERVICIOS;
-using CAPAS.CAPA.TECNICA;
-using CAPAS.CAPA.TECNICA.BASICO;
-using CAPAS.CAPA.TECNICA.CLIENTES;
-using CAPAS.CAPA.TECNICA.DISTRIBUIDORAS;
-using CAPAS.CAPA.TECNICA.INVENTARIO;
-using CAPAS.CAPA.TECNICA.PERSISTENCIA;
-using CAPAS.CAPA.TECNICA.USUARIOS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +9,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Reflection;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Tecnica;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server
 {
@@ -52,7 +50,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
 
             services.AddDbContext<BaseDatosContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("CAPAS"))
+                    b => b.MigrationsAssembly("Compartido"))
                 );
 
             //Aplicacion
@@ -73,7 +71,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarResponsableAlmacenService), typeof(AdministrarResponsableAlmacenService)) ;
 
             //Repositorios
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(Modulos.Inventario.Tecnica.IRepository<>), typeof(Modulos.Inventario.Tecnica.Repository<>));
             services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
             services.AddScoped(typeof(IRubroRepository), typeof(RubroRepository));
             services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));

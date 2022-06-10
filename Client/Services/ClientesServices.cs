@@ -3,7 +3,4 @@
     public interface IClientesServices
     {
     }
-    public class ClientesServices : IClientesServices
-    {
-    }
 }

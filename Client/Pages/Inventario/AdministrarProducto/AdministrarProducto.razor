@@ -1,12 +1,12 @@
 ﻿@page "/AdministrarProducto"
-@using CAPAS.CAPA.DOMINIO
-@using CAPAS.CAPA.DOMINIO.INVENTARIO.DTO
+@using Compartido.Modulos.Inventario.Dto
+@using Compartido
 @inject IInventarioServices _inventarioService
 
 <h3>Administrar Producto</h3>
 
 <!-- Implementacion -->
-@if (ListaProducto != null && ListaProducto.Success == true && VisibleListado == true)
+@if (ListaProducto is {Success: true } && VisibleListado == true)
 {
     <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
         <div style="width: 70%;">
@@ -69,7 +69,6 @@ else
     <p>@Loading</p>
 }
 
-<Authorizeview />
 
 @code {
     public readonly string EnlaceRegistro = "RegistrarProducto";
