@@ -8,13 +8,13 @@ using Compartido.Dto.Personal.General;
 
 namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 {
-    public class UsuariosServices : IUsuariosServices
+    public class PersonalServices : IPersonalServices
     {
         private readonly HttpClient _http;
         private string EnlaceRoles = "api/AdministrarRoles";
         private string EnlaceUsuario = "api/AdministrarUsuario";
 
-        public UsuariosServices(HttpClient http)
+        public PersonalServices(HttpClient http)
         {
             _http = http;
         }

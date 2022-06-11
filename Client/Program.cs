@@ -24,12 +24,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Client
             
             //Servicios
             builder.Services.AddScoped<IInventarioServices, InventarioServices>();
-            builder.Services.AddScoped<IBasicoServices, BasicoServices>();
-            builder.Services.AddScoped<IClientesServices, ClientesServices>();
             builder.Services.AddScoped<IDistribuidorasServices, DistribuidorasServices>();
             builder.Services.AddScoped<IPedidosServices, PedidosServices>();
-            builder.Services.AddScoped<IProveedoresServices, ProveedoresServices>();
-            builder.Services.AddScoped<IUsuariosServices, UsuariosServices>();
+            builder.Services.AddScoped<IPersonalServices, PersonalServices>();
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();

@@ -9,7 +9,7 @@ using Compartido.Dto.Personal.General;
 namespace Proyecto_Final_Gestion_Sistemas.Client.Services
 {
 
-    public interface IUsuariosServices
+    public interface IPersonalServices
     {
         #region Usuarios
 
