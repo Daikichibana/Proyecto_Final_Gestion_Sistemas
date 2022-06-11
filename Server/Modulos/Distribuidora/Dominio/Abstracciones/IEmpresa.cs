@@ -1,5 +1,7 @@
 ﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones
 {
@@ -11,5 +13,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
         public Rubro Rubro { get; set; }
         public NIT NIT { get; set; }
         public ResponsableEmpresa Responsable { get; set; }
+
+        [ForeignKey("Responsable")]
+        public Guid ResponsableId { get; set; }
     }
 }

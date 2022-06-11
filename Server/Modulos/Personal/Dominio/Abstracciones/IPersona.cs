@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones
 {
@@ -10,5 +13,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
         public DateTime FechaNacimiento { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
+        public Usuario Usuario{ get; set; }
+
+        [ForeignKey("Usuario")]
+        public Guid UsuarioId { get; set; }
+        
     }
 }

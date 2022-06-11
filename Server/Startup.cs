@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Servicios;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
@@ -19,6 +18,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Tecnica;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servicios;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server
 {
@@ -43,8 +43,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             //Configuracion para bases de datos:
 
             services.AddDbContext<BaseDatosContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Compartido"))
+                    //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly("Proyecto_Final_Gestion_Sistemas.Server"))
                 );
 
             //Aplicacion

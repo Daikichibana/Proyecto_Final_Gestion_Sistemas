@@ -13,16 +13,17 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Enti
         [ForeignKey("TipoProducto")]
         public Guid TipoProductoId { get; set; }
 
+
+        public Producto()
+        {
+
+        }
+
         public Producto(string nombre, TipoProducto tipoProducto, string descripcion)
         {
             Nombre = nombre;
             TipoProducto = tipoProducto;
             Descripcion = descripcion;
-        }
-
-        public Producto()
-        {
-
         }
     }
 }

@@ -4,6 +4,11 @@
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+
+        public Rubro()
+        {
+
+        }
         public Rubro(string nombre, string descripcion)
         {
             Nombre = nombre;

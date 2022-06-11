@@ -14,6 +14,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.E
         public NIT NIT { get; set; }
         public ResponsableEmpresa Responsable { get; set; }
 
+
         [ForeignKey("Rubro")]
         public Guid RubroId { get; set; }
 
@@ -23,6 +24,11 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.E
         [ForeignKey("Responsable")]
         public Guid ResponsableId { get; set; }
 
+        public EmpresaDistribuidora()
+        {
+
+        }
+
         public EmpresaDistribuidora(string nombreEmpresa, string razonSocial, string emailEmpresa, Rubro rubro, NIT nIT, ResponsableEmpresa responsable)
         {
             NombreEmpresa = nombreEmpresa;
@@ -31,11 +37,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.E
             Rubro = rubro;
             NIT = nIT;
             Responsable = responsable;
-        }
-
-        public EmpresaDistribuidora()
-        {
-
         }
     }
 }

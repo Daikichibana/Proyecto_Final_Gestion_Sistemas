@@ -7,15 +7,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entida
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
+        public Rol()
+        {
+
+        }
+
         public Rol(string nombre, string descripcion)
         {
             Nombre = nombre;
             Descripcion = descripcion;
         }
 
-        public Rol()
-        {
-
-        }
     }
 }
