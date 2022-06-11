@@ -1,12 +1,10 @@
-﻿
-@using Compartido.Dto.Inventario.General
+﻿@page "/ModificarRubro"
+@using Compartido.Dto.Distribuidora.General
 @using Microsoft.AspNetCore.Components
-@using global::Compartido
+@using Compartido
+@inject IDistribuidorasServices _distribuidorasService
 
-@inject IInventarioServices _inventarioService
-
-<h4>Modificar Tipo Producto</h4>
-
+<h3>Modificar Rubro</h3>
 <!-- Formulario Registro -->
 <div style="display: flex; justify-content: center;">
     <form style="width: 70%;">
@@ -14,14 +12,13 @@
 
         <fieldset class="form-group">
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Nombre del tipo de producto</label>
-                <input @bind=@TipoProducto.Nombre type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del tipo de producto.">
+                <label for="NombreRubro" class="form-label mt-4">Nombre del Rubro</label>
+                <input @bind=Rubro.Nombre type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del rubro.">
             </div>
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Descripcion del tipo de producto</label>
-                <input @bind=@TipoProducto.Descripcion type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del tipo de producto.">
+                <label for="NombreRubro" class="form-label mt-4">Descripcion del Rubro</label>
+                <input @bind=Rubro.Descripcion type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del rubro.">
             </div>
-
         </fieldset>
     </form>
 </div>
@@ -33,9 +30,11 @@
     <button @onclick=Modificar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
 </div>
 
+
 @code {
+
     [Parameter]
-    public TipoProductoDTO TipoProducto { get; set; }
+    public RubroDTO Rubro { get; set; }
 
     [Parameter]
     public EventCallback<bool> MostrarModificar { get; set; }
@@ -43,15 +42,15 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    public ServiceResponse<TipoProductoDTO> Response { get; set; }
+    public ServiceResponse<RubroDTO> ResponseRubro { get; set; }
 
 
     public async void Modificar()
     {
-        Response = await _inventarioService.ActualizarTipoProducto(TipoProducto);
-        
-        if(Response.Success)
+        ResponseRubro = await _distribuidorasService.ActualizarRubro(Rubro);
+
+        if (ResponseRubro.Success)
             await this.MostrarListado.InvokeAsync();
     }
-}
 
+}
