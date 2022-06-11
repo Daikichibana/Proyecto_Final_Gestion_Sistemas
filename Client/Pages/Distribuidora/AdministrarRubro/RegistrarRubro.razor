@@ -1,22 +1,23 @@
-﻿@using Compartido
-@using Compartido.Dto.Inventario.General
+﻿@page "/RegistrarRubro"
+@using Compartido
+@using Compartido.Dto.Distribuidora.General
+@inject IDistribuidorasServices _distribuidorasService
 
-@inject IInventarioServices _inventarioService
-
-<h4>Registrar Tipo Producto</h4>
+<h4>Registrar Rubro</h4>
 
 <!-- Formulario Registro -->
 <div style="display: flex; justify-content: center;">
     <form style="width: 70%;">
         <!-- Informacion del responsable -->
+
         <fieldset class="form-group">
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Nombre del tipo de producto</label>
-                <input @bind=TipoProducto.Nombre type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del tipo de producto.">
+                <label for="NombreRubro" class="form-label mt-4">Nombre del rubro</label>
+                <input @bind=Rubro.Nombre type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del rubro.">
             </div>
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Descripcion del tipo de producto</label>
-                <input @bind=TipoProducto.Descripcion type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del tipo de producto.">
+                <label for="NombreRubro" class="form-label mt-4">Descripcion del rubro</label>
+                <input @bind=Rubro.Descripcion type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del rubro.">
             </div>
         </fieldset>
     </form>
@@ -29,6 +30,7 @@
     <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
 </div>
 
+
 @code {
     [Parameter]
     public EventCallback<bool> MostrarRegistrar { get; set; }
@@ -36,20 +38,23 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    public TipoProductoDTO TipoProducto { get; set; }
-    public ServiceResponse<TipoProductoDTO> Response { get; set; }
-    
+
+    public ServiceResponse<RubroDTO> ResponseRubro { get; set; }
+
+    public RubroDTO Rubro { get; set; }
+
+
     protected override void OnInitialized()
     {
-        TipoProducto = new TipoProductoDTO();
+        Rubro =  new RubroDTO();
     }
+
 
     public async void Registrar()
     {
-        Response = await _inventarioService.CrearTipoProducto(TipoProducto);
+        ResponseRubro = await _distribuidorasService.CrearRubro(Rubro);
         
-        if(Response.Success)
+        if(ResponseRubro.Success)
             await this.MostrarListado.InvokeAsync();
     }
-
 }

@@ -1,37 +1,32 @@
-﻿
-@page "/AdministrarTipoProducto"
-@using System.Reflection
+﻿@page "/AdministrarRubro"
 @using Compartido
-@using Compartido.Dto.Inventario.General
-@inject IInventarioServices _inventarioService
-@inject NavigationManager NavManager
-
-<h3>Administrar Tipo Producto</h3>
+@using Compartido.Dto.Distribuidora.General
+@inject IDistribuidorasServices _distribuidorasService
+<h3>Administrar Rubro</h3>
 
 <!-- Implementacion -->
-@if (ListaTipoProducto != null && ListaTipoProducto.Success == true && VisibleListado == true)
+@if (ListaRubro is {Success: true } && VisibleListado == true)
 {
     <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
         <div style="width: 70%;">
-            @if (ListaTipoProducto.Data.Count > 0)
+            @if (ListaRubro.Data.Count > 0)
             {
                 <table class="table table-bordered" style="width: 100%">
                     <thead>
                         <tr>
-                            <th scope="col">Nombre del tipo de producto</th>
-                            <th scope="col">Descripcion del tipo de producto</th>
-                            <th scope="col">Opcion</th>
+                            <th scope="col">Nombre del tipo de Rubro</th>
+                            <th scope="col">Descripcion del tipo de Rubro</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in ListaTipoProducto.Data)
+                        @foreach (var item in ListaRubro.Data)
                         {
                             <tr id="fila1" class="filaTabla">
                                 <td>@item.Nombre</td>
                                 <td>@item.Descripcion</td>
                                 <td>
                                     <button @onclick="() => MostrarModificar(item)">Modificar</button>
-                                    <button @onclick="() => EliminarTipoProducto(item)" class="txtElim" id="txtEliminar1">Eliminar</button>
+                                    <button @onclick="() => EliminarRubro(item)">Eliminar</button>
                                 </td>
                             </tr>
                         }
@@ -40,7 +35,7 @@
             }
             else
             {
-                <p>No existen Tipos Productos registrados.</p>
+                <p>No existen Rubros registrados.</p>
             }
         </div>
 
@@ -52,18 +47,17 @@
         </button>
     </div>
 }
-else if (VisibleEditar == true && TipoProductoSeleccionado != null)
+else if (VisibleEditar == true && RubroSeleccionado != null)
 {
-    <ModificarTipoProducto 
-        TipoProducto="@TipoProductoSeleccionado"
-        MostrarListado="() => MostrarListado()"
-        MostrarModificar="() => MostrarModificar(TipoProductoSeleccionado)" />
+    <ModificarRubro Rubro="@RubroSeleccionado"
+                   MostrarListado="() => MostrarListado()"
+                   MostrarModificar="() => MostrarModificar(RubroSeleccionado)" />
 }
 else if (VisibleRegistrar == true)
 {
-    <RegistrarTipoProducto 
-        MostrarListado="() => MostrarListado()"
-        MostrarRegistrar="() => MostrarRegistrar()" />
+    <RegistrarRubro 
+                   MostrarListado="() => MostrarListado()"
+                   MostrarRegistrar="() => MostrarRegistrar()" />
 }
 else
 {
@@ -71,14 +65,14 @@ else
 }
 
 
-
 @code {
-    public readonly string EnlaceRegistro = "RegistrarTipoProducto";
-    public readonly string EnlaceModificar = "ModificarTipoProducto";
+    public readonly string EnlaceRegistro = "RegistrarRubro";
+    public readonly string EnlaceModificar = "ModificarRubro";
     public string Loading = "Cargando...";
 
-    public ServiceResponse<List<TipoProductoDTO>> ListaTipoProducto { get; set; }
-    public TipoProductoDTO TipoProductoSeleccionado { get; set; }
+    public ServiceResponse<List<RubroDTO>> ListaRubro { get; set; }
+    public RubroDTO RubroSeleccionado { get; set; }
+
 
     public bool VisibleRegistrar { get; set; }
     public bool VisibleEditar { get; set; }
@@ -90,13 +84,7 @@ else
         VisibleListado = true;
         VisibleEditar = false;
         VisibleRegistrar = false;
-        ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
-    }
-
-    public void RedireccionarPagina(string enlace)
-    {
-        NavManager.NavigateTo(enlace);
-        StateHasChanged();
+        ListaRubro = await _distribuidorasService.ObtenerTodoRubro();
     }
 
     public async void MostrarListado()
@@ -104,7 +92,7 @@ else
         VisibleListado = true;
         VisibleEditar = false;
         VisibleRegistrar = false;
-        ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
+        ListaRubro = await _distribuidorasService.ObtenerTodoRubro();
 
         StateHasChanged();
     }
@@ -118,21 +106,20 @@ else
         StateHasChanged();
     }
 
-    public void MostrarModificar(TipoProductoDTO tipoProducto)
+    public void MostrarModificar(RubroDTO Rubro)
     {
         VisibleListado = false;
         VisibleEditar = true;
         VisibleRegistrar = false;
-        TipoProductoSeleccionado = tipoProducto;
+        RubroSeleccionado = Rubro;
 
         StateHasChanged();
     }
 
-    public async void EliminarTipoProducto(TipoProductoDTO tipoProducto)
+    public async void EliminarRubro(RubroDTO Rubro)
     {
-        var response = await _inventarioService.EliminarTipoProducto(tipoProducto);
-        
+        var response = await _distribuidorasService.EliminarRubro(Rubro);
+
         this.MostrarListado();
     }
-
 }
