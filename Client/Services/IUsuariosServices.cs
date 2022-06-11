@@ -21,5 +21,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<bool>> ValidarUsuario(ValidarUsuarioDTO usuario);
 
         #endregion
+
+        #region Rol
+        Task<ServiceResponse<List<RolDTO>>> ObtenerTodoRol();
+        Task<ServiceResponse<RolDTO>> CrearRol(RolDTO Rol);
+        Task<ServiceResponse<RolDTO>> ActualizarRol(RolDTO Rol);
+        Task<ServiceResponse<RolDTO>> EliminarRol(RolDTO Rol);
+        #endregion
     }
 }
