@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Dominio.Entidades;
+using Compartido.Dto.Distribuidora;
+using Compartido.Dto.Distribuidora.General;
+using Compartido.Dto.Inventario;
+using Compartido.Dto.Inventario.General;
+using Compartido.Dto.Personal;
+using Compartido.Dto.Personal.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Dominio.Entidades;
-using Compartido.Modulos.Basico.Dto;
-using Compartido.Modulos.Clientes.Dto;
-using Compartido.Modulos.Distribuidoras.Dto;
-using Compartido.Modulos.Inventario.Dto;
-using Compartido.Modulos.Usuarios.Dto;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server
 {

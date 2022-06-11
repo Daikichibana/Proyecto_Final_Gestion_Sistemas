@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Proveedores.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos
 {

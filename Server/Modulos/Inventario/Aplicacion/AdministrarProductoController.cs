@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades;
 using Compartido;
-using Compartido.Modulos.Inventario.Dto;
+using Compartido.Dto.Inventario;
+using Compartido.Dto.Inventario.General;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 {

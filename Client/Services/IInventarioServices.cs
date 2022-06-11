@@ -3,7 +3,8 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Compartido;
-using Compartido.Modulos.Inventario.Dto;
+using Compartido.Dto.Inventario;
+using Compartido.Dto.Inventario.General;
 
 namespace Proyecto_Final_Gestion_Sistemas.Client.Services
 {

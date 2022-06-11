@@ -16,4 +16,19 @@
     <ProjectReference Include="..\Compartido\Compartido.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Basico\IndexBasico.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Clientes\AdministrarCliente\FormularioRegistroCliente.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Clientes\AdministrarCliente\ModificacionCliente.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Clientes\IndexClientes.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Clientes\PedidosCliente\MisDistribuidoras.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Proveedores\AdministrarNotaRecepcion\AdministrarNotaRecepcion.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Proveedores\AdministrarNotaRecepcion\ModificarNotaRecepcion.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Proveedores\AdministrarNotaRecepcion\RegistrarNotaRecepcion.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Proveedores\AdministrarProveedor\AdministrarProveedor.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Proveedores\AdministrarProveedor\ModificarProveedor.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Proveedores\AdministrarProveedor\RegistrarProveedor.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Proveedores\IndexProveedores.razor" />
+  </ItemGroup>
+
 </Project>

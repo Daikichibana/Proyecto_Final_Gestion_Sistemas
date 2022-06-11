@@ -21,12 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Modulos\Basico\Dominio" />
-    <Folder Include="Modulos\Clientes\Dominio" />
-    <Folder Include="Modulos\Distribuidoras\Dominio" />
+    <Folder Include="Modulos\Distribuidora\Dominio" />
     <Folder Include="Modulos\Inventario\Dominio" />
     <Folder Include="Modulos\Pedidos\Dominio" />
-    <Folder Include="Modulos\Usuarios\Dominio" />
+    <Folder Include="Modulos\Personal\Dominio" />
   </ItemGroup>
 
 

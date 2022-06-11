@@ -10,21 +10,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Dominio.Abstracciones;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Dominio.Servicios;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Basico.Tecnica;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Dominio.Abstracciones;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Dominio.Servicios;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Clientes.Tecnica;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Dominio.Abstracciones;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Dominio.Servicios;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidoras.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Servicios;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Tecnica;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Dominio.Abstracciones;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Dominio.Servicios;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Usuarios.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server
 {

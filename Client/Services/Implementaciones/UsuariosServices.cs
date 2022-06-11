@@ -3,7 +3,8 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Compartido;
-using Compartido.Modulos.Usuarios.Dto;
+using Compartido.Dto.Personal;
+using Compartido.Dto.Personal.General;
 
 namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 {
