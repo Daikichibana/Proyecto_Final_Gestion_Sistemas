@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
@@ -9,9 +10,10 @@ using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
 {
     [DbContext(typeof(BaseDatosContext))]
-    partial class BaseDatosContextModelSnapshot : ModelSnapshot
+    [Migration("20220611144227_Migration6")]
+    partial class Migration6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -510,66 +512,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                     b.ToTable("Vechiculo");
                 });
 
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.DetalleNotaRecepcion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("NotaRecepcionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("StockId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NotaRecepcionId");
-
-                    b.HasIndex("StockId");
-
-                    b.ToTable("DetalleNotaRecepcion");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.NotaRecepcion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("DistribuidoraId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("FechaCompra")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("ProveedorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DistribuidoraId");
-
-                    b.HasIndex("ProveedorId");
-
-                    b.ToTable("NotaRecepcion");
-                });
-
             modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.Producto", b =>
                 {
                     b.Property<Guid>("Id")
@@ -582,9 +524,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                     b.Property<string>("Descripcion")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("EmpresaDistribuidoraId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Nombre")
                         .HasColumnType("text");
 
@@ -595,8 +534,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmpresaDistribuidoraId");
 
                     b.HasIndex("TipoProductoId");
 
@@ -661,140 +598,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                     b.HasKey("Id");
 
                     b.ToTable("TipoProducto");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.DetalleOrdenPedido", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("CantidadOrdenada")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("OrdenPedidoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("StockId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrdenPedidoId");
-
-                    b.HasIndex("StockId");
-
-                    b.ToTable("DetalleOrdenPedido");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.Factura", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("NroComprobante")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("PedidoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("numeric(18,2)");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PedidoId");
-
-                    b.ToTable("Factura");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.OrdenPedido", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AclaracionCliente")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AclaracionDistribuidor")
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("CodigoQR")
-                        .HasColumnType("bytea");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("DeseaFactura")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("EmpresaClienteId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("MetodoPago")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PedidoConfirmado")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmpresaClienteId");
-
-                    b.ToTable("OrdenPedido");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.Pedido", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ConductorAsignadoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("EstadoEnvio")
-                        .HasColumnType("text");
-
-                    b.Property<string>("EstadoPago")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("OrdenPedidoId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConductorAsignadoId");
-
-                    b.HasIndex("OrdenPedidoId");
-
-                    b.ToTable("Pedido");
                 });
 
             modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades.Conductor", b =>
@@ -1192,59 +995,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                     b.Navigation("Conductor");
                 });
 
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.DetalleNotaRecepcion", b =>
-                {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.NotaRecepcion", "NotaRecepcion")
-                        .WithMany()
-                        .HasForeignKey("NotaRecepcionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.Stock", "Stock")
-                        .WithMany()
-                        .HasForeignKey("StockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("NotaRecepcion");
-
-                    b.Navigation("Stock");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.NotaRecepcion", b =>
-                {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaDistribuidora", "Distribuidora")
-                        .WithMany()
-                        .HasForeignKey("DistribuidoraId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaProveedor", "Proveedor")
-                        .WithMany()
-                        .HasForeignKey("ProveedorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Distribuidora");
-
-                    b.Navigation("Proveedor");
-                });
-
             modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.Producto", b =>
                 {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaDistribuidora", "EmpresaDistribuidora")
-                        .WithMany()
-                        .HasForeignKey("EmpresaDistribuidoraId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.TipoProducto", "TipoProducto")
                         .WithMany()
                         .HasForeignKey("TipoProductoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("EmpresaDistribuidora");
 
                     b.Navigation("TipoProducto");
                 });
@@ -1258,66 +1015,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                         .IsRequired();
 
                     b.Navigation("Producto");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.DetalleOrdenPedido", b =>
-                {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.OrdenPedido", "OrdenPedido")
-                        .WithMany()
-                        .HasForeignKey("OrdenPedidoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades.Stock", "Stock")
-                        .WithMany()
-                        .HasForeignKey("StockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrdenPedido");
-
-                    b.Navigation("Stock");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.Factura", b =>
-                {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.Pedido", "Pedido")
-                        .WithMany()
-                        .HasForeignKey("PedidoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pedido");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.OrdenPedido", b =>
-                {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaCliente", "EmpresaCliente")
-                        .WithMany()
-                        .HasForeignKey("EmpresaClienteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EmpresaCliente");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.Pedido", b =>
-                {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.AsignacionVechiculoConductor", "ConductorAsignado")
-                        .WithMany()
-                        .HasForeignKey("ConductorAsignadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades.OrdenPedido", "OrdenPedido")
-                        .WithMany()
-                        .HasForeignKey("OrdenPedidoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ConductorAsignado");
-
-                    b.Navigation("OrdenPedido");
                 });
 
             modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades.Conductor", b =>

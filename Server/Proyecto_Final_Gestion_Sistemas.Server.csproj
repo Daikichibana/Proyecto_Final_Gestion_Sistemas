@@ -23,8 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Modulos\Distribuidora\Dominio" />
-    <Folder Include="Modulos\Inventario\Dominio" />
-    <Folder Include="Modulos\Pedidos\Dominio" />
   </ItemGroup>
 
 

@@ -23,18 +23,20 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
         public DbSet<Vechiculo> Vechiculo { get; set; }
         public DbSet<AsignacionVechiculoConductor> AsignacionVechiculoConductor { get; set; }
         
-        /*
+        
         // Modulo Inventario 
         public DbSet<NotaRecepcion> NotaRecepcion { get; set; }
         public DbSet<TipoProducto> TipoProducto { get; set; }
         public DbSet<Producto> Producto { get; set; }
         public DbSet<Stock> Stock { get; set; }
+        public DbSet<DetalleNotaRecepcion> DetalleNotaRecepcion { get; set; }
+
 
         // Modulo Pedidos 
         public DbSet<Factura> Factura { get; set; }
         public DbSet<OrdenPedido> OrdenPedido { get; set; }
         public DbSet<Pedido> Pedido { get; set; }
-        */
+        public DbSet<DetalleOrdenPedido> DetalleOrdenPedido { get; set; }
 
         // Modulo Personal 
         public DbSet<Rol> Rol { get; set; }
@@ -78,14 +80,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
             //modelBuilder.Ignore<Vechiculo>();
             //modelBuilder.Ignore<AsignacionVechiculoConductor>();
 
-            modelBuilder.Ignore<NotaRecepcion>();
-            modelBuilder.Ignore<TipoProducto>();
-            modelBuilder.Ignore<Producto>();
-            modelBuilder.Ignore<Stock>();
+            //modelBuilder.Ignore<NotaRecepcion>();
+            //modelBuilder.Ignore<TipoProducto>();
+            //modelBuilder.Ignore<Producto>();
+            //modelBuilder.Ignore<Stock>();
 
-            modelBuilder.Ignore<Factura>();
-            modelBuilder.Ignore<OrdenPedido>();
-            modelBuilder.Ignore<Pedido>();
+            //modelBuilder.Ignore<Factura>();
+            //modelBuilder.Ignore<OrdenPedido>();
+            //modelBuilder.Ignore<Pedido>();
+            //modelBuilder.Ignore<DetalleOrdenPedido>();
 
             base.OnModelCreating(modelBuilder);
         }

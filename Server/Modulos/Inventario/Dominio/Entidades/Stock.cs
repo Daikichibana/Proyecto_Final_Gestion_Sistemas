@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades
@@ -14,6 +15,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Enti
         
         [ForeignKey("Producto")]
         public Guid ProductoId { get; set; }
+
 
         public Stock()
         {
