@@ -17,23 +17,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarDistribuidoraController : ControllerBase
     {
-        /// <summary>
-        ///  
-        /// </summary>
+
         IMapper _mapper;
         IAdministrarDistribuidoraService _AdministrarDistribuidoraService;
 
-        /// <summary>
-        ///  
-        /// </summary>
         public AdministrarDistribuidoraController(IMapper mapper, IAdministrarDistribuidoraService administrarDistribuidoraService)
         {
             _mapper = mapper;
             _AdministrarDistribuidoraService = administrarDistribuidoraService;
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpGet]
         public IActionResult ObtenerTodos()
         {
@@ -65,9 +58,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
 
         [HttpPost]
         public IActionResult InsertarEmpresa(EmpresaDistribuidoraDTO _empresaDistribuidoraDTO )
@@ -97,11 +88,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPut]
-        public IActionResult ActualizarEmpresao(EmpresaDistribuidoraDTO empresaDistribuidoraDTO)
+        public IActionResult ActualizarEmpresa(EmpresaDistribuidoraDTO empresaDistribuidoraDTO)
         {
             var result = new ServiceResponse<EmpresaDistribuidoraDTO>();
 
@@ -125,9 +113,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpDelete]
         public IActionResult EliminarEmpresa(Guid id)
         {

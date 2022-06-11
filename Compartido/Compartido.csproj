@@ -22,8 +22,4 @@
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Dto" />
-  </ItemGroup>
 </Project>

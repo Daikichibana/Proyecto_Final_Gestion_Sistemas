@@ -8,5 +8,9 @@ namespace Compartido.Dto.Distribuidora.General
         public int NumeroTarjeta { get; set; }
         public DateTime FechaExpiracion { get; set; }
         public string NombreTitular { get; set; }
+        public EmpresaClienteDTO EmpresaCliente { get; set; }
+        
+        public Guid EmpresaClienteId { get; set; }
     }
+
 }

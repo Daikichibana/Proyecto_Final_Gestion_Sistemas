@@ -12,11 +12,9 @@ namespace Compartido.Dto.Distribuidora.General
         public RubroDTO Rubro { get; set; }
         public NITDTO NIT { get; set; }
         public ResponsableEmpresaDTO Responsable { get; set; }
-      
+        
         public Guid RubroId { get; set; }
-
         public Guid NITId { get; set; }
-
         public Guid ResponsableId { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
         [HttpPost]
-        public IActionResult InsertarNIT(ResponsableEmpresaDTO _responsableDTO)
+        public IActionResult InsertarResponsableEmpresa(ResponsableEmpresaDTO _responsableDTO)
         {
             ServiceResponse<ResponsableEmpresaDTO> result = new ServiceResponse<ResponsableEmpresaDTO>();
             try

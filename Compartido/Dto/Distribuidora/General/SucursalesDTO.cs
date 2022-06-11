@@ -2,13 +2,14 @@
 
 namespace Compartido.Dto.Distribuidora.General
 {
-    public class SucursalesDTO
+    public class SucursalesDTO 
     {
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
         public int NroSucursal { get; set; }
         public string Direccion { get; set; }
         public string Telefono { get; set; }
-        /*public EmpresaDistribuidora EmpresaDistribuidora { get; set; }
-        public Guid EmpresaDitribuidoraId { get; set; }*/
+        public EmpresaDistribuidoraDTO EmpresaDistribuidora { get; set; }
+        
+        public Guid EmpresaDistribuidoraId { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿<h3>@Titulo</h3>
+﻿@inject IDistribuidorasServices _distribuidorasService
+
+<h3>@Titulo</h3>
 
 <form>
     <!-- Informacion del responsable -->
@@ -6,30 +8,31 @@
         <legend>Informacion del Reponsable</legend>
         <div class="form-group">
             <label for="nombreResponsable" class="form-label mt-4">Nombre</label>
-            <input @bind="nombreResponsable" type="text" class="form-control" id="nombreResponsable" aria-describedby="nombreHelp" placeholder="Ingresar nombre">
+            <input @bind="ResponsableEmpresa.Nombre" id="nombreResponsable" aria-describedby="nombreHelp" placeholder="Ingresar nombre">
             <small id="nombreHelp" class="form-text text-muted">Ingrese el nombre del responsable de la empresa distribuidora.</small>
         </div>
         <div class="form-group">
             <label for="apellidosReponsable" class="form-label mt-4">Apellidos</label>
-            <input type="text" class="form-control" id="apellidosReponsable" aria-describedby="apellidoHelp" placeholder="Ingresar apellidos">
+            <input @bind="ResponsableEmpresa.Apellido" class="form-control" id="apellidosReponsable" aria-describedby="apellidoHelp" placeholder="Ingresar apellidos">
             <small id="apellidoHelp" class="form-text text-muted">Ingrese los apellidos del responsable de la empresa distribuidora.</small>
         </div>
         <div class="form-group">
             <label for="telefonoResponsable" class="form-label mt-4">Numero de telefono</label>
-            <input type="text" class="form-control" id="telefonoResponsable" aria-describedby="telefonoHelp" placeholder="Ingresar telefono del responsable">
+            <input @bind="ResponsableEmpresa.Telefono" class="form-control" id="telefonoResponsable" aria-describedby="telefonoHelp" placeholder="Ingresar telefono del responsable">
             <small id="telefonoHelp" class="form-text text-muted">Ingrese el numero de telefono del responsable de la empresa distribuidora.</small>
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1" class="form-label mt-4">Correo electronico</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su correo electronico">
+            <input @bind="ResponsableEmpresa.Email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su correo electronico">
             <small id="emailHelp" class="form-text text-muted">El correo electronico se utilizara para poder ingresar al sistema.</small>
         </div>
         <div class="form-group">
             <label for="claveResponsable" class="form-label mt-4">Clave</label>
-            <input type="text" class="form-control" id="claveResponsable" aria-describedby="claveHelp" placeholder="Ingresar clave">
+            <input @bind="Usuario.Clave" class="form-control" id="claveResponsable" aria-describedby="claveHelp" placeholder="Ingresar clave">
             <small id="claveHelp" class="form-text text-muted">Ingrese la clave que utilizara para ingresar al sistema.</small>
         </div>
     </fieldset>
+
     <!-- Informacion de la empresa-->
     <fieldset class="form-group" style="border-style: solid; border-color: black;">
         <legend>Informacion de la empresa</legend>
@@ -49,15 +52,17 @@
             <label for="NIT" class="form-label mt-4">Numero NIT</label>
             <input type="text" class="form-control" id="NIT" placeholder="Ingrese el numero de NIT del negocio">
         </div>
+         <div class="form-group">
+            <label for="NombreFacturacion" class="form-label mt-4">Nombre Facturacion</label>
+            <input type="text" class="form-control" id="NombreFacturacion" placeholder="Ingrese el nombre de facturacion del NIT">
+        </div>
         <div class="form-group">
             <label for="rubroNegocio" class="form-label mt-4">Rubro</label>
-            <select class="form-select form-select-lg mb-3" id="rubroNegocio">
-                <!--
-                if(Rubros != null )
+            <select @bind=RubroSeleccionado.Id class="form-select form-select-lg mb-3">
+                @foreach (RubroDTO rubro in ListaRubros.Data)
                 {
-                
+                    <option value=@rubro.Id>@rubro.Nombre</option>
                 }
-                -->
             </select>
         </div>
     </fieldset>
@@ -69,27 +74,36 @@
     [Parameter]
     public string Titulo { get; set; }
 
-
     [Parameter]
-    public int TipoEmpresa { get; set; }
+    public string TipoEmpresa { get; set; }
 
-    //Datos del responsable
-    public string nombreResponsable { get; set; }
+    public ServiceResponse<List<RubroDTO>> ListaRubros { get; set; }
 
-    //Datos del 
+    public ResponsableEmpresaDTO ResponsableEmpresa { get; set; }
+    public UsuarioDTO Usuario { get; set; }
+    public NITDTO NIT { get; set; }
+    public RubroDTO RubroSeleccionado { get; set; }
 
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
-
-    }
-    
-    void RubroSeleccionado(ChangeEventArgs e)
-    {
-
+        ListaRubros = await _distribuidorasService.ObtenerTodoRubro();
     }
 
     public void RegistrarEmpresa()
     {
+        /*
+        if (TipoEmpresa == "EmpresaDistribuidora")
+        {
+            EmpresaDistribuidoraDTO nuevaEmpresa = new EmpresaDistribuidoraDTO();
+            nuevaEmpresa.Responsable = 
+            //_distribuidorasService.CrearEmpresaDistribuidora();
+        }
+        else if (TipoEmpresa == "EmpresaCliente")
+        {
+            //_distribuidorasService.CrearEmpresaCliente();
+        }
+        */
     }
 
 }

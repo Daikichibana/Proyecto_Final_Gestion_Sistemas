@@ -1,4 +1,5 @@
 ﻿using System;
+using Compartido.Dto.Distribuidora.General;
 
 namespace Compartido.Dto.Personal.General
 {
@@ -11,7 +12,11 @@ namespace Compartido.Dto.Personal.General
         public DateTime FechaNacimiento { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
-        /*public EmpresaDistribuidora EmpresaDistribuidora { get; set; }
-        public Guid EmpresaDitribuidoraId { get; set; }*/
+        public EmpresaDistribuidoraDTO Distribuidora { get; set; }
+        public UsuarioDTO Usuario { get; set; }
+        
+        public Guid DistribuidoraId { get; set; }
+        public Guid UsuarioId { get; set; }
+        
     }
 }

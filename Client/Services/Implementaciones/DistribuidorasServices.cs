@@ -12,6 +12,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         private readonly HttpClient _http;
         private string EnlaceRubro = "api/AdministrarRubro";
+        private string EnlaceEmpresaDistribuidora = "api/AdministrarDistribuidora";
+        private string EnlaceEmpresaCliente = "api/AdministrarCliente";
 
         public DistribuidorasServices(HttpClient http)
         {
@@ -50,6 +52,26 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             return result;
         }
 
+        #endregion
+
+        #region Empresa Distribuidora
+        public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> CrearEmpresaDistribuidora(EmpresaDistribuidoraDTO distribuidora)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceEmpresaDistribuidora, distribuidora);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaDistribuidoraDTO>>();
+
+            return content;
+        }
+        #endregion
+
+        #region Empresa Cliente
+        public async Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(EmpresaClienteDTO cliente)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceEmpresaCliente, cliente);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
+
+            return content;
+        }
         #endregion
     }
 }

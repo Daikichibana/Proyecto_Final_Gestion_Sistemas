@@ -1,4 +1,5 @@
 ﻿using System;
+using Compartido.Dto.Personal.General;
 
 namespace Compartido.Dto.Distribuidora.General
 {
@@ -8,7 +9,8 @@ namespace Compartido.Dto.Distribuidora.General
         public string Placa { get; set; }
         public string Modelo { get; set; }
         public string Marca { get; set; }
-        /*public Conductor Conductor { get; set; }
-        public Guid DistribuidoraId { get; set; }*/
+        public ConductorDTO Conductor { get; set; }
+        
+        public Guid ConductorId { get; set; }
     }
 }
