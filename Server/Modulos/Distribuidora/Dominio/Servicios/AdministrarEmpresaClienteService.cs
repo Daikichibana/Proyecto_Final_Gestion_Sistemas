@@ -9,8 +9,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
     public class AdministrarEmpresaClienteService : IAdministrarEmpresaClienteService
     {
         IEmpresaClienteRepository _EmpresaClienteRepository;
-        public AdministrarEmpresaClienteService(IEmpresaClienteRepository EmpresaClienteRepository)
+        IClienteDistribuidoraRepository _ClienteDistribuidoraRepository;
+        public AdministrarEmpresaClienteService(IEmpresaClienteRepository EmpresaClienteRepository, IClienteDistribuidoraRepository ClienteDistribuidoraRepository)
         {
+            _ClienteDistribuidoraRepository = ClienteDistribuidoraRepository;
             _EmpresaClienteRepository = EmpresaClienteRepository;
         }
 
@@ -38,5 +40,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         {
             return _EmpresaClienteRepository.ObtenerTodo();
         }
+
+        public IList<ClientesDistribuidora> ObtenerDistribuidorasDeCliente()
+        {
+            return _ClienteDistribuidoraRepository.ObtenerTodo();
+        }
+
+        public void EliminarDistribuidorasDeCliente(Guid Id) 
+        {
+            _ClienteDistribuidoraRepository.Eliminar(Id);
+        }
+        
+        public ClientesDistribuidora InsertarDistribuidorasDeCliente(ClientesDistribuidora clienteDistribuidora)
+        {
+            return _ClienteDistribuidoraRepository.Guardar(clienteDistribuidora);
+        }
+
     }
 }

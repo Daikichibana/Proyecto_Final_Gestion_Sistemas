@@ -21,9 +21,5 @@
     <ProjectReference Include="..\Compartido\Compartido.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modulos\Distribuidora\Dominio" />
-  </ItemGroup>
-
 
 </Project>

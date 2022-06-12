@@ -82,6 +82,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(ISucursalRepository), typeof(SucursalRepository));
             services.AddScoped(typeof(IResponsableAlmacenRepository), typeof(ResponsableAlmacenRepository));
             services.AddScoped(typeof(IUsuariosRolesRepository), typeof(UsuariosRolesRepository));
+            services.AddScoped(typeof(IClienteDistribuidoraRepository), typeof(ClienteDistribuidoraRepository));
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>

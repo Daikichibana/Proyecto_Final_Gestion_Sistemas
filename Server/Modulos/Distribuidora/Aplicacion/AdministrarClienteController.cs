@@ -7,10 +7,11 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstr
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 using System;
+using System.Collections.Generic;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarClienteController : ControllerBase
     {
@@ -39,6 +40,86 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 var response = _administrarClienteService.Guardar(nuevaEmpresa);
 
                 result.Data = _mapper.Map<EmpresaClienteDTO>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult ObtenerDistribuidorasDeCliente()
+        {
+
+            var result = new ServiceResponse<List<ClientesDistribuidoraDTO>>();
+
+            try
+            {
+                var response = _administrarClienteService.ObtenerDistribuidorasDeCliente();
+
+                result.Data = _mapper.Map<List<ClientesDistribuidoraDTO>>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO clienteDistribuidora)
+        {
+
+            var result = new ServiceResponse<ClientesDistribuidoraDTO>();
+
+            try
+            {
+                var ClienteDist = _mapper.Map<ClientesDistribuidora>(clienteDistribuidora);
+                var response = _administrarClienteService.InsertarDistribuidorasDeCliente(ClienteDist);
+
+                result.Data = _mapper.Map<ClientesDistribuidoraDTO>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+        [HttpDelete]
+        public IActionResult EliminarDistribuidorasDeCliente(Guid Id)
+        {
+
+            var result = new ServiceResponse<List<ClientesDistribuidoraDTO>>();
+
+            try
+            {
+                _administrarClienteService.EliminarDistribuidorasDeCliente(Id);
+
+                result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 

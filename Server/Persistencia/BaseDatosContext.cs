@@ -22,6 +22,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
         public DbSet<Sucursales> Sucursales { get; set; }
         public DbSet<Vechiculo> Vechiculo { get; set; }
         public DbSet<AsignacionVechiculoConductor> AsignacionVechiculoConductor { get; set; }
+        public DbSet<ClientesDistribuidora> ClienteDistribuidora { get; set; }
         
         
         // Modulo Inventario 
@@ -37,6 +38,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
         public DbSet<OrdenPedido> OrdenPedido { get; set; }
         public DbSet<Pedido> Pedido { get; set; }
         public DbSet<DetalleOrdenPedido> DetalleOrdenPedido { get; set; }
+
 
         // Modulo Personal 
         public DbSet<Rol> Rol { get; set; }
