@@ -43,6 +43,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<SucursalesDTO, Sucursales>();
             CreateMap<ResponsableAlmacenDTO, ResponsableAlmacen>();
             CreateMap<ResponsableAlmacen, ResponsableAlmacenDTO>();
+            CreateMap<UsuariosRoles, UsuariosRolesDTO>();
+            CreateMap<UsuariosRolesDTO, UsuariosRoles>();
         }
     }
 }

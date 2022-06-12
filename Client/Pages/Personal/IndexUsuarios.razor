@@ -1,12 +1,20 @@
 ﻿@page "/Usuarios"
 
-<h1>Usuarios</h1>
+<h1>Personal</h1>
 
-<div style="padding: 20px; display: flex; flex-wrap: wrap; justify-content: left;">  
-    <ContenedorCasosUsoComponent 
-        Titulo="Administrar Usuario" 
-        Descripcion="Administre la informacion de los usuarios."
-        Enlace="#"/>
+<div style="padding: 20px; display: flex; flex-wrap: wrap; justify-content: left;">
+    <ContenedorCasosUsoComponent Titulo="Administrar Usuario"
+                                 Descripcion="Administre la informacion de los usuarios."
+                                 Enlace="#" />
+    <ContenedorCasosUsoComponent Titulo="Administrar conductor"
+                                 Descripcion="Administre la informacion de los conductores de la empresa."
+                                 Enlace="AdministrarConductor" />
+    <ContenedorCasosUsoComponent Titulo="Administrar responsable de almacén"
+                                 Descripcion="Administre la informacion del responsable de almacen de la empresa."
+                                 Enlace="AdministrarResponsableAlmacen" />
+    <ContenedorCasosUsoComponent Titulo="Administrar Roles"
+                                 Descripcion="Administre la informacion de los roles de la empresa."
+                                 Enlace="" />
 </div>
 
 @code {

@@ -30,5 +30,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<TarjetaClienteDTO>> ActualizarTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
         Task<ServiceResponse<TarjetaClienteDTO>> EliminarTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
         #endregion
+
+        #region Sucursales
+        Task<ServiceResponse<List<SucursalesDTO>>> ObtenerTodasLasSucursales();
+        Task<ServiceResponse<SucursalesDTO>> CrearSucursal(SucursalesDTO sucursalesDTO);
+        Task<ServiceResponse<SucursalesDTO>> ActualizarSucursal(SucursalesDTO sucursalesDTO);
+        Task<ServiceResponse<SucursalesDTO>> EliminarSucursal(SucursalesDTO sucursalesDTO);
+        #endregion  
     }
 }

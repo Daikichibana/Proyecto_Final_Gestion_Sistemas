@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Compartido.Dto.Personal;
+using Compartido.Dto.Personal.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones
@@ -11,7 +13,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
         Usuario ObtenerPorId(Guid id);
         Usuario Guardar(Usuario entity);
         Usuario Actualizar(Usuario entity);
-        bool ValidarUsuario(string nombreUsuario, string clave);
-        Usuario ObtenerUsuarioPorNombre(string nombreUsuario);
+        IList<UsuariosRoles> AsignarRolesAUsuario(List<UsuariosRoles> usuarioRoles);
+        IniciarSesionDTO IniciarSesion(UsuarioDTO usuario);
     }
 }

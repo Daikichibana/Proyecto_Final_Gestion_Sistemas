@@ -153,19 +153,18 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPost]
-        public IActionResult ValidarUsuario(ValidarUsuarioDTO user)
+        public IActionResult AsignarRolesAUsuario(List<UsuariosRolesDTO> UsuarioRoles)
         {
-            var result = new ServiceResponse<bool>();
+            var result = new ServiceResponse<List<UsuariosRolesDTO>>();
 
             try
             {
-                bool response = _usuarioService.ValidarUsuario(user.NombreUsuario, user.Clave);
 
-                result.Data = response;
+                var usuarioRoles = _mapper.Map<List<UsuariosRoles>>(UsuarioRoles);
+                var response = _usuarioService.AsignarRolesAUsuario(usuarioRoles);
+
+                result.Data = _mapper.Map<List<UsuariosRolesDTO>>(response);
                 result.Success = true;
                 result.Message = "Se ha realizado la operacion correctamente.";
 
@@ -173,7 +172,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
             catch (Exception error)
             {
-                result.Data = false;
+                result.Data = null;
                 result.Success = false;
                 result.Message = error.Message;
 
@@ -184,16 +183,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         /// <summary>
         ///  
         /// </summary>
-        [HttpGet]
-        public IActionResult ObtenerUsuarioPorNombre(string nombre)
+        [HttpPost]
+        public IActionResult IniciarSesion(UsuarioDTO user)
         {
-            var result = new ServiceResponse<UsuarioDTO>();
+            var result = new ServiceResponse<IniciarSesionDTO>();
 
             try
             {
-                Usuario response = _usuarioService.ObtenerUsuarioPorNombre(nombre);
+               var response = _usuarioService.IniciarSesion(user);
 
-                result.Data = _mapper.Map<UsuarioDTO>(response);
+                result.Data = response;
                 result.Success = true;
                 result.Message = "Se ha realizado la operacion correctamente.";
 
