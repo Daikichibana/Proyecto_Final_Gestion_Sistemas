@@ -19,12 +19,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.E
 
         }
 
-        public Sucursales(int nroSucursal, string direccion, string telefono, EmpresaDistribuidora empresaDistribuidora)
+        public Sucursales(int nroSucursal, string direccion, string telefono, Guid empresaDistribuidoraId)
         {
             NroSucursal = nroSucursal;
             Direccion = direccion;
             Telefono = telefono;
-            EmpresaDistribuidora = empresaDistribuidora;
+            EmpresaDistribuidoraId = empresaDistribuidoraId;
         }
     }
 }

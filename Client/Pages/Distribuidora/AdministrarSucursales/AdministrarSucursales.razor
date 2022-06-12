@@ -1,7 +1,136 @@
 ﻿@page "/AdministrarSucursales"
+@using System.Reflection
+@using Compartido
+@using Compartido.Dto.Distribuidora.General
+@inject IDistribuidorasServices _distribuidoraService
+@inject NavigationManager NavManager
 
 <h3>AdministrarSucursales</h3>
 
+
+<!-- Implementacion -->
+@if (ListaSucursal != null && ListaSucursal.Success == true && VisibleListado == true)
+{
+    <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
+        <div style="width: 70%;">
+            @if (ListaSucursal.Data.Count > 0)
+            {
+                <table class="table table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre del tipo de producto</th>
+                            <th scope="col">Descripcion del tipo de producto</th>
+                            <th scope="col">Opcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ListaSucursal.Data)
+                        {
+                            <tr id="fila1" class="filaTabla">
+                                <td>@item.NroSucursal</td>
+                                <td>@item.Direccion</td>
+                                <td>@item.Telefono</td>
+                                <td>
+                                    <button @onclick="() => MostrarModificar(item)">Modificar</button>
+                                    <button @onclick="() => EliminarSucursal(item)" class="txtElim" id="txtEliminar1">Eliminar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No existen Sucursales registradas.</p>
+            }
+        </div>
+
+        <!-- Boton  -->
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <button @onclick="MostrarRegistrar" type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">
+            Registrar nuevo
+        </button>
+    </div>
+}
+else if (VisibleEditar == true && SucursalSeleccionada != null)
+{
+    <ModificarSucursales 
+        Sucursal="@SucursalSeleccionada"
+        MostrarListado="() => MostrarListado()"
+        MostrarModificar="() => MostrarModificar(TipoProductoSeleccionado)" />
+}
+else if (VisibleRegistrar == true)
+{
+    <RegistrarSucursales 
+        MostrarListado="() => MostrarListado()"
+        MostrarRegistrar="() => MostrarRegistrar()" />
+}
+else
+{
+    <p>@Loading</p>
+}
+
 @code {
+    public readonly string EnlaceRegistro = "RegistrarTipoProducto";
+    public readonly string EnlaceModificar = "ModificarTipoProducto";
+    public string Loading = "Cargando...";
+
+    public ServiceResponse<List<SucursalesDTO>> ListaSucursal { get; set; }
+    public SucursalesDTO SucursalSeleccionada { get; set; }
+
+    public bool VisibleRegistrar { get; set; }
+    public bool VisibleEditar { get; set; }
+    public bool VisibleListado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
+        ListaSucursal = await _distribuidoraService.ObtenerTodasLasSucursales();
+    }
+
+    public void RedireccionarPagina(string enlace)
+    {
+        NavManager.NavigateTo(enlace);
+        StateHasChanged();
+    }
+
+    public async void MostrarListado()
+    {
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
+        ListaSucursal = await _distribuidoraService.ObtenerTodasLasSucursales();
+
+        StateHasChanged();
+    }
+
+    public void MostrarRegistrar()
+    {
+        VisibleListado = false;
+        VisibleEditar = false;
+        VisibleRegistrar = true;
+
+        StateHasChanged();
+    }
+
+    public void MostrarModificar(SucursalesDTO sucursalesDTO)
+    {
+        VisibleListado = false;
+        VisibleEditar = true;
+        VisibleRegistrar = false;
+        SucursalSeleccionada = sucursalesDTO;
+
+        StateHasChanged();
+    }
+
+    public async void EliminarSucursal(SucursalesDTO sucursalesDTO)
+    {
+        var response = await _distribuidoraService.EliminarSucursal(sucursalesDTO);
+        
+        this.MostrarListado();
+    }
 
 }
