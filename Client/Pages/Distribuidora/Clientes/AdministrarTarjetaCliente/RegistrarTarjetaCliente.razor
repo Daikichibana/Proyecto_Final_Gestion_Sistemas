@@ -17,7 +17,7 @@
             </div>
             <div class="form-group">
                 <label for="FechaExpiracion" class="form-label mt-4">Fecha de Expiracion</label>
-                <input @bind=TarjetaCliente.FechaExpiracion type="text" class="form-control" id="FechaExpiracion" placeholder="Ingrese fechad expiracion">
+                <input @bind=TarjetaCliente.FechaExpiracion type="date" class="form-control" id="FechaExpiracion" placeholder="Ingrese fechad expiracion">
             </div>
             <div class="form-group">
                 <label for="NombreTitular" class="form-label mt-4">Nombre del titular</label>
@@ -57,7 +57,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Distribuidora = await LocalStorage.GetItemAsync<string>("IdDistribuidora");
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
         StateHasChanged();
     }
 
