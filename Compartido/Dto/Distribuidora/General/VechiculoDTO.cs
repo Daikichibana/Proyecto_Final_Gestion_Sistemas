@@ -9,8 +9,5 @@ namespace Compartido.Dto.Distribuidora.General
         public string Placa { get; set; }
         public string Modelo { get; set; }
         public string Marca { get; set; }
-        public ConductorDTO Conductor { get; set; }
-        
-        public Guid ConductorId { get; set; }
     }
 }

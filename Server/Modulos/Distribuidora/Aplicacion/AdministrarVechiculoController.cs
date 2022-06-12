@@ -65,7 +65,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         ///  
         /// </summary>
         [HttpPost]
-        public IActionResult InsertarVehiculo(VehiculoDTO vehiculoDTO)
+        public IActionResult CrearVehiculo(VehiculoDTO vehiculoDTO)
         {
 
             var result = new ServiceResponse<VehiculoDTO>();

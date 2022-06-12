@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
@@ -9,9 +10,10 @@ using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
 {
     [DbContext(typeof(BaseDatosContext))]
-    partial class BaseDatosContextModelSnapshot : ModelSnapshot
+    [Migration("20220612192937_Migration11")]
+    partial class Migration11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
