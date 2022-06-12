@@ -1,4 +1,5 @@
 ﻿using Compartido;
+using Compartido.Dto.Distribuidora;
 using Compartido.Dto.Distribuidora.General;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,11 +16,11 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         #endregion
 
         #region Empresa Distribuidora
-        Task<ServiceResponse<EmpresaDistribuidoraDTO>> CrearEmpresaDistribuidora(EmpresaDistribuidoraDTO distribuidora);
+        Task<ServiceResponse<EmpresaDistribuidoraDTO>> CrearEmpresaDistribuidora(RegistroEmpresaDTO distribuidora);
         #endregion
 
         #region Empresa Cliente
-        Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(EmpresaClienteDTO cliente);
+        Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(RegistroEmpresaDTO cliente);
         #endregion
 
         #region Sucursales

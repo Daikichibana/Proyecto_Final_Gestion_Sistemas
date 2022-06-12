@@ -18,6 +18,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         {
             _http = http;
         }
+
+        #region Usuario
         public async Task<ServiceResponse<UsuarioDTO>> ActualizarUsuario(UsuarioDTO usuario)
         {
             var Enlace = EnlaceUsuario + "/ActualizarUsuario";
@@ -68,5 +70,39 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             
             return content;
         }
+        #endregion
+
+        #region Rol
+
+        public async Task<ServiceResponse<RolDTO>> ActualizarRol(RolDTO Rol)
+        {
+            var result = await _http.PutAsJsonAsync(EnlaceRoles, Rol);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<RolDTO>> CrearRol(RolDTO Rol)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceRoles, Rol);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<RolDTO>> EliminarRol(RolDTO Rol)
+        {
+            var result = await _http.DeleteAsync($"{EnlaceRoles}/?Id={Rol.Id}");
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<RolDTO>>> ObtenerTodoRol()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<RolDTO>>>(EnlaceRoles);
+            return result;
+        }
+        #endregion
     }
 }

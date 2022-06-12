@@ -12,7 +12,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
     public interface IPersonalServices
     {
         #region Usuarios
-
         Task<ServiceResponse<List<UsuarioDTO>>> ObtenerTodoUsuario();
         Task<ServiceResponse<UsuarioDTO>> ObtenerUsuarioPorNombre(string nombreUsuario);
         Task<ServiceResponse<UsuarioDTO>> CrearUsuario(UsuarioDTO usuario);
@@ -20,6 +19,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<UsuarioDTO>> EliminarUsuario(UsuarioDTO usuario);
         Task<ServiceResponse<bool>> ValidarUsuario(ValidarUsuarioDTO usuario);
 
+        #endregion
+
+        #region Rol
+        Task<ServiceResponse<List<RolDTO>>> ObtenerTodoRol();
+        Task<ServiceResponse<RolDTO>> CrearRol(RolDTO Rol);
+        Task<ServiceResponse<RolDTO>> ActualizarRol(RolDTO Rol);
+        Task<ServiceResponse<RolDTO>> EliminarRol(RolDTO Rol);
         #endregion
     }
 }
