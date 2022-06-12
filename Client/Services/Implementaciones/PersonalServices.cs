@@ -54,20 +54,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             return result;
         }
 
-        public async Task<ServiceResponse<UsuarioDTO>> ObtenerUsuarioPorNombre(string nombreUsuario)
+        public async Task<ServiceResponse<IniciarSesionDTO>> IniciarSesion(UsuarioDTO usuario)
         {
-            var Enlace = EnlaceUsuario + $"/ObtenerUsuarioPorNombre?nombre={nombreUsuario}";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<UsuarioDTO>>(Enlace);
-
-            return result;
-        }
-
-        public async Task<ServiceResponse<bool>> ValidarUsuario(ValidarUsuarioDTO usuario)
-        {
-            var Enlace = EnlaceUsuario + "/ValidarUsuario";
+            var Enlace = EnlaceUsuario + "/IniciarSesion";
             var result = await _http.PostAsJsonAsync(Enlace, usuario);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
-            
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<IniciarSesionDTO>>();
+
             return content;
         }
         #endregion

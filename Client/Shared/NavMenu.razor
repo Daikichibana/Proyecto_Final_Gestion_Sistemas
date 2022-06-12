@@ -92,7 +92,8 @@
     {
         List<string> variableLocalStorage = new List<string>();
         variableLocalStorage.Add("username");
-        variableLocalStorage.Add("rol");
+        variableLocalStorage.Add("idEmpresa");
+        variableLocalStorage.Add("roles");
 
         await LocalStorage.RemoveItemsAsync(variableLocalStorage);
         await AuthStateProvider.GetAuthenticationStateAsync();

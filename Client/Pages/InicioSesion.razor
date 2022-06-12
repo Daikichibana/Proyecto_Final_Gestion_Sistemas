@@ -4,7 +4,7 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
-@inject IPersonalServices usuariosServices
+@inject IPersonalServices _personalService
 @inject IJSRuntime JsRuntime
 
 <h3>Inicio sesion</h3>
@@ -24,19 +24,26 @@
 
 @code {
 
-    private ValidarUsuarioDTO user = new ValidarUsuarioDTO();
+    private UsuarioDTO user = new UsuarioDTO();
 
     private async void HandleLogin()
     {
-        /*
-        var usuarioValido = await usuariosServices.ValidarUsuario(user);
-        var usuarioDetalle = await usuariosServices.ObtenerUsuarioPorNombre(user.NombreUsuario);
-        
-        if (usuarioValido.Data && usuarioDetalle != null)
+        var DatoInicioSesion = await _personalService.IniciarSesion(user);
+
+
+        if (DatoInicioSesion.Success)
         {
             Console.WriteLine("Log me in!");
-            await LocalStorage.SetItemAsync<string>("username", usuarioDetalle.Data.NombreUsuario);
-            await LocalStorage.SetItemAsync<string>("rol", usuarioDetalle.Data.RolId.ToString());
+            string rolesConcatenados = "";
+
+            foreach (var rol in DatoInicioSesion.Data.Roles)
+            {
+                rolesConcatenados += $"{rol.RolId},";
+            }
+
+            await LocalStorage.SetItemAsync<string>("username", DatoInicioSesion.Data.NombreUsuario);
+            await LocalStorage.SetItemAsync<string>("idEmpresa", DatoInicioSesion.Data.IdEmpresa.ToString());
+            await LocalStorage.SetItemAsync<string>("roles", rolesConcatenados);
             await AuthStateProvider.GetAuthenticationStateAsync();
             NavigationManager.NavigateTo("");
         }
@@ -44,7 +51,6 @@
         {
             await JsRuntime.InvokeVoidAsync("alert", "Usuario no valido.");
         }
-        */
     }
 
 }
