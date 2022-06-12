@@ -15,6 +15,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private string EnlaceRubro = "api/AdministrarRubro";
         private string EnlaceEmpresaDistribuidora = "api/AdministrarDistribuidora";
         private string EnlaceEmpresaCliente = "api/AdministrarCliente";
+        private string EnlaceSucursal = "api/AdministrarSucursales";
 
         public DistribuidorasServices(HttpClient http)
         {
@@ -72,6 +73,38 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
 
             return content;
+        }
+        #endregion
+
+        #region Sucursales
+        public async Task<ServiceResponse<SucursalesDTO>> ActualizarSucursal(SucursalesDTO sucursalesDTO)
+        {
+            var result = await _http.PutAsJsonAsync(EnlaceSucursal, sucursalesDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<SucursalesDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<SucursalesDTO>> CrearSucursal(SucursalesDTO sucursalesDTO)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceSucursal, sucursalesDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<SucursalesDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<SucursalesDTO>> EliminarSucursal(SucursalesDTO sucursalesDTO)
+        {
+            var result = await _http.DeleteAsync($"{EnlaceSucursal}?Id={sucursalesDTO.Id}");
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<SucursalesDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<SucursalesDTO>>> ObtenerTodasLasSucursales()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>(EnlaceSucursal);
+            return result;
         }
         #endregion
     }
