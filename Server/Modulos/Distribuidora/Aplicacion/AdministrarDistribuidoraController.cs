@@ -7,6 +7,7 @@ using Compartido.Dto.Distribuidora.General;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
@@ -61,14 +62,17 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
 
         [HttpPost]
-        public IActionResult InsertarEmpresa(EmpresaDistribuidoraDTO _empresaDistribuidoraDTO )
+        public IActionResult InsertarEmpresa(RegistroEmpresaDTO Empresa)
         {
 
             var result = new ServiceResponse<EmpresaDistribuidoraDTO>();
 
             try
             {
-                EmpresaDistribuidora nuevaEmpresa = _mapper.Map<EmpresaDistribuidora>(_empresaDistribuidoraDTO);
+                NIT nit = new NIT(Empresa.NombreFacturacion,Empresa.NumeroNIT);
+                Usuario usuario = new Usuario(Empresa.NombreUsuario, Empresa.ClaveUsuario);
+                ResponsableEmpresa responsable = new ResponsableEmpresa(Empresa.NombreResponsable,Empresa.ApellidoResponsable,Empresa.CiResponsable, Empresa.FechaNacimientoResponsable, Empresa.EmailEmpresa, Empresa.TelefonoResponsable, usuario);
+                EmpresaDistribuidora nuevaEmpresa = new EmpresaDistribuidora(Empresa.NombreEmpresa, Empresa.RazonSocialEmpresa, Empresa.EmailEmpresa, Empresa.Rubro.Id, nit, responsable);
 
                 var response = _AdministrarDistribuidoraService.Guardar(nuevaEmpresa);
 

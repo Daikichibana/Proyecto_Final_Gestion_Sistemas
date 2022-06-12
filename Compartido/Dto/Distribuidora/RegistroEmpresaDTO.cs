@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compartido.Dto.Distribuidora.General;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,7 @@ namespace Compartido.Dto.Distribuidora
         public string EmailEmpresa { get; set; }
 
         //Rubro
-        public string NombreRubro { get; set; }
-        public string DescripcionRubro { get; set; }
+        public RubroDTO Rubro { get; set; }
 
         //Responsable
         public string NombreResponsable { get; set; }
@@ -25,7 +25,7 @@ namespace Compartido.Dto.Distribuidora
         public string TelefonoResponsable { get; set; }
 
         //Usuario
-        public string NombreUsuarioUsuario { get; set; }
+        public string NombreUsuario { get; set; }
         public string ClaveUsuario { get; set; }
 
         // NIT

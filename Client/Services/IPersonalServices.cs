@@ -12,7 +12,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
     public interface IPersonalServices
     {
         #region Usuarios
-
         Task<ServiceResponse<List<UsuarioDTO>>> ObtenerTodoUsuario();
         Task<ServiceResponse<UsuarioDTO>> ObtenerUsuarioPorNombre(string nombreUsuario);
         Task<ServiceResponse<UsuarioDTO>> CrearUsuario(UsuarioDTO usuario);

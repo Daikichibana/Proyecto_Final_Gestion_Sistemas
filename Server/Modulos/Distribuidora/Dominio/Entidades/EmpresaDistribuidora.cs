@@ -29,12 +29,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.E
 
         }
 
-        public EmpresaDistribuidora(string nombreEmpresa, string razonSocial, string emailEmpresa, Rubro rubro, NIT nIT, ResponsableEmpresa responsable)
+        public EmpresaDistribuidora(string nombreEmpresa, string razonSocial, string emailEmpresa, Guid rubroId, NIT nIT, ResponsableEmpresa responsable)
         {
             NombreEmpresa = nombreEmpresa;
             RazonSocial = razonSocial;
             EmailEmpresa = emailEmpresa;
-            Rubro = rubro;
+            RubroId = rubroId;
             NIT = nIT;
             Responsable = responsable;
         }

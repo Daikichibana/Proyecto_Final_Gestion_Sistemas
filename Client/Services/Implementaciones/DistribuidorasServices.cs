@@ -1,4 +1,5 @@
 ﻿using Compartido;
+using Compartido.Dto.Distribuidora;
 using Compartido.Dto.Distribuidora.General;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -55,7 +56,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #endregion
 
         #region Empresa Distribuidora
-        public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> CrearEmpresaDistribuidora(EmpresaDistribuidoraDTO distribuidora)
+        public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> CrearEmpresaDistribuidora(RegistroEmpresaDTO distribuidora)
         {
             var result = await _http.PostAsJsonAsync(EnlaceEmpresaDistribuidora, distribuidora);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaDistribuidoraDTO>>();
@@ -65,7 +66,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #endregion
 
         #region Empresa Cliente
-        public async Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(EmpresaClienteDTO cliente)
+        public async Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(RegistroEmpresaDTO cliente)
         {
             var result = await _http.PostAsJsonAsync(EnlaceEmpresaCliente, cliente);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
