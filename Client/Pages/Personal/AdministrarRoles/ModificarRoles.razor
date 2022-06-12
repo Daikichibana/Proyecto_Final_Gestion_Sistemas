@@ -1,0 +1,56 @@
+﻿@page "/ModificarRol"
+@using Compartido.Dto.Distribuidora.General
+@using Microsoft.AspNetCore.Components
+@using Compartido
+@inject IUsuariosServices _usuariosService
+
+<h3>Modificar Rol</h3>
+<!-- Formulario Registro -->
+<div style="display: flex; justify-content: center;">
+    <form style="width: 70%;">
+        <!-- Informacion del responsable -->
+
+        <fieldset class="form-group">
+            <div class="form-group">
+                <label for="NombreRol" class="form-label mt-4">Nombre del Rol</label>
+                <input @bind=Rol.Nombre type="text" class="form-control" id="NombreRol" placeholder="Ingrese nombre del rol.">
+            </div>
+            <div class="form-group">
+                <label for="NombreRol" class="form-label mt-4">Descripcion del Rol</label>
+                <input @bind=Rol.Descripcion type="text" class="form-control" id="NombreRol" placeholder="Ingrese descripcion del rol.">
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<!-- Boton enviar -->
+
+<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button @onclick=Modificar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public RolDTO Rol { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> MostrarModificar { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> MostrarListado { get; set; }
+
+    public ServiceResponse<RolDTO> ResponseRol { get; set; }
+
+
+    public async void Modificar()
+    {
+        ResponseRol = await _usuariosService.ActualizarRol(Rol);
+
+        if (ResponseRol.Success)
+            await this.MostrarListado.InvokeAsync();
+    }
+
+}
