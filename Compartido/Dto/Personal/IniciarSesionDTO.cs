@@ -11,5 +11,6 @@ namespace Compartido.Dto.Personal
         public Guid IdEmpresa { get; set; }
         public List<UsuariosRolesDTO> Roles  { get; set; }
         public bool EsDistribuidora { get; set; }
+        public string NombreEmpresa { get; set; }
     }
 }

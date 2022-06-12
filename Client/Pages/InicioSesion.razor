@@ -44,6 +44,8 @@
             await LocalStorage.SetItemAsync<string>("username", DatoInicioSesion.Data.NombreUsuario);
             await LocalStorage.SetItemAsync<string>("idEmpresa", DatoInicioSesion.Data.IdEmpresa.ToString());
             await LocalStorage.SetItemAsync<string>("roles", rolesConcatenados);
+            await LocalStorage.SetItemAsync<bool>("EsDistribuidora", DatoInicioSesion.Data.EsDistribuidora);
+            await LocalStorage.SetItemAsync<string>("NombreEmpresa", DatoInicioSesion.Data.NombreEmpresa);
             await AuthStateProvider.GetAuthenticationStateAsync();
             NavigationManager.NavigateTo("");
         }

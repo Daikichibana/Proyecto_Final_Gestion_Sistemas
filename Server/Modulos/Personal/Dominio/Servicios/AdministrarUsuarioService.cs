@@ -103,11 +103,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                     iniciarSesionDTO.IdEmpresa = empresaCliente.Id;
                     iniciarSesionDTO.EsDistribuidora = false;
                     iniciarSesionDTO.Roles = RolesConvertidos;
+                    iniciarSesionDTO.NombreEmpresa = empresaCliente.NombreEmpresa;
                 }
                 else if (empresaDistribuidora != null)
                 {
                     iniciarSesionDTO.IdEmpresa = empresaDistribuidora.Id;
                     iniciarSesionDTO.EsDistribuidora = true;
+                    iniciarSesionDTO.Roles = RolesConvertidos;
+                    iniciarSesionDTO.NombreEmpresa = empresaDistribuidora.NombreEmpresa;
                 }
 
                 return iniciarSesionDTO;

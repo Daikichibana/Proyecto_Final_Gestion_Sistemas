@@ -1,7 +1,23 @@
 ﻿@page "/"
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
 
-<h1>Hello, world!</h1>
+<AuthorizeView>
+    <Authorized>
+        <h1>@NombreEmpresa</h1>
+        <p>Muchas gracias por utilizar nuestros servicios.</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Bienvenido</h1>
+        <p>Debes iniciar sesion para poder acceder al panel de administracion.</p>
+    </NotAuthorized>
+</AuthorizeView>
 
-Welcome to your new app.
+@code {
+    public string NombreEmpresa { get; set; }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    protected override async Task OnInitializedAsync()
+    {
+        NombreEmpresa = await LocalStorage.GetItemAsync<string>("NombreEmpresa");
+    }
+}

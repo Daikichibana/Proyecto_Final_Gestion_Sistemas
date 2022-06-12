@@ -19,39 +19,42 @@
                         <span class="oi oi-home" aria-hidden="true"></span> Inicio
                     </NavLink>
                 </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="distribuidoras">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Distribuidoras
-                    </NavLink>
-                </li>
 
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="inventario">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Inventario
-                    </NavLink>
-                </li>
+                @if (EsDistribuidora)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="distribuidoras">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Distribuidora
+                        </NavLink>
+                    </li>
 
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="pedidos">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Pedidos
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="proveedores">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Proveedores
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="usuarios">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Usuarios
-                    </NavLink>
-                </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="inventario">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Inventario
+                        </NavLink>
+                    </li>
 
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="clientes">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Clientes
-                    </NavLink>
-                </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="pedidos">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Pedidos
+                        </NavLink>
+                    </li>
+
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="usuarios">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Personal
+                        </NavLink>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="clientes">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Clientes
+                        </NavLink>
+                    </li>
+                }
 
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="login" @onclick=CerrarSesion>
@@ -75,7 +78,7 @@
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    public string rolSesion { get; set; }
+    public bool EsDistribuidora { get; set; }
 
     private void ToggleNavMenu()
     {
@@ -84,7 +87,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        rolSesion = await LocalStorage.GetItemAsync<string>("rol");
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
+        Console.Write(EsDistribuidora);
         StateHasChanged();
     }
 
@@ -94,6 +98,8 @@
         variableLocalStorage.Add("username");
         variableLocalStorage.Add("idEmpresa");
         variableLocalStorage.Add("roles");
+        variableLocalStorage.Add("EsDistribuidora");
+        variableLocalStorage.Add("NombreEmpresa");
 
         await LocalStorage.RemoveItemsAsync(variableLocalStorage);
         await AuthStateProvider.GetAuthenticationStateAsync();
