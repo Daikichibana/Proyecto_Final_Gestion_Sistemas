@@ -21,6 +21,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
 
         #region Empresa Cliente
         Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(RegistroEmpresaDTO cliente);
+        Task<ServiceResponse<List<EmpresaClienteDTO>>> ObtenerTodoEmpresaCliente();
+        #endregion
+
+        #region TarjetaCliente
+        Task<ServiceResponse<List<TarjetaClienteDTO>>> ObtenerTodoTarjetaCliente();
+        Task<ServiceResponse<TarjetaClienteDTO>> CrearTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
+        Task<ServiceResponse<TarjetaClienteDTO>> ActualizarTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
+        Task<ServiceResponse<TarjetaClienteDTO>> EliminarTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
         #endregion
     }
 }
