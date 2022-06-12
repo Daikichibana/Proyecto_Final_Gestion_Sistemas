@@ -1,0 +1,16 @@
+﻿@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+
+<h3>Asignar Roles</h3>
+
+@code {
+    public string IdDistribuidora { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IdDistribuidora = await LocalStorage.GetItemAsync<string>("IdDistribuidora");
+        StateHasChanged();
+    }
+
+
+}
