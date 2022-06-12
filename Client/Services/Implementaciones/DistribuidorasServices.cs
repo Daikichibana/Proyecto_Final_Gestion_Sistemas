@@ -95,7 +95,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<SucursalesDTO>> EliminarSucursal(SucursalesDTO sucursalesDTO)
         {
-            var result = await _http.DeleteAsync($"{EnlaceRubro}/?Id={sucursalesDTO.Id}");
+            var result = await _http.DeleteAsync($"{EnlaceSucursal}?Id={sucursalesDTO.Id}");
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<SucursalesDTO>>();
 
             return content;

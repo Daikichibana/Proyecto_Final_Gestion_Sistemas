@@ -4,6 +4,7 @@
 @using Compartido.Dto.Distribuidora.General
 @inject IDistribuidorasServices _distribuidoraService
 @inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage
 
 <h3>AdministrarSucursales</h3>
 
@@ -32,7 +33,7 @@
                                 <td>@item.Telefono</td>
                                 <td>
                                     <button @onclick="() => MostrarModificar(item)">Modificar</button>
-                                    <button @onclick="() => EliminarSucursal(item)" class="txtElim" id="txtEliminar1">Eliminar</button>
+                                    <button @onclick="() => EliminarSucursal(item)">Eliminar</button>
                                 </td>
                             </tr>
                         }
@@ -82,6 +83,7 @@ else
     public bool VisibleRegistrar { get; set; }
     public bool VisibleEditar { get; set; }
     public bool VisibleListado { get; set; }
+    public string Distribuidora;
 
     protected override async Task OnInitializedAsync()
     {
@@ -89,7 +91,12 @@ else
         VisibleEditar = false;
         VisibleRegistrar = false;
         ListaSucursal = await _distribuidoraService.ObtenerTodasLasSucursales();
+        Distribuidora = await LocalStorage.GetItemAsync<string>("IdDistribuidora");
+        this.MostrarListado();
+        StateHasChanged();
     }
+
+
 
     public void RedireccionarPagina(string enlace)
     {
@@ -103,6 +110,9 @@ else
         VisibleEditar = false;
         VisibleRegistrar = false;
         ListaSucursal = await _distribuidoraService.ObtenerTodasLasSucursales();
+        Guid dist = new Guid(Distribuidora);
+        ListaSucursal.Data = ListaSucursal.Data.Where(t => t.EmpresaDistribuidoraId.Equals(dist)).ToList();
+
 
         StateHasChanged();
     }
