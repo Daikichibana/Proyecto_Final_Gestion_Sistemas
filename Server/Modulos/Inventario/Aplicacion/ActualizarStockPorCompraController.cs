@@ -22,7 +22,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpGet]
-        public IActionResult ObtenerTodosProductos()
+        public IActionResult ObtenerTodosStock()
         {
 
             var result = new ServiceResponse<List<StockDTO>>();
@@ -54,7 +54,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult InsertarProducto(StockDTO _StockDTO)
+        public IActionResult InsertarStock(StockDTO _StockDTO)
         {
 
             var result = new ServiceResponse<StockDTO>();
@@ -82,7 +82,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPut]
-        public IActionResult ActualizarProducto(StockDTO _StockDTO)
+        public IActionResult ActualizarStock(StockDTO _StockDTO)
         {
             var result = new ServiceResponse<StockDTO>();
 
@@ -108,7 +108,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpDelete]
-        public IActionResult EliminarProducto(Guid id)
+        public IActionResult EliminarStock(Guid id)
         {
             var result = new ServiceResponse<StockDTO>();
 

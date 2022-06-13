@@ -1,0 +1,17 @@
+﻿@inject IInventarioServices _inventarioServices
+
+<h3>Modificar Stock</h3>
+
+@code {
+    [Parameter]
+    public StockDTO StockSeleccionado { get; set; }
+    
+    [Parameter]
+    public List<ProductoDTO> ListaProductos { get; set; }
+
+    public void Modificar()
+    {
+        
+    }
+
+}

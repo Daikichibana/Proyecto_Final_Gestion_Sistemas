@@ -1,6 +1,7 @@
 ﻿using Compartido;
 using Compartido.Dto.Distribuidora;
 using Compartido.Dto.Distribuidora.General;
+using Compartido.Dto.Pedidos.General;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

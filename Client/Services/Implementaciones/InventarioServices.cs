@@ -14,6 +14,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private readonly HttpClient _http;
         private string EnlaceTipoProducto = "api/GestionarTipoProducto";
         private string EnlaceProducto = "api/AdministrarProducto";
+        private string EnlaceStock = "api/ActualizarStockPorCompra";
 
         public InventarioServices(HttpClient http)
         {
@@ -83,6 +84,46 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         public async Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodoProducto()
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<ProductoDTO>>>(EnlaceProducto);
+            return result;
+        }
+
+        #endregion
+
+        #region Stock
+
+        public async Task<ServiceResponse<StockDTO>> ActualizarStock(StockDTO Stock)
+        {
+            var enlaceConcatenado = EnlaceStock + "";
+            var result = await _http.PutAsJsonAsync(enlaceConcatenado, Stock);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<StockDTO>> CrearStock(StockDTO Stock)
+        {
+            var enlaceConcatenado = EnlaceStock + "";
+            var result = await _http.PostAsJsonAsync(enlaceConcatenado, Stock);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<StockDTO>> EliminarStock(StockDTO Stock)
+        {
+            var enlaceConcatenado = EnlaceStock + "";
+
+            var result = await _http.DeleteAsync($"{enlaceConcatenado}/?Id={Stock.Id}");
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStock()
+        {
+            var enlaceConcatenado = EnlaceStock + "";
+
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<StockDTO>>>(enlaceConcatenado);
             return result;
         }
 
