@@ -1,5 +1,110 @@
-﻿<h3>RegistrarProveedor</h3>
+﻿@page "/RegistrarProveedor"
+
+@using Compartido
+@using Compartido.Dto.Distribuidora.General
+@inject IDistribuidorasServices _DistribuidoraService
+@inject ILocalStorageService LocalStorage
+
+<h3>Registrar Conductor</h3>
+
+<!-- Formulario Registro -->
+<div style="display: flex; justify-content: center;">
+    <form style="width: 70%;">
+        <!-- Informacion del responsable -->
+
+        <fieldset class="form-group">
+            <div class="form-group">
+                <label for="NroSucursal" class="form-label mt-4">Nombre Empresa</label>
+                <input @bind=Proveedor.NombreEmpresa type="text" class="form-control" id="NroSucursal" placeholder="Ingrese nombre.">
+            </div>
+            <div class="form-group">
+                <label for="Direccion" class="form-label mt-4">Razon Social</label>
+                <input @bind=Proveedor.RazonSocial type="text" class="form-control" id="Direccion" placeholder="Ingrese razon social.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Email Empresa</label>
+                <input @bind=Proveedor.EmailEmpresa type="text" class="form-control" id="Telefono" placeholder="Ingrese email empresa.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Nombre Facturacion</label>
+                <input @bind=Proveedor.NIT.NombreFacturacion type="text" class="form-control" id="Telefono" placeholder="Ingrese nombre de facturacion.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Numero NIT</label>
+                <input @bind=Proveedor.NIT.NumeroNIT type="text" class="form-control" id="Telefono" placeholder="Ingrese NIT.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Email</label>
+                <input @bind=Conductor.Email type="text" class="form-control" id="Telefono" placeholder="Ingrese email.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Telefono</label>
+                <input @bind=Conductor.Telefono type="text" class="form-control" id="Telefono" placeholder="Ingrese telefono.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Clave de Usuario</label>
+                <input @bind=Usuario.Clave  type="text" class="form-control" id="Telefono" placeholder="Ingrese clave.">
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<!-- Boton enviar -->
+
+<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
+</div>
+
 
 @code {
+    [Parameter]
+    public EventCallback<bool> MostrarRegistrar { get; set; }
 
+    [Parameter]
+    public EventCallback<bool> MostrarListado { get; set; }
+
+
+    public ServiceResponse<EmpresaProveedorDTO> ResponseProveedor { get; set; }
+
+    public EmpresaProveedorDTO Proveedor { get; set; }
+
+    public UsuarioDTO Usuario { get; set; }
+
+    public NITDTO Nit { get; set; }
+
+    public ResponsableEmpresaDTO ResponsableEmpresa { get; set; }
+
+    public string Distribuidora { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Proveedor =  new EmpresaProveedorDTO();
+        Usuario = new UsuarioDTO();
+        Nit = new NITDTO();
+        ResponsableEmpresa = new ResponsableEmpresaDTO();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        StateHasChanged();
+    }
+
+
+    public async void Registrar()
+    {
+        Guid dist = new Guid(Distribuidora);
+        Proveedor.EmpresaDistribuidoraId = dist;
+        Usuario.NombreUsuario = Conductor.Email;
+        Conductor.Usuario = Usuario;
+        
+
+        ResponseProveedor = await _DistribuidoraService.CrearProveedor(Proveedor);
+
+
+        if(ResponseProveedor.Success)
+            await this.MostrarListado.InvokeAsync();
+    }
 }

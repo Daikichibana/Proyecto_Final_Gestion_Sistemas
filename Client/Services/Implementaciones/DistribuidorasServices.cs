@@ -19,6 +19,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private string EnlaceSucursal = "api/AdministrarSucursales";
         private string EnlaceVehiculo = "api/AdministrarVechiculo";
         private string EnlaceTarjetaCliente = "api/AdministrarTarjetaCliente";
+        private string EnlaceProveedor = "api/AdministrarProveedor";
 
         public DistribuidorasServices(HttpClient http)
         {
@@ -211,6 +212,38 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         public async Task<ServiceResponse<List<VehiculoDTO>>> ObtenerTodosLosVehiculos()
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>(EnlaceVehiculo);
+            return result;
+        }
+        #endregion
+
+        #region Proveedor
+        public async Task<ServiceResponse<EmpresaProveedorDTO>> ActualizarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
+        {
+            var result = await _http.PutAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<EmpresaProveedorDTO>> CrearProveedor(EmpresaProveedorDTO empresaProveedorDTO)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<EmpresaProveedorDTO>> EliminarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
+        {
+            var result = await _http.DeleteAsync($"{EnlaceProveedor}?Id={empresaProveedorDTO.Id}");
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<EmpresaProveedorDTO>>> ObtenerTodosLosProveedores()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>(EnlaceProveedor);
             return result;
         }
         #endregion
