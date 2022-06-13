@@ -1,10 +1,9 @@
-﻿@page "/RegistrarProducto"
-@using Compartido
-@using Compartido.Dto.Inventario
-@using Compartido.Dto.Inventario.General
+﻿@using Compartido
+@using Compartido.Dto.Distribuidora.General
 @inject IInventarioServices _inventarioService
+@inject ILocalStorageService LocalStorage
 
-<h4>Registrar Producto</h4>
+<h3>Registrar Producto</h3>
 
 <!-- Formulario Registro -->
 <div style="display: flex; justify-content: center;">
@@ -12,13 +11,9 @@
         <!-- Informacion del responsable -->
 
         <fieldset class="form-group">
-            <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Nombre del producto</label>
-                <input @bind=Producto.Nombre type="text" class="form-control" id="NombreRubro" placeholder="Ingrese nombre del producto.">
-            </div>
-            <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Descripcion del producto</label>
-                <input @bind=Producto.Descripcion type="text" class="form-control" id="NombreRubro" placeholder="Ingrese descripcion del producto.">
+             <div class="form-group">
+                <label for="nombre" class="form-label mt-4">Nombre</label>
+                <input @bind=Producto.Nombre type="text" class="form-control" id="nombre" placeholder="Ingrese nombre del producto.">
             </div>
             <div class="form-group">
                 <label for="NombreRubro" class="form-label mt-4">Tipo producto</label>
@@ -35,6 +30,10 @@
                         }
                     }
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="Descripcion" class="form-label mt-4">Descripcion</label>
+                <input @bind=Producto.Descripcion type="text" class="form-control" id="Descripcion" placeholder="Ingrese descripcion.">
             </div>
         </fieldset>
     </form>
@@ -55,12 +54,14 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    [Parameter]
+      [Parameter]
     public List<TipoProductoDTO> ListaTipoProducto { get; set; }
 
     public ServiceResponse<ProductoDTO> ResponseProducto { get; set; }
 
     public ProductoDTO Producto { get; set; }
+
+    public string Distribuidora { get; set; }
 
 
     protected override void OnInitialized()
@@ -68,9 +69,17 @@
         Producto =  new ProductoDTO();
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        StateHasChanged();
+    }
+
 
     public async void Registrar()
     {
+        Guid dist = new Guid(Distribuidora);
+        Producto.EmpresaDistribuidoraId = dist;
         ResponseProducto = await _inventarioService.CrearProducto(Producto);
         
         if(ResponseProducto.Success)

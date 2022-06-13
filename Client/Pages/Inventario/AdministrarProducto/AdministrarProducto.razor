@@ -1,13 +1,16 @@
 ﻿@page "/AdministrarProducto"
+@using System.Reflection
 @using Compartido
-@using Compartido.Dto.Inventario
-@using Compartido.Dto.Inventario.General
+@using Compartido.Dto.Distribuidora.General
 @inject IInventarioServices _inventarioService
+@inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage
 
-<h3>Administrar Producto</h3>
+<h3>AdministrarProducto</h3>
+
 
 <!-- Implementacion -->
-@if (ListaProducto is {Success: true } && VisibleListado == true)
+@if (ListaProducto != null && ListaProducto.Success == true && VisibleListado == true)
 {
     <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
         <div style="width: 70%;">
@@ -16,19 +19,19 @@
                 <table class="table table-bordered" style="width: 100%">
                     <thead>
                         <tr>
-                            <th scope="col">Nombre del tipo de producto</th>
-                            <th scope="col">Descripcion del tipo de producto</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">Tipo de producto</th>
+                            <th scope="col">Descripcion</th>
                             <th scope="col">Opcion</th>
                         </tr>
                     </thead>
-                    <tbody>
+                     <tbody>
                         @foreach (var item in ListaProducto.Data)
                         {
                             <tr id="fila1" class="filaTabla">
                                 <td>@item.Nombre</td>
-                                <td>@item.Descripcion</td>
                                 <td>@BuscarNombreTipoProducto(item.TipoProductoId)</td>
+                                <td>@item.Descripcion</td>
                                 <td>
                                     <button @onclick="() => MostrarModificar(item)">Modificar</button>
                                     <button @onclick="() => EliminarProducto(item)">Eliminar</button>
@@ -40,7 +43,7 @@
             }
             else
             {
-                <p>No existen Productos registrados.</p>
+                <p>No existen productos registrados.</p>
             }
         </div>
 
@@ -52,24 +55,24 @@
         </button>
     </div>
 }
-else if (VisibleEditar == true && ProductoSeleccionado != null)
+else if (VisibleEditar == true && ProductoSeleccionada != null)
 {
-    <ModificarProducto Producto="@ProductoSeleccionado"
-                   ListaTipoProducto="ListaTipoProducto.Data"
-                   MostrarListado="() => MostrarListado()"
-                   MostrarModificar="() => MostrarModificar(ProductoSeleccionado)" />
+    <ModificarProducto 
+        Producto="@ProductoSeleccionada"
+        ListaTipoProducto="ListaTipoProducto.Data"
+        MostrarListado="() => MostrarListado()"
+        MostrarModificar="() => MostrarModificar(ProductoSeleccionada)" />
 }
 else if (VisibleRegistrar == true)
 {
     <RegistrarProducto ListaTipoProducto="ListaTipoProducto.Data"
-                   MostrarListado="() => MostrarListado()"
-                   MostrarRegistrar="() => MostrarRegistrar()" />
+        MostrarListado="() => MostrarListado()"
+        MostrarRegistrar="() => MostrarRegistrar()" />
 }
 else
 {
     <p>@Loading</p>
 }
-
 
 @code {
     public readonly string EnlaceRegistro = "RegistrarProducto";
@@ -78,13 +81,12 @@ else
 
     public ServiceResponse<List<ProductoDTO>> ListaProducto { get; set; }
     public ServiceResponse<List<TipoProductoDTO>> ListaTipoProducto { get; set; }
-    public ProductoDTO ProductoSeleccionado { get; set; }
-
+    public ProductoDTO ProductoSeleccionada { get; set; }
 
     public bool VisibleRegistrar { get; set; }
     public bool VisibleEditar { get; set; }
     public bool VisibleListado { get; set; }
-
+    public string Distribuidora;
 
     protected override async Task OnInitializedAsync()
     {
@@ -93,6 +95,17 @@ else
         VisibleRegistrar = false;
         ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
         ListaProducto = await _inventarioService.ObtenerTodoProducto();
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        this.MostrarListado();
+        StateHasChanged();
+    }
+
+
+
+    public void RedireccionarPagina(string enlace)
+    {
+        NavManager.NavigateTo(enlace);
+        StateHasChanged();
     }
 
     public async void MostrarListado()
@@ -101,6 +114,9 @@ else
         VisibleEditar = false;
         VisibleRegistrar = false;
         ListaProducto = await _inventarioService.ObtenerTodoProducto();
+        Guid dist = new Guid(Distribuidora);
+        ListaProducto.Data = ListaProducto.Data.Where(t => t.EmpresaDistribuidoraId.Equals(dist)).ToList();
+
 
         StateHasChanged();
     }
@@ -114,24 +130,24 @@ else
         StateHasChanged();
     }
 
-    public void MostrarModificar(ProductoDTO Producto)
+    public void MostrarModificar(ProductoDTO productoDTO)
     {
         VisibleListado = false;
         VisibleEditar = true;
         VisibleRegistrar = false;
-        ProductoSeleccionado = Producto;
+        ProductoSeleccionada = productoDTO;
 
         StateHasChanged();
     }
 
-    public async void EliminarProducto(ProductoDTO Producto)
+    public async void EliminarProducto(ProductoDTO productoDTO)
     {
-        var response = await _inventarioService.EliminarProducto(Producto);
-
+        var response = await _inventarioService.EliminarProducto(productoDTO);
+        
         this.MostrarListado();
     }
 
-    public string BuscarNombreTipoProducto(Guid Id)
+     public string BuscarNombreTipoProducto(Guid Id)
     {
         var result = (from tipoProducto in ListaTipoProducto.Data
                     where tipoProducto.Id == Id
@@ -139,4 +155,5 @@ else
 
         return result.Nombre;
     }
+
 }
