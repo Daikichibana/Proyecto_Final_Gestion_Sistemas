@@ -4,5 +4,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
 {
     public class RealizarPedidoADistribuidoraService : IRealizarPedidoADistribuidoraService
     {
+
     }
 }
