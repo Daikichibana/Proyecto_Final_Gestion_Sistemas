@@ -1,6 +1,7 @@
 ﻿using Compartido;
 using Compartido.Dto.Distribuidora;
 using Compartido.Dto.Distribuidora.General;
+using Compartido.Dto.Pedidos.General;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -19,7 +20,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private string EnlaceSucursal = "api/AdministrarSucursales";
         private string EnlaceVehiculo = "api/AdministrarVechiculo";
         private string EnlaceTarjetaCliente = "api/AdministrarTarjetaCliente";
-
         public DistribuidorasServices(HttpClient http)
         {
             _http = http;
@@ -214,5 +214,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             return result;
         }
         #endregion
+
     }
 }

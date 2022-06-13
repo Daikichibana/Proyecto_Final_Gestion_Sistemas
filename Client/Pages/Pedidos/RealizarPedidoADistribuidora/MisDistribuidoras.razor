@@ -1,10 +1,9 @@
 ﻿@page "/MisDistribuidoras"
 @inject IDistribuidorasServices _distribuidoraService
 
-<h3>Mis Distribuidoras</h3>
-
 @if (ListaDistribuidoras != null && ListaRubros != null && Vista == 1)
 {
+    <h3>Mis Distribuidoras</h3>
     <button @onclick="RegistrarNuevo" type="button" class="btn btn-primary mb-2">Agregar Nueva Distribuidora</button>
 
     <table class="table">
@@ -27,7 +26,7 @@
                         <td>@distribuidora.EmailEmpresa</td>
                         <td>@obtenerNombreRubro(distribuidora.RubroId)</td>
                         <td>
-                            <button type="button" class="btn btn-success">Realizar Pedido</button>
+                            <button @onclick="() => IrCatalogo(distribuidora)" type="button" class="btn btn-success">Realizar Pedido</button>
                             <button @onclick="() => eliminarDistribuidora(distribuidora.Id)" type="button" class="btn btn-danger ml-3">Eliminar</button>
                         </td>
                     </tr>
@@ -42,6 +41,10 @@ else if (Vista == 2)
     <RegistrarMisDistribuidoras ListaDistribuidoraFiltrado="@ListaDistribuidoraFiltrado"
                             Volver="() => Volver()" />
 }
+else if (Vista == 3)
+{
+    <CatalogoProductos EmpresaDistribuidora="@DistribuidoraSeleccionada" />    
+}
 else
 {
     <p>@Loading</p>
@@ -52,6 +55,7 @@ else
     public ServiceResponse<List<EmpresaDistribuidoraDTO>> ListaDistribuidoras { get; set; }
     public ServiceResponse<List<RubroDTO>> ListaRubros { get; set; }
     public List<EmpresaDistribuidoraDTO> ListaDistribuidoraFiltrado { get; set; }
+    public EmpresaDistribuidoraDTO DistribuidoraSeleccionada { get; set; } = new EmpresaDistribuidoraDTO();
     public string Loading { get; set; }
     public int Vista { get; set; } = 1;
 
@@ -115,6 +119,13 @@ else
             }
         }
 
+        StateHasChanged();
+    }
+
+    public void IrCatalogo(EmpresaDistribuidoraDTO emp)
+    {
+        DistribuidoraSeleccionada = emp;
+        Vista = 3;
         StateHasChanged();
     }
 

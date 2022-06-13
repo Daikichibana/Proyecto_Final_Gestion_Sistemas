@@ -15,6 +15,9 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Servicios;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servicios;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Tecnica;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servicios;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
@@ -81,7 +84,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
 
             /*** Modulo Pedidos ***/
             //Servicios
+            services.AddScoped(typeof(IAdministrarPedidoService), typeof(AdministrarPedidoService));
+
             //Repositorios
+            services.AddScoped(typeof(IDetalleOrdenPedidoRepository), typeof(DetalleOrdenPedidoRepository));
+            services.AddScoped(typeof(IFacturaRepository), typeof(FacturaRepository));
+            services.AddScoped(typeof(IOrdenPedidoRepository), typeof(OrdenPedidoRepository));
+            services.AddScoped(typeof(IPedidoRepository), typeof(PedidoRepository));
 
             /**** Modulo Personal ****/
             //Servicios

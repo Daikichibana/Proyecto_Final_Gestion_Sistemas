@@ -21,7 +21,6 @@
         </fieldset>
     </form>
 }
-
 <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
     <button @onclick="@(() => Volver.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
     <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
@@ -43,6 +42,7 @@
     public EmpresaDistribuidoraDTO DistribuidoraSeleccionada { get; set; } = new EmpresaDistribuidoraDTO();
 
     public Guid IdEmpresaCliente { get; set; }
+
 
 
     protected override async Task OnInitializedAsync()

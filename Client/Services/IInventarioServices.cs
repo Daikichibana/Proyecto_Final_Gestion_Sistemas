@@ -23,5 +23,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<ProductoDTO>> ActualizarProducto(ProductoDTO Producto);
         Task<ServiceResponse<ProductoDTO>> EliminarProducto(ProductoDTO Producto);
         #endregion
+
+        #region Stock
+        Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStock();
+        Task<ServiceResponse<StockDTO>> CrearStock(StockDTO Stock);
+        Task<ServiceResponse<StockDTO>> ActualizarStock(StockDTO Stock);
+        Task<ServiceResponse<StockDTO>> EliminarStock(StockDTO Stock);
+        #endregion
     }
 }
