@@ -91,7 +91,7 @@ else
         VisibleEditar = false;
         VisibleRegistrar = false;
         ListaSucursal = await _distribuidoraService.ObtenerTodasLasSucursales();
-        Distribuidora = await LocalStorage.GetItemAsync<string>("IdDistribuidora");
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
         this.MostrarListado();
         StateHasChanged();
     }

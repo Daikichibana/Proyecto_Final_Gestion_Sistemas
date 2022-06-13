@@ -51,5 +51,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<VehiculoDTO>> ActualizarVehiculo(VehiculoDTO vehiculoDTO);
         Task<ServiceResponse<VehiculoDTO>> EliminarVehiculo(VehiculoDTO vehiculoDTO);
         #endregion
+
+        #region Proveedor
+        Task<ServiceResponse<List<EmpresaProveedorDTO>>> ObtenerTodosLosProveedores();
+        Task<ServiceResponse<EmpresaProveedorDTO>> CrearProveedor(EmpresaProveedorDTO empresaProveedorDTO);
+        Task<ServiceResponse<EmpresaProveedorDTO>> ActualizarProveedor(EmpresaProveedorDTO empresaProveedorDTO);
+        Task<ServiceResponse<EmpresaProveedorDTO>> EliminarProveedor(EmpresaProveedorDTO empresaProveedorDTO);
+        #endregion
     }
 }

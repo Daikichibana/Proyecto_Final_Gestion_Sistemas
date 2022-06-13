@@ -46,7 +46,7 @@
 }
 else if (Paginacion == 2)
 {
-    <RegistrarStock ListaProductos="ListaFiltradaProductos" />
+    <RegistrarStock ListaProductos="ListaFiltradaProductos" MostrarListado="() => MostrarListado()"/>
 }
 else if (Paginacion == 3)
 {
@@ -67,16 +67,27 @@ else
     public int Paginacion { get; set; } = 1;
     public StockDTO StockSeleccionado { get; set; }
 
+
+
     public Guid IdEmpresaSesion { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Loading = "Cargando...";
+
         ResponseStock = await _inventarioServices.ObtenerTodoStock();
         ResponseProducto = await _inventarioServices.ObtenerTodoProducto();
         IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
 
+
+
         FiltrarLista();
+    }
+
+    public async void MostrarListado()
+    {
+        Paginacion = 1;
+        StateHasChanged();
     }
 
     public void Registrar()
@@ -96,7 +107,7 @@ else
     {
         await _inventarioServices.EliminarStock(entidad);
     }
-
+    
     public void FiltrarLista()
     {
         ListaFiltradaProductos = ResponseProducto.Data.Where(p => p.EmpresaDistribuidoraId.Equals(IdEmpresaSesion)).ToList();

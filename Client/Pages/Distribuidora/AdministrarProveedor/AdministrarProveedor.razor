@@ -1,5 +1,147 @@
-﻿<h3>AdministrarProveedor</h3>
+﻿@page "/AdministrarProveedor"
+@using System.Reflection
+@using Compartido
+@using Compartido.Dto.Distribuidora.General
+@inject IDistribuidorasServices _distribuidoraService
+@inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage
+
+<h3>Administrar Proveedores</h3>
+
+
+<!-- Implementacion -->
+@if (ListaProveedor != null && ListaProveedor.Success == true && VisibleListado == true)
+{
+    <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
+        <div style="width: 70%;">
+            @if (ListaProveedor.Data.Count > 0)
+            {
+                <table class="table table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre Empresa</th>
+                            <th scope="col">Razon Social</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Opcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ListaProveedor.Data)
+                        {
+                            <tr id="fila1" class="filaTabla">
+                                <td>@item.NombreEmpresa</td>
+                                <td>@item.RazonSocial</td>
+                                <td>@item.EmailEmpresa</td>
+                                <td>
+                                    <button @onclick="() => MostrarModificar(item)">Modificar</button>
+                                    <button @onclick="() => EliminarProveedor(item)">Eliminar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No existen Sucursales registradas.</p>
+            }
+        </div>
+
+        <!-- Boton  -->
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <button @onclick="MostrarRegistrar" type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">
+            Registrar nuevo
+        </button>
+    </div>
+}
+else if (VisibleEditar == true && ProveedorSeleccionado != null)
+{
+    <ModificarProveedor 
+        Sucursal="@ProveedorSeleccionado"
+        MostrarListado="() => MostrarListado()"
+        MostrarModificar="() => MostrarModificar(SucursalSeleccionada)" />
+}
+else if (VisibleRegistrar == true)
+{
+    <RegistrarProveedor 
+        MostrarListado="() => MostrarListado()"
+        MostrarRegistrar="() => MostrarRegistrar()" />
+}
+else
+{
+    <p>@Loading</p>
+}
 
 @code {
+    public readonly string EnlaceRegistro = "RegistrarSucursales";
+    public readonly string EnlaceModificar = "ModificarSucursales";
+    public string Loading = "Cargando...";
+
+    public ServiceResponse<List<EmpresaProveedorDTO>> ListaProveedor { get; set; }
+    public EmpresaProveedorDTO ProveedorSeleccionado { get; set; }
+
+    public bool VisibleRegistrar { get; set; }
+    public bool VisibleEditar { get; set; }
+    public bool VisibleListado { get; set; }
+    public string Distribuidora;
+
+    protected override async Task OnInitializedAsync()
+    {
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
+        ListaProveedor = await _distribuidoraService.ObtenerTodosLosProveedores();
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        this.MostrarListado();
+        StateHasChanged();
+    }
+
+
+
+    public void RedireccionarPagina(string enlace)
+    {
+        NavManager.NavigateTo(enlace);
+        StateHasChanged();
+    }
+
+    public async void MostrarListado()
+    {
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
+        ListaProveedor = await _distribuidoraService.ObtenerTodosLosProveedores();
+        Guid dist = new Guid(Distribuidora);
+        ListaProveedor.Data = ListaProveedor.Data.Where(t => t.EmpresaDistribuidoraId.Equals(dist)).ToList();
+
+
+        StateHasChanged();
+    }
+
+    public void MostrarRegistrar()
+    {
+        VisibleListado = false;
+        VisibleEditar = false;
+        VisibleRegistrar = true;
+
+        StateHasChanged();
+    }
+
+    public void MostrarModificar(EmpresaProveedorDTO empresaProveedorDTO)
+    {
+        VisibleListado = false;
+        VisibleEditar = true;
+        VisibleRegistrar = false;
+        ProveedorSeleccionado = empresaProveedorDTO;
+
+        StateHasChanged();
+    }
+
+    public async void EliminarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
+    {
+        var response = await _distribuidoraService.EliminarProveedor(empresaProveedorDTO);
+        
+        this.MostrarListado();
+    }
 
 }
