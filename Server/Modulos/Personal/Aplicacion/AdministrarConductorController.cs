@@ -66,7 +66,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         /// </summary>
 
         [HttpPost]
-        public IActionResult InsertarConductor(ConductorDTO conductorDTO)
+        public IActionResult CrearConductor(ConductorDTO conductorDTO)
         {
 
             var result = new ServiceResponse<ConductorDTO>();

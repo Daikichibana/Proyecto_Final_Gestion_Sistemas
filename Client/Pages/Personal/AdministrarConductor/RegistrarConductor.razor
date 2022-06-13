@@ -1,44 +1,104 @@
 ﻿@page "/RegistrarConductor"
 
+@using Compartido
+@using Compartido.Dto.Personal.General
+@inject IPersonalServices _personalService
+@inject ILocalStorageService LocalStorage
+
 <h3>Registrar Conductor</h3>
 
+<!-- Formulario Registro -->
 <div style="display: flex; justify-content: center;">
     <form style="width: 70%;">
         <!-- Informacion del responsable -->
 
         <fieldset class="form-group">
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Nombre del conductor</label>
-                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Nombre del conductor">
+                <label for="NroSucursal" class="form-label mt-4">Nombre</label>
+                <input @bind=Conductor.Nombre type="text" class="form-control" id="NroSucursal" placeholder="Ingrese nombre.">
             </div>
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Apellidos del conductor</label>
-                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Apellidos del conductor">
+                <label for="Direccion" class="form-label mt-4">Apellido</label>
+                <input @bind=Conductor.Apellido type="text" class="form-control" id="Direccion" placeholder="Ingrese apellido.">
             </div>
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Direccion del conductor</label>
-                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Direccion del conductor">
+                <label for="Telefono" class="form-label mt-4">CI</label>
+                <input @bind=Conductor.Ci type="text" class="form-control" id="Telefono" placeholder="Ingrese CI.">
             </div>
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">CI del conductor</label>
-                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese CI del conductor">
+                <label for="Telefono" class="form-label mt-4">FechaNacimiento</label>
+                <input @bind=Conductor.FechaNacimiento type="text" class="form-control" id="Telefono" placeholder="Ingrese Fecha Nacimiento.">
             </div>
             <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Licencia del conductor</label>
-                <input type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Licencia del conductor">
+                <label for="Telefono" class="form-label mt-4">Email</label>
+                <input @bind=Conductor.Email type="text" class="form-control" id="Telefono" placeholder="Ingrese email.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Telefono</label>
+                <input @bind=Conductor.Telefono type="text" class="form-control" id="Telefono" placeholder="Ingrese telefono.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Clave de Usuario</label>
+                <input @bind=Usuario.Clave  type="text" class="form-control" id="Telefono" placeholder="Ingrese clave.">
             </div>
         </fieldset>
-        <!-- Boton enviar -->
     </form>
 </div>
 
 <!-- Boton enviar -->
 
 <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-    <button type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
-    <button type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
+    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
 </div>
 
-@code {
 
+@code {
+    [Parameter]
+    public EventCallback<bool> MostrarRegistrar { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> MostrarListado { get; set; }
+
+
+    public ServiceResponse<ConductorDTO> ResponseConductor { get; set; }
+
+    public ServiceResponse<UsuarioDTO> ResponseUsuario { get; set; }
+
+    public ConductorDTO Conductor { get; set; }
+
+    public UsuarioDTO Usuario { get; set; }
+
+    public string Distribuidora { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Conductor =  new ConductorDTO();
+        Usuario = new UsuarioDTO();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        StateHasChanged();
+    }
+
+
+    public async void Registrar()
+    {
+        Guid dist = new Guid(Distribuidora);
+        Conductor.EmpresaDistribuidoraId = dist;
+        Usuario.NombreUsuario = Conductor.Email;
+        Conductor.Usuario = Usuario;
+        //ResponseUsuario = await _personalService.CrearUsuario(Usuario);
+
+        //Conductor.UsuarioId = Usuario.Id;
+        ResponseConductor = await _personalService.CrearConductor(Conductor);
+
+
+        if(ResponseConductor.Success)
+            await this.MostrarListado.InvokeAsync();
+    }
 }
+

@@ -27,5 +27,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<RolDTO>> ActualizarRol(RolDTO Rol);
         Task<ServiceResponse<RolDTO>> EliminarRol(RolDTO Rol);
         #endregion
+
+        #region Conductor
+        Task<ServiceResponse<List<ConductorDTO>>> ObtenerTodosLosConductores();
+        Task<ServiceResponse<ConductorDTO>> CrearConductor(ConductorDTO conductorDTO);
+        Task<ServiceResponse<ConductorDTO>> ActualizarConductor(ConductorDTO conductorDTO);
+        Task<ServiceResponse<ConductorDTO>> EliminarConductor(ConductorDTO conductorDTO);
+        #endregion
     }
 }

@@ -13,6 +13,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private readonly HttpClient _http;
         private string EnlaceRoles = "api/AdministrarRoles";
         private string EnlaceUsuario = "api/AdministrarUsuario";
+        private string EnlaceConductor = "api/AdministrarConductor";
 
         public PersonalServices(HttpClient http)
         {
@@ -95,6 +96,39 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<RolDTO>>>(EnlaceRoles);
             return result;
         }
+        #endregion
+
+        #region Coonductor
+        public async Task<ServiceResponse<ConductorDTO>> ActualizarConductor(ConductorDTO conductor)
+        {
+            var result = await _http.PutAsJsonAsync(EnlaceConductor, conductor);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<ConductorDTO>> CrearConductor(ConductorDTO conductor)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceConductor, conductor);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<ConductorDTO>> EliminarConductor(ConductorDTO conductor)
+        {
+            var result = await _http.DeleteAsync($"{EnlaceConductor}?Id={conductor.Id}");
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<ConductorDTO>>> ObtenerTodosLosConductores()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<ConductorDTO>>>(EnlaceConductor);
+            return result;
+        }
+
         #endregion
     }
 }
