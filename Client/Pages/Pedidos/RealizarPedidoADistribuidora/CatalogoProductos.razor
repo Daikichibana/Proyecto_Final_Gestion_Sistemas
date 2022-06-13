@@ -1,7 +1,69 @@
-﻿@page "/Pedido"
+﻿@page "/Catalogo"
+@inject IJSRuntime JsRuntime
 
-<h3>Realizar Pedido A Distribuidora</h3>
+<h3>Catalogo de productos</h3>
+
+@if (ListaDeProductos != null)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre del producto</th>
+                <th scope="col">Descripcion del producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+                @foreach (var producto in ListaDeProductos)
+                {
+                    <tr>
+                    <td>@producto.Nombre</td>
+                    <td>@producto.Descripcion</td>
+                    <td>
+                        <input @bind="Cantidad" type="number" />
+                    </td>
+                    <td>
+                        <button @onclick=AgregarAlCarrito type="button" class="btn btn-success">Agregar Al carrito</button>
+                    </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+}
+
+
 
 @code {
+    [Parameter]
+    public Guid EmpresaDistribuidoraId { get; set; }
+
+    [Parameter]
+    public string NombreEmpresaDistribuidora { get; set; }
+
+
+    public int Cantidad { get; set; }
+
+    public List<ProductoDTO> ListaDeProductos { get; set; } = new List<ProductoDTO>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProductoDTO product1 = new ProductoDTO();
+        product1.Nombre = "Taladro";
+        product1.Descripcion = "Esto es un productaso";
+        ProductoDTO product2 = new ProductoDTO();
+        product2.Nombre = "Escopeta";
+        product2.Descripcion = "Esto es un producto";
+
+        ListaDeProductos.Add(product1);
+        ListaDeProductos.Add(product2);
+    }
+
+    public async void AgregarAlCarrito()
+    {
+        if(Cantidad <= 0)
+            await JsRuntime.InvokeVoidAsync("alert", "Para añadir al carrito debe ingresar una cantidad valida.");
+    }
 
 }

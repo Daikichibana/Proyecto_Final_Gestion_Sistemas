@@ -48,41 +48,56 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
                     b => b.MigrationsAssembly("Proyecto_Final_Gestion_Sistemas.Server"))
                 );
 
-            //Aplicacion
-            services.AddScoped(typeof(IAdministrarRubroService), typeof(AdministrarRubroService));
-            services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));   
-            services.AddScoped(typeof(IAdministrarProductoService), typeof(AdministrarProductoService));   
-            services.AddScoped(typeof(INITService), typeof(AdministrarNITService));   
-            services.AddScoped(typeof(IResponsableEmpresaService), typeof(AdministrarResponsableEmpresaService));   
-            services.AddScoped(typeof(IAdministrarUsuarioService), typeof(AdministrarUsuarioService));   
-            services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));     
-            services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
-            services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService)) ;
-            services.AddScoped(typeof(IAdministrarEmpresaClienteService), typeof(AdministrarEmpresaClienteService)) ;
-            services.AddScoped(typeof(IAdministrarDistribuidoraService), typeof(AdministrarDistribuidoraService)) ;
-            services.AddScoped(typeof(IAdministrarConductorService), typeof(AdministrarConductorService)) ;
-            services.AddScoped(typeof(IAdministrarVehiculoService), typeof(AdministrarVehiculoService)) ;
-            services.AddScoped(typeof(IAdministrarSucursalesService), typeof(AdministrarSucursalesService)) ;
-            services.AddScoped(typeof(IAdministrarResponsableAlmacenService), typeof(AdministrarResponsableAlmacenService));
-
-            //Repositorios
             services.AddScoped(typeof(Modulos.Inventario.Tecnica.IRepository<>), typeof(Modulos.Inventario.Tecnica.Repository<>));
-            services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
+
+            /*** Modulo Distribuidora ***/
+            //Servicios
+            services.AddScoped(typeof(IAdministrarRubroService), typeof(AdministrarRubroService));
+            services.AddScoped(typeof(INITService), typeof(AdministrarNITService));
+            services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService));
+            services.AddScoped(typeof(IAdministrarEmpresaClienteService), typeof(AdministrarEmpresaClienteService));
+            services.AddScoped(typeof(IAdministrarDistribuidoraService), typeof(AdministrarDistribuidoraService));
+            services.AddScoped(typeof(IAdministrarVehiculoService), typeof(AdministrarVehiculoService));
+            services.AddScoped(typeof(IAdministrarSucursalesService), typeof(AdministrarSucursalesService));
+            //Repositorios
             services.AddScoped(typeof(IRubroRepository), typeof(RubroRepository));
-            services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));
             services.AddScoped(typeof(INITRepository), typeof(NITRepository));
-            services.AddScoped(typeof(IResponsableEmpresaRepository), typeof(ResponsableEmpresaRepository));
-            services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
-            services.AddScoped(typeof(IRolRepository), typeof(RolRepository));
             services.AddScoped(typeof(ITarjetaClienteRepository), typeof(TarjetaClienteRepository));
             services.AddScoped(typeof(IEmpresaClienteRepository), typeof(EmpresaClienteRepository));
             services.AddScoped(typeof(IEmpresaDistribuidoraRepository), typeof(EmpresaDistribuidoraRepository));
-            services.AddScoped(typeof(IConductorRepository), typeof(ConductorRepository));
             services.AddScoped(typeof(IVehiculoRepository), typeof(VehiculoRepository));
             services.AddScoped(typeof(ISucursalRepository), typeof(SucursalRepository));
+            services.AddScoped(typeof(IClienteDistribuidoraRepository), typeof(ClienteDistribuidoraRepository));
+
+            /*** Modulo Inventario ***/
+            //Servicios
+            services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
+            services.AddScoped(typeof(IAdministrarProductoService), typeof(AdministrarProductoService));
+            services.AddScoped(typeof(IActualizarStockPorCompraService), typeof(ActualizarStockPorCompraService));
+            //Repositorios
+            services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
+            services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));
+            services.AddScoped(typeof(IStockRepository), typeof(StockRepository));
+
+            /*** Modulo Pedidos ***/
+            //Servicios
+            //Repositorios
+
+            /**** Modulo Personal ****/
+            //Servicios
+            services.AddScoped(typeof(IResponsableEmpresaService), typeof(AdministrarResponsableEmpresaService));
+            services.AddScoped(typeof(IAdministrarUsuarioService), typeof(AdministrarUsuarioService));
+            services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));
+            services.AddScoped(typeof(IAdministrarConductorService), typeof(AdministrarConductorService));
+            services.AddScoped(typeof(IAdministrarResponsableAlmacenService), typeof(AdministrarResponsableAlmacenService));
+            //Repositorios
+            services.AddScoped(typeof(IResponsableEmpresaRepository), typeof(ResponsableEmpresaRepository));
+            services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
+            services.AddScoped(typeof(IRolRepository), typeof(RolRepository));
+            services.AddScoped(typeof(IConductorRepository), typeof(ConductorRepository));
             services.AddScoped(typeof(IResponsableAlmacenRepository), typeof(ResponsableAlmacenRepository));
             services.AddScoped(typeof(IUsuariosRolesRepository), typeof(UsuariosRolesRepository));
-            services.AddScoped(typeof(IClienteDistribuidoraRepository), typeof(ClienteDistribuidoraRepository));
+
 
             //Configuracion del Mapeador
             var config = new MapperConfiguration(configure =>
