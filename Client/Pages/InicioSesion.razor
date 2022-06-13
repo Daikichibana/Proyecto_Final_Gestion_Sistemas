@@ -47,7 +47,7 @@
             await LocalStorage.SetItemAsync<bool>("EsDistribuidora", DatoInicioSesion.Data.EsDistribuidora);
             await LocalStorage.SetItemAsync<string>("NombreEmpresa", DatoInicioSesion.Data.NombreEmpresa);
             await AuthStateProvider.GetAuthenticationStateAsync();
-            NavigationManager.NavigateTo("");
+            NavigationManager.NavigateTo("", forceLoad: true);
         }
         else
         {
