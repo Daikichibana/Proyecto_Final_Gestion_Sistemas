@@ -27,6 +27,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<List<ClientesDistribuidoraDTO>>> ObtenerDistribuidorasDeCliente();
         Task<ServiceResponse<ClientesDistribuidoraDTO>> InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO ClienteDistribuidora);
         Task<ServiceResponse<ClientesDistribuidoraDTO>> EliminarDistribuidorasDeCliente(Guid Id);
+        Task<ServiceResponse<List<EmpresaClienteDTO>>> ObtenerTodoEmpresaCliente();
+        #endregion
+
+        #region TarjetaCliente
+        Task<ServiceResponse<List<TarjetaClienteDTO>>> ObtenerTodoTarjetaCliente();
+        Task<ServiceResponse<TarjetaClienteDTO>> CrearTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
+        Task<ServiceResponse<TarjetaClienteDTO>> ActualizarTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
+        Task<ServiceResponse<TarjetaClienteDTO>> EliminarTarjetaCliente(TarjetaClienteDTO TarjetaCliente);
         #endregion
 
         #region Sucursales

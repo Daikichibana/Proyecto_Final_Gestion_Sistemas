@@ -17,6 +17,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private string EnlaceEmpresaDistribuidora = "api/AdministrarDistribuidora";
         private string EnlaceEmpresaCliente = "api/AdministrarCliente";
         private string EnlaceSucursal = "api/AdministrarSucursales";
+        private string EnlaceTarjetaCliente = "api/AdministrarTarjetaCliente";
 
         public DistribuidorasServices(HttpClient http)
         {
@@ -82,6 +83,46 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
             return content;
         }
+        public async Task<ServiceResponse<List<EmpresaClienteDTO>>> ObtenerTodoEmpresaCliente()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaClienteDTO>>>(EnlaceEmpresaCliente);
+            return result;
+        }
+
+        #endregion
+
+        #region Tarjeta Cliente
+
+        public async Task<ServiceResponse<TarjetaClienteDTO>> ActualizarTarjetaCliente(TarjetaClienteDTO TarjetaCliente)
+        {
+            var result = await _http.PutAsJsonAsync(EnlaceTarjetaCliente, TarjetaCliente);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TarjetaClienteDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<TarjetaClienteDTO>> CrearTarjetaCliente(TarjetaClienteDTO TarjetaCliente)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceTarjetaCliente, TarjetaCliente);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TarjetaClienteDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<TarjetaClienteDTO>> EliminarTarjetaCliente(TarjetaClienteDTO TarjetaCliente)
+        {
+            var result = await _http.DeleteAsync($"{EnlaceTarjetaCliente}/?Id={TarjetaCliente.Id}");
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TarjetaClienteDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<TarjetaClienteDTO>>> ObtenerTodoTarjetaCliente()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<TarjetaClienteDTO>>>(EnlaceTarjetaCliente);
+            return result;
+        }
+
 
         public async Task<ServiceResponse<ClientesDistribuidoraDTO>> InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO ClienteDistribuidora)
         {
