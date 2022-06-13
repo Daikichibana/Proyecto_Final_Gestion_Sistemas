@@ -57,7 +57,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Distribuidora = await LocalStorage.GetItemAsync<string>("IdDistribuidora");
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
         StateHasChanged();
     }
 
