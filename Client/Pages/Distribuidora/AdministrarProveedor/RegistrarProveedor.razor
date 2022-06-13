@@ -33,18 +33,7 @@
                 <label for="Telefono" class="form-label mt-4">Numero NIT</label>
                 <input @bind=Proveedor.NIT.NumeroNIT type="text" class="form-control" id="Telefono" placeholder="Ingrese NIT.">
             </div>
-            <div class="form-group">
-                <label for="Telefono" class="form-label mt-4">Email</label>
-                <input @bind=Conductor.Email type="text" class="form-control" id="Telefono" placeholder="Ingrese email.">
-            </div>
-            <div class="form-group">
-                <label for="Telefono" class="form-label mt-4">Telefono</label>
-                <input @bind=Conductor.Telefono type="text" class="form-control" id="Telefono" placeholder="Ingrese telefono.">
-            </div>
-            <div class="form-group">
-                <label for="Telefono" class="form-label mt-4">Clave de Usuario</label>
-                <input @bind=Usuario.Clave  type="text" class="form-control" id="Telefono" placeholder="Ingrese clave.">
-            </div>
+            
         </fieldset>
     </form>
 </div>
@@ -95,10 +84,10 @@
 
     public async void Registrar()
     {
-        Guid dist = new Guid(Distribuidora);
+        /*Guid dist = new Guid(Distribuidora);
         Proveedor.EmpresaDistribuidoraId = dist;
-        Usuario.NombreUsuario = Conductor.Email;
-        Conductor.Usuario = Usuario;
+        Usuario.NombreUsuario = Proveedor.Responsable.Usuario.NombreUsuario;
+        Proveedor.Responsable.Usuario = Usuario;*/
         
 
         ResponseProveedor = await _DistribuidoraService.CrearProveedor(Proveedor);

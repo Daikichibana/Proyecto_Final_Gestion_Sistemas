@@ -1,17 +1,92 @@
 ﻿@inject IInventarioServices _inventarioServices
 
-<h3>Modificar Stock</h3>
+@using Compartido.Dto.Inventario.General
+@using Microsoft.AspNetCore.Components
+@using Compartido
+@inject IInventarioServices _inventarioService
+
+<h3>Modificar stock</h3>
+<!-- Formulario Registro -->
+<div style="display: flex; justify-content: center;">
+    <form style="width: 70%;">
+        <!-- Informacion del responsable -->
+
+        <fieldset class="form-group">
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">Cantidad</label>
+                    <input @bind=StockSeleccionado.Cantidad type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">CantidadPedida</label>
+                    <input @bind=StockSeleccionado.CantidadPedida type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pedida.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">CantidadOrdenada</label>
+                    <input @bind=StockSeleccionado.Cantidad type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pordenada.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">PrecioCompra</label>
+                    <input @bind=StockSeleccionado.PrecioCompraPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio compra.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">PrecioVenta</label>
+                    <input @bind=StockSeleccionado.PrecioVentaPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio venta.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="NombreRubro" class="form-label mt-4">Producto</label>
+                    <select @bind=StockSeleccionado.ProductoId class="form-select" id="rubroNegocio">
+                        @foreach (ProductoDTO producto in ListaProductos)
+                        {
+                            @if (producto.Id == StockSeleccionado.ProductoId)
+                            {
+                                <option value=@producto.Id selected="selected">@producto.Nombre</option>
+                            }
+                            else
+                            {
+                                <option value=@producto.Id>@producto.Nombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+                
+
+            </fieldset>
+    </form>
+</div>
+
+<!-- Boton enviar -->
+
+<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button @onclick=Modificar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
+</div>
+
 
 @code {
+
     [Parameter]
     public StockDTO StockSeleccionado { get; set; }
-    
-    [Parameter]
+
+     [Parameter]
     public List<ProductoDTO> ListaProductos { get; set; }
 
-    public void Modificar()
+
+    [Parameter]
+    public EventCallback<bool> MostrarModificar { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> MostrarListado { get; set; }
+
+    public ServiceResponse<StockDTO> ResponseStock { get; set; }
+
+
+    public async void Modificar()
     {
-        
+        ResponseStock = await _inventarioService.ActualizarStock(StockSeleccionado);
+
+        if (ResponseStock.Success)
+            await this.MostrarListado.InvokeAsync();
     }
 
 }

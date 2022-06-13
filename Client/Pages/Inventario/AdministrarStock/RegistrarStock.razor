@@ -1,20 +1,111 @@
-﻿@inject IInventarioServices _inventarioServices
-<h3>Registrar Stock</h3>
+﻿@using Compartido
+@using Compartido.Dto.Inventario.General
+@inject IInventarioServices _inventarioService
+@inject ILocalStorageService LocalStorage
+
+<h3>Registrar Producto</h3>
+
+@if (Stock != null)
+{
+    
+    <!-- Formulario Registro -->
+    <div style="display: flex; justify-content: center;">
+        <form style="width: 70%;">
+            <!-- Informacion del responsable -->
+
+            <fieldset class="form-group">
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">Cantidad</label>
+                    <input @bind=Stock.Cantidad type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">CantidadPedida</label>
+                    <input @bind=Stock.CantidadPedida type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pedida.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">CantidadOrdenada</label>
+                    <input @bind=Stock.CantidadOrdenada type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pordenada.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">PrecioCompra</label>
+                    <input @bind=Stock.PrecioCompraPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio compra.">
+                </div>
+                <div class="form-group">
+                    <label for="nombre" class="form-label mt-4">PrecioVenta</label>
+                    <input @bind=Stock.PrecioVentaPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio venta.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="NombreRubro" class="form-label mt-4">Producto</label>
+                    <select @bind=Stock.ProductoId class="form-select" id="rubroNegocio">
+                        @foreach (ProductoDTO producto in ListaProductos)
+                        {
+                            @if (producto.Id == Stock.ProductoId)
+                            {
+                                <option value=@producto.Id selected="selected">@producto.Nombre</option>
+                            }
+                            else
+                            {
+                                <option value=@producto.Id>@producto.Nombre</option>
+                            }
+                        }
+                    </select>
+                </div>
+                
+
+            </fieldset>
+        </form>
+    </div>
+    
+}
+<!-- Boton enviar -->
+
+<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
+</div>
+
 
 @code {
-    public StockDTO Stock { get; set; } = new StockDTO();
+    [Parameter]
+    public EventCallback<bool> MostrarRegistrar { get; set; }
 
+    [Parameter]
+    public EventCallback<bool> MostrarListado { get; set; }
+
+    [Parameter]
+    public List<StockDTO> ListaStock { get; set; }
+    
     [Parameter]
     public List<ProductoDTO> ListaProductos { get; set; }
 
+    public ServiceResponse<StockDTO> ResponseStock { get; set; }
+
+    public ServiceResponse<ProductoDTO> ResponseProducto { get; set; }
+
+    public StockDTO Stock { get; set; } 
+
+    public string Distribuidora { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Stock = new StockDTO();
+        
+    }
 
     protected override async Task OnInitializedAsync()
     {
-
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        StateHasChanged();
     }
 
-    public void Registrar()
-    {
 
+    public async void Registrar()
+    {
+        ResponseStock = await _inventarioService.CrearStock(Stock);
+        
+        if(ResponseStock.Success)
+            await this.MostrarListado.InvokeAsync();
     }
 }
