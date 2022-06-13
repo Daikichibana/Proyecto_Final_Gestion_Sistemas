@@ -1,5 +1,66 @@
-﻿<h3>AdministrarPedido</h3>
+﻿@page "/administrarpedido"
+@inject IPedidosServices _pedidosServices
+@inject IInventarioServices _inventarioServices
+@inject IDistribuidorasServices _distribuidoraServices
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
 
+<h3>Administrar Pedido</h3>
+
+<button @onclick=MostrarListadoOrdenes>HazmeClick</button>
 @code {
+    public ServiceResponse<List<PedidoDTO>> ResponsePedidos { get; set; }
+    public ServiceResponse<List<OrdenPedidoDTO>> ResponseOrdenes { get; set; }
+    public ServiceResponse<List<DetalleOrdenPedidoDTO>> ResponseDetalleOrdenes { get; set; }
+    public ServiceResponse<List<StockDTO>> ResponseStock { get; set; }
+    public ServiceResponse<List<ProductoDTO>> ResponseProducto { get; set; }
 
+    public List<PedidoDTO> ListaPedidos { get; set; } = new List<PedidoDTO>();
+    public List<OrdenPedidoDTO> ListaOrdenes { get; set; } = new List<OrdenPedidoDTO>();
+    public List<DetalleOrdenPedidoDTO> ListaDetalleOrdenes { get; set; } = new List<DetalleOrdenPedidoDTO>();
+    public List<StockDTO> ListaDeStock { get; set; } = new List<StockDTO>();
+    public List<ProductoDTO> ListaDeProducto { get; set; } = new List<ProductoDTO>();
+
+    public Guid IdEmpresaSesion { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ResponsePedidos = await _pedidosServices.ObtenerTodosLosPedidos();
+        ResponseOrdenes = await _pedidosServices.ObtenerTodosLosOrdenPedido();
+        ResponseDetalleOrdenes = await _pedidosServices.ObtenerTodosLosDetalleOrdenPedido();
+        ResponseStock = await _inventarioServices.ObtenerTodoStock();
+        ResponseProducto = await _inventarioServices.ObtenerTodoProducto();
+
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+    }
+
+    public void MostrarListadoOrdenes()
+    {
+        ListaPedidos = ResponsePedidos.Data;
+        //ListaOrdenes = ResponseOrdenes.Data;
+        ListaDetalleOrdenes = ResponseDetalleOrdenes.Data;
+
+        foreach (var detalle in ListaDetalleOrdenes)
+        {
+            Guid idEmpresa = ObtenerIdEmpresaPorStock(detalle.StockId);
+            if (idEmpresa == IdEmpresaSesion)
+            {
+                ListaOrdenes.Add(ResponseOrdenes.Data.Where(p => p.Id.Equals(detalle.OrdenPedidoId)).FirstOrDefault());
+                Console.Write(ResponseOrdenes.Data.Where(p => p.Id.Equals(detalle.OrdenPedidoId)).FirstOrDefault().Id);
+            }
+        }
+    }
+
+    public Guid ObtenerIdEmpresaPorStock(Guid StockId)
+    {
+        ListaDeStock = ResponseStock.Data;
+        ListaDeProducto = ResponseProducto.Data;
+
+        Guid idProducto = ListaDeStock.Where(p => p.Id.Equals(StockId)).FirstOrDefault().ProductoId;
+
+        Guid idEmpresaDistribuidora = ListaDeProducto.Where(p => p.Id.Equals(idProducto)).FirstOrDefault().EmpresaDistribuidoraId;
+
+        return idEmpresaDistribuidora;
+    }
 }
