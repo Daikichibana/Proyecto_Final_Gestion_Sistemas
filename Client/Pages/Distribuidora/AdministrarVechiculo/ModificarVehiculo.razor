@@ -1,39 +1,61 @@
 ﻿@page "/ModificarVechiculo"
 
+@using Compartido.Dto.Distribuidora.General
+@using Microsoft.AspNetCore.Components
+@using Compartido
+@inject IDistribuidorasServices _distribuidorasService
+
 <h3>Modificar Vehiculo</h3>
-
 <!-- Formulario Registro -->
-    <div style="display: flex; justify-content: center;">
-      <form style="width: 70%;">
-          <!-- Informacion del responsable -->
+<div style="display: flex; justify-content: center;">
+    <form style="width: 70%;">
+        <!-- Informacion del responsable -->
 
-          <fieldset class="form-group">
-              <legend>Modificar Sucursal</legend>
-              <legend>Registrar Vehiculo</legend>
-              <div class="form-group">
-                  <label for="NombreRubro" class="form-label mt-4">Placa del vehiculo</label>
-                  <input value="123sas" type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Placa del vehiculo">
-              </div>
-              <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Modelo del vehiculo</label>
-                <input value="vitara" type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Modelo del vehiculo.">
-              </div>
-                <div class="form-group">
-                  <label for="NombreRubro" class="form-label mt-4">Marca del vehiculo</label>
-                  <input value="Suzuki" type="text" class="form-control" id="NombreRubro" placeholder="Ingrese Marca del vehiculo.">
-              </div>
-          </fieldset>
-      </form>
-    </div>
+        <fieldset class="form-group">
+            <div class="form-group">
+                <label for="NroSucursal" class="form-label mt-4">Marca</label>
+                <input @bind=Vehiculo.Marca type="text" class="form-control" id="NroSucursal" placeholder="Ingrese Marca.">
+            </div>
+            <div class="form-group">
+                <label for="Direccion" class="form-label mt-4">Modelo</label>
+                <input @bind=Vehiculo.Modelo type="text" class="form-control" id="Direccion" placeholder="Ingrese Modelo.">
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="form-label mt-4">Placa</label>
+                <input @bind=Vehiculo.Placa type="text" class="form-control" id="Telefono" placeholder="Ingrese Placa.">
+            </div>
+        </fieldset>
+    </form>
+</div>
 
-    <!-- Boton enviar -->
+<!-- Boton enviar -->
 
-    <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-        <button type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
-        <button type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
-    </div>
+<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
+    <button @onclick=Modificar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
+</div>
 
 
 @code {
+
+    [Parameter]
+    public VehiculoDTO Vehiculo { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> MostrarModificar { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> MostrarListado { get; set; }
+
+    public ServiceResponse<VehiculoDTO> ResponseVehiculo { get; set; }
+
+
+    public async void Modificar()
+    {
+        ResponseVehiculo = await _distribuidorasService.ActualizarVehiculo(Vehiculo);
+
+        if (ResponseVehiculo.Success)
+            await this.MostrarListado.InvokeAsync();
+    }
 
 }

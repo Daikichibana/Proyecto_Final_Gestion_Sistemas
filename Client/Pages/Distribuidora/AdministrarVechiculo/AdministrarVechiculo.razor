@@ -1,36 +1,144 @@
 ﻿@page "/AdministrarVechiculo"
 
-<h3>Administrar Vechiculo</h3>
+@using System.Reflection
+@using Compartido
+@using Compartido.Dto.Distribuidora.General
+@inject IDistribuidorasServices _distribuidoraService
+@inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage
 
-<div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
-    <div style="width: 70%;">
-        <table class="table table-bordered" style="width: 100%">
-            <thead>
-                <tr>
-                    <th scope="col">Placa</th>
-                    <th scope="col">Modelo</th>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Opcion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr id="fila1" class="filaTabla">
-                    <td>321tds</td>
-                    <td>Vitara</td>
-                    <td>Suzuki</td>
-                    <td><a href="./ModificarVehiculo.html">Editar</a> / <a href="#" class="txtElim" id="txtEliminar1">Eliminar</a></td>
-                </tr>
-                <tr id="fila2" class="filaTabla">
-                    <td>312sda</td>
-                    <td>Hilux</td>
-                    <td>Toyota</td>
-                    <td><a href="./ModificarVehiculo.html">Editar</a> / <a href="#" class="txtElim" id="txtEliminar2">Eliminar</a></td>
-                </tr>
-            </tbody>
-        </table>
+<h3>Administrar Vehiculos</h3>
+
+
+<!-- Implementacion -->
+@if (ListaVehiculo != null && ListaVehiculo.Success == true && VisibleListado == true)
+{
+    <div style="width: 100%; height: 30rem; display: flex; justify-content: center; align-items: center;">
+        <div style="width: 70%;">
+            @if (ListaVehiculo.Data.Count > 0)
+            {
+                <table class="table table-bordered" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Placa</th>
+                            <th scope="col">Opcion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ListaVehiculo.Data)
+                        {
+                            <tr id="fila1" class="filaTabla">
+                                <td>@item.Marca</td>
+                                <td>@item.Modelo</td>
+                                <td>@item.Placa</td>
+                                <td>
+                                    <button @onclick="() => MostrarModificar(item)">Modificar</button>
+                                    <button @onclick="() => EliminarVehiculo(item)">Eliminar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No existen Vehiculos registradas.</p>
+            }
+        </div>
+
+        <!-- Boton  -->
     </div>
-</div>
+    <div style="display: flex; justify-content: center;">
+        <button @onclick="MostrarRegistrar" type="submit" class="btn btn-primary" id="btnRegistrar" style="font-size: 20px;">
+            Registrar nuevo
+        </button>
+    </div>
+}
+else if (VisibleEditar == true && VehiculoSeleccionado != null)
+{
+    <ModificarVehiculo 
+        Vehiculo="@VehiculoSeleccionado"
+        MostrarListado="() => MostrarListado()"
+        MostrarModificar="() => MostrarModificar(VehiculoSeleccionado)" />
+}
+else if (VisibleRegistrar == true)
+{
+    <RegistrarVehiculo 
+        MostrarListado="() => MostrarListado()"
+        MostrarRegistrar="() => MostrarRegistrar()" />
+}
+else
+{
+    <p>@Loading</p>
+}
 
 @code {
+    public readonly string EnlaceRegistro = "RegistrarTipoProducto";
+    public readonly string EnlaceModificar = "ModificarTipoProducto";
+    public string Loading = "Cargando...";
+
+    public ServiceResponse<List<VehiculoDTO>> ListaVehiculo { get; set; }
+    public VehiculoDTO VehiculoSeleccionado { get; set; }
+
+    public bool VisibleRegistrar { get; set; }
+    public bool VisibleEditar { get; set; }
+    public bool VisibleListado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
+        ListaVehiculo = await _distribuidoraService.ObtenerTodosLosVehiculos();
+        this.MostrarListado();
+        StateHasChanged();
+    }
+
+
+
+    public void RedireccionarPagina(string enlace)
+    {
+        NavManager.NavigateTo(enlace);
+        StateHasChanged();
+    }
+
+    public async void MostrarListado()
+    {
+        VisibleListado = true;
+        VisibleEditar = false;
+        VisibleRegistrar = false;
+        ListaVehiculo = await _distribuidoraService.ObtenerTodosLosVehiculos();
+
+
+        StateHasChanged();
+    }
+
+    public void MostrarRegistrar()
+    {
+        VisibleListado = false;
+        VisibleEditar = false;
+        VisibleRegistrar = true;
+
+        StateHasChanged();
+    }
+
+    public void MostrarModificar(VehiculoDTO vehiculoDTO)
+    {
+        VisibleListado = false;
+        VisibleEditar = true;
+        VisibleRegistrar = false;
+        VehiculoSeleccionado = vehiculoDTO;
+
+        StateHasChanged();
+    }
+
+    public async void EliminarVehiculo(VehiculoDTO vehiculoDTO)
+    {
+        var response = await _distribuidoraService.EliminarVehiculo(vehiculoDTO);
+        
+        this.MostrarListado();
+    }
 
 }

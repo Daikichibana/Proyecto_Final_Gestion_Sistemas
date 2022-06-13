@@ -17,6 +17,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private string EnlaceEmpresaDistribuidora = "api/AdministrarDistribuidora";
         private string EnlaceEmpresaCliente = "api/AdministrarCliente";
         private string EnlaceSucursal = "api/AdministrarSucursales";
+        private string EnlaceVehiculo = "api/AdministrarVechiculo";
         private string EnlaceTarjetaCliente = "api/AdministrarTarjetaCliente";
 
         public DistribuidorasServices(HttpClient http)
@@ -178,6 +179,38 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         public async Task<ServiceResponse<List<SucursalesDTO>>> ObtenerTodasLasSucursales()
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>(EnlaceSucursal);
+            return result;
+        }
+        #endregion
+
+        #region Vehiculo
+        public async Task<ServiceResponse<VehiculoDTO>> ActualizarVehiculo(VehiculoDTO vehiculoDTO)
+        {
+            var result = await _http.PutAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<VehiculoDTO>> CrearVehiculo(VehiculoDTO vehiculoDTO)
+        {
+            var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<VehiculoDTO>> EliminarVehiculo(VehiculoDTO vehiculoDTO)
+        {
+            var result = await _http.DeleteAsync($"{EnlaceVehiculo}?Id={vehiculoDTO.Id}");
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<VehiculoDTO>>> ObtenerTodosLosVehiculos()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>(EnlaceVehiculo);
             return result;
         }
         #endregion

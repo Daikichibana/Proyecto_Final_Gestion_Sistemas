@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
@@ -9,9 +10,10 @@ using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
 {
     [DbContext(typeof(BaseDatosContext))]
-    partial class BaseDatosContextModelSnapshot : ModelSnapshot
+    [Migration("20220612192937_Migration11")]
+    partial class Migration11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,33 +243,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                     b.HasIndex("VechiculoId");
 
                     b.ToTable("AsignacionVechiculoConductor");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.ClientesDistribuidora", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ClientesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("DistribuidorasId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientesId");
-
-                    b.HasIndex("DistribuidorasId");
-
-                    b.ToTable("ClienteDistribuidora");
                 });
 
             modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaCliente", b =>
@@ -1090,25 +1065,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia.Migraciones
                     b.Navigation("Conductor");
 
                     b.Navigation("Vechiculo");
-                });
-
-            modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.ClientesDistribuidora", b =>
-                {
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaCliente", "Clientes")
-                        .WithMany()
-                        .HasForeignKey("ClientesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaDistribuidora", "Distribuidoras")
-                        .WithMany()
-                        .HasForeignKey("DistribuidorasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Clientes");
-
-                    b.Navigation("Distribuidoras");
                 });
 
             modelBuilder.Entity("Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades.EmpresaCliente", b =>
