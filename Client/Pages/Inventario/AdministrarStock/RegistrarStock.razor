@@ -1,0 +1,20 @@
+﻿@inject IInventarioServices _inventarioServices
+<h3>Registrar Stock</h3>
+
+@code {
+    public StockDTO Stock { get; set; } = new StockDTO();
+
+    [Parameter]
+    public List<ProductoDTO> ListaProductos { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    public void Registrar()
+    {
+
+    }
+}
