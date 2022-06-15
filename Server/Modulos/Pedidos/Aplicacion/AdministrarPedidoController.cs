@@ -29,7 +29,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
 
             try
             {
-                IList<Pedido> entidad = _administracionPedidoService.ObtenerTodo();
+                IList<Pedido> entidad = _administracionPedidoService.ObtenerTodoPedido();
                 List<PedidoDTO> response = new List<PedidoDTO>();
 
                 foreach (var item in entidad)
@@ -63,7 +63,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
             {
                 Pedido item = _mapper.Map<Pedido>(entidad);
 
-                var response = _administracionPedidoService.Guardar(item);
+                var response = _administracionPedidoService.GuardarPedido(item);
 
                 result.Data = _mapper.Map<PedidoDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -89,7 +89,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
             try
             {
                 Pedido item = _mapper.Map<Pedido>(entidad);
-                var response = _administracionPedidoService.Actualizar(item);
+                var response = _administracionPedidoService.ActualizarPedido(item);
 
                 result.Data = _mapper.Map<PedidoDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -114,7 +114,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
 
             try
             {
-                _administracionPedidoService.Eliminar(id);
+                _administracionPedidoService.EliminarPedido(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -360,6 +360,139 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
                 return BadRequest(result);
             }
         }
+
+        [HttpGet]
+        public IActionResult ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id)
+        {
+
+            var result = new ServiceResponse<List<OrdenPedidoDTO>>();
+
+            try
+            {
+                var response = _administracionPedidoService.ObtenerOrdenesPedidosDistribuidoraPorId(Id);
+
+                result.Data = _mapper.Map<List<OrdenPedidoDTO>>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerOrdenesPedidosClientePorId(Guid Id)
+        {
+
+            var result = new ServiceResponse<OrdenPedidoDTO>();
+
+            try
+            {
+                var response = _administracionPedidoService.ObtenerOrdenesPedidosClientePorId(Id);
+
+                result.Data = _mapper.Map<OrdenPedidoDTO>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult ObtenerPedidosDistribuidoraPorId(Guid Id)
+        {
+
+            var result = new ServiceResponse<PedidoDTO>();
+
+            try
+            {
+                var response = _administracionPedidoService.ObtenerPedidosDistribuidoraPorId(Id);
+
+                result.Data = _mapper.Map<PedidoDTO>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult ObtenerPedidosClientePorId(Guid Id)
+        {
+
+            var result = new ServiceResponse<PedidoDTO>();
+
+            try
+            {
+                var response = _administracionPedidoService.ObtenerPedidosClientePorId(Id);
+
+                result.Data = _mapper.Map<PedidoDTO>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmarOrdenPedido(Guid Id, bool aceptado)
+        {
+
+            var result = new ServiceResponse<PedidoDTO>();
+
+            try
+            {
+                _administracionPedidoService.ConfirmarOrdenPedido(Id, aceptado);
+
+                result.Data = null;
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
 
     }
 }

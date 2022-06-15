@@ -7,11 +7,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstrac
     public interface IAdministrarPedidoService
     {
         //Pedido
-        void Eliminar(Guid id);
-        IList<Pedido> ObtenerTodo();
-        Pedido ObtenerPorId(Guid id);
-        Pedido Guardar(Pedido entity);
-        Pedido Actualizar(Pedido entity);
+        void EliminarPedido(Guid id);
+        IList<Pedido> ObtenerTodoPedido();
+        Pedido ObtenerPorIdPedido(Guid id);
+        Pedido GuardarPedido(Pedido entity);
+        Pedido ActualizarPedido(Pedido entity);
+        
+        List<Pedido> ObtenerPedidosDistribuidoraPorId(Guid Id);
+        List<Pedido> ObtenerPedidosClientePorId(Guid Id);
+
+
 
         //Orden Pedido
         void EliminarOrdenPedido(Guid id);
@@ -19,6 +24,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstrac
         OrdenPedido ObtenerPorIdOrdenPedido(Guid id);
         OrdenPedido GuardarOrdenPedido(OrdenPedido entity);
         OrdenPedido ActualizarOrdenPedido(OrdenPedido entity);
+
+        List<OrdenPedido> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id);
+        List<OrdenPedido> ObtenerOrdenesPedidosClientePorId(Guid Id);
+        void ConfirmarOrdenPedido(Guid Id, bool aceptado);
 
 
         //Detalle Orden Pedido

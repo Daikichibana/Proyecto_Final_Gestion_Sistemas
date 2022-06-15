@@ -3,6 +3,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidade
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Tecnica;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Servicios
 {
@@ -31,9 +32,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
             return _stockRepository.Guardar(entity);
         }
 
+        public Stock ObtenerPorId(Guid Id)
+        {
+            return _stockRepository.ObtenerPorId(Id);
+        }
+
         public IList<Stock> ObtenerTodo()
         {
             return _stockRepository.ObtenerTodo();
         }
+
     }
 }

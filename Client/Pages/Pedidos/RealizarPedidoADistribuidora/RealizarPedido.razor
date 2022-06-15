@@ -72,6 +72,9 @@
     public List<DetalleOrdenPedidoDTO> ProductosEnCarrito { get; set; }
 
     [Parameter]
+    public EmpresaDistribuidoraDTO EmpresaDistribuidora { get; set; }
+
+    [Parameter]
     public string ClienteId { get; set; }
 
     public List<string> ListaMetodosPago { get; set; } = new List<string>();
@@ -99,6 +102,7 @@
     {
 
         OrdenPedidoDTO orden = new OrdenPedidoDTO();
+        orden.EmpresaDistribuidoraId = EmpresaDistribuidora.Id;
         orden.EmpresaClienteId = new Guid(ClienteId);
         orden.DeseaFactura = DeseaFactura;
         orden.PedidoConfirmado = false;

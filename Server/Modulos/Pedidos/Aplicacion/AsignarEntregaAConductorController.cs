@@ -1,19 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Compartido;
+using Microsoft.AspNetCore.Mvc;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
+using System;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
+
     public class AsignarEntregaAConductorController : ControllerBase
     {
-        /// <summary>
-        ///  
-        /// </summary>
-        public AsignarEntregaAConductorController()
+        IAsignarEntregaAConductorService _asignarEntregaAConductorService;
+        IMapper _mapper;
+        public AsignarEntregaAConductorController(IAsignarEntregaAConductorService asignarEntregaAConductorService)
         {
+            _asignarEntregaAConductorService = asignarEntregaAConductorService;
         }
+
+        [HttpGet]
+        public IActionResult AsignarEntregaAconductor(Guid IdConductorVehiculo, Guid IdPedido)
+        {
+            var result = new ServiceResponse<Object>();
+
+            try
+            {
+                _asignarEntregaAConductorService.AsignarEntregaAconductor(IdConductorVehiculo, IdPedido);
+
+                result.Data = null;
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
     }
 }

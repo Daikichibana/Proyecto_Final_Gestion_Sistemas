@@ -1,8 +1,10 @@
-﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
+﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Tecnica;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servicios
 {
@@ -19,7 +21,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             _DetalleOrdenPedidoRepository = DetalleOrdenPedidoRepository;
         }
 
-        public Pedido Actualizar(Pedido entity)
+        public Pedido ActualizarPedido(Pedido entity)
         {
             return _pedidoRepository.Actualizar(entity);
         }
@@ -34,7 +36,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             return _ordenPedidoRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarPedido(Guid id)
         {
             _pedidoRepository.Eliminar(id);
         }
@@ -49,7 +51,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             _ordenPedidoRepository.Eliminar(id);
         }
 
-        public Pedido Guardar(Pedido entity)
+        public Pedido GuardarPedido(Pedido entity)
         {
             return _pedidoRepository.Guardar(entity);
         }
@@ -64,7 +66,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             return _ordenPedidoRepository.Guardar(entity);
         }
 
-        public Pedido ObtenerPorId(Guid id)
+        public Pedido ObtenerPorIdPedido(Guid id)
         {
             return _pedidoRepository.ObtenerPorId(id);
         }
@@ -79,9 +81,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             return _ordenPedidoRepository.ObtenerPorId(id);
         }
 
-        public IList<Pedido> ObtenerTodo()
+        public IList<Pedido> ObtenerTodoPedido()
         {
-            return _pedidoRepository.ObtenerTodo(); 
+            return _pedidoRepository.ObtenerTodo();
         }
 
         public IList<DetalleOrdenPedido> ObtenerTodoDetalleOrdenPedido()
@@ -93,5 +95,92 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
         {
             return _ordenPedidoRepository.ObtenerTodo();
         }
+        
+        public List<OrdenPedido> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id)
+        {
+            List<OrdenPedido> listaOrdenPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaDistribuidoraId.Equals(Id)).ToList();
+            List<OrdenPedido> result = new List<OrdenPedido>();
+
+            foreach (var orden in listaOrdenPedido)
+            {
+                var pedidoConfirmado = _pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
+
+                if (pedidoConfirmado.Count == 0)
+                {
+                    result.Add(orden);
+                }
+            }
+            
+            return result;
+        }
+
+        public List<OrdenPedido> ObtenerOrdenesPedidosClientePorId(Guid Id)
+        {
+            List<OrdenPedido> listaOrdenPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaClienteId.Equals(Id)).ToList();
+            List<OrdenPedido> result = new List<OrdenPedido>();
+
+            foreach (var orden in listaOrdenPedido)
+            {
+                var pedidoConfirmado = _pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
+
+                if (pedidoConfirmado.Count == 0)
+                {
+                    result.Add(orden);
+                }
+            }
+
+            return result;
+        }
+
+        public List<Pedido> ObtenerPedidosDistribuidoraPorId(Guid Id)
+        {
+            List<OrdenPedido> ordenesPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaDistribuidoraId.Equals(Id)).ToList();
+            List<Pedido> pedidosEmpresa = _pedidoRepository.ObtenerTodo().ToList();
+            List<Pedido> resultado = new List<Pedido>();
+
+            foreach (var pedido in pedidosEmpresa)
+            {
+                if (ordenesPedido.Contains(pedido.OrdenPedido))
+                { 
+                    resultado.Add(pedido);
+                }
+            }
+
+            return resultado;
+        }
+
+        public List<Pedido> ObtenerPedidosClientePorId(Guid Id)
+        {
+            List<OrdenPedido> ordenesPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaClienteId.Equals(Id)).ToList();
+            List<Pedido> pedidosEmpresa = _pedidoRepository.ObtenerTodo().ToList();
+            List<Pedido> resultado = new List<Pedido>();
+
+            foreach (var pedido in pedidosEmpresa)
+            {
+                if (ordenesPedido.Contains(pedido.OrdenPedido))
+                {
+                    resultado.Add(pedido);
+                }
+            }
+
+            return resultado;
+        }
+
+        public void ConfirmarOrdenPedido(Guid Id, bool aceptado)
+        {
+            OrdenPedido orden = _ordenPedidoRepository.ObtenerPorId(Id);
+
+            if (orden != null && aceptado)
+            {
+                Pedido pedido = new Pedido(orden, null, "Entrega No Asignada", "No pagado", orden.Id, null);
+
+                _pedidoRepository.Guardar(pedido);
+            }
+            else if(orden != null && !aceptado)
+            {
+                _ordenPedidoRepository.Eliminar(orden.Id);
+            }
+        }
+
     }
 }

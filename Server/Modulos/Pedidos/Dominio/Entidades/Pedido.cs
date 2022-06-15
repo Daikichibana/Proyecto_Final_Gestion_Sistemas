@@ -15,14 +15,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidad
         public Guid OrdenPedidoId { get; set; }
         
         [ForeignKey("ConductorAsignado")]
-        public Guid ConductorAsignadoId { get; set; }
+        public Guid? ConductorAsignadoId { get; set; }
 
         public Pedido()
         {
 
         }
 
-        public Pedido(OrdenPedido ordenPedido, AsignacionVechiculoConductor conductorAsignado, string estadoEnvio, string estadoPago, Guid ordenPedidoId, Guid conductorAsignadoId)
+        public Pedido(OrdenPedido ordenPedido, AsignacionVechiculoConductor conductorAsignado, string estadoEnvio, string estadoPago, Guid ordenPedidoId, Guid? conductorAsignadoId)
         {
             OrdenPedido = ordenPedido;
             ConductorAsignado = conductorAsignado;

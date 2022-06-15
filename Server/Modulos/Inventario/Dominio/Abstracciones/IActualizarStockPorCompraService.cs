@@ -8,6 +8,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
     {
         void Eliminar(Guid id);
         IList<Stock> ObtenerTodo();
+        Stock ObtenerPorId(Guid Id);
         Stock Guardar(Stock entity);
         Stock Actualizar(Stock entity);
     }

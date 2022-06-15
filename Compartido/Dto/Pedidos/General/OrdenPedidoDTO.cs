@@ -7,6 +7,7 @@ namespace Compartido.Dto.Pedidos.General
     {
         public Guid Id { get; set; }
         public EmpresaClienteDTO EmpresaCliente { get; set; }
+        public EmpresaDistribuidoraDTO EmpresaDistribuidora { get; set; }
         public bool DeseaFactura { get; set; }
         public bool PedidoConfirmado { get; set; }
         public string AclaracionCliente { get; set; }
@@ -15,5 +16,6 @@ namespace Compartido.Dto.Pedidos.General
         public byte[] CodigoQR { get; set; }
 
         public Guid EmpresaClienteId { get; set; }
+        public Guid EmpresaDistribuidoraId { get; set; }
     }
 }

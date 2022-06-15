@@ -9,6 +9,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidad
     public class OrdenPedido : Entity
     {
         public EmpresaCliente EmpresaCliente { get; set; }
+        public EmpresaDistribuidora EmpresaDistribuidora { get; set; }
         public bool DeseaFactura { get; set; }
         public bool PedidoConfirmado { get; set; }
         public string AclaracionCliente { get; set; }
@@ -18,7 +19,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidad
         
         [ForeignKey("EmpresaCliente")]
         public Guid EmpresaClienteId { get; set; }
-        
+
+        [ForeignKey("EmpresaDistribuidora")]
+        public Guid EmpresaDistribuidoraId { get; set; }
 
         public OrdenPedido()
         {
