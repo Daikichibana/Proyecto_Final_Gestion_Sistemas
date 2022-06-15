@@ -23,7 +23,97 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             _mapper = mapper;
             _administrarClienteService = administrarClienteService;
         }
+        
+        [HttpGet]
+        public IActionResult ObtenerTodasLasEmpresaClientes()
+        {
+            ServiceResponse<List<EmpresaClienteDTO>> result = new ServiceResponse<List<EmpresaClienteDTO>>();
+            try
+            {
+                var response = _administrarClienteService.ObtenerTodo();
 
+                result.Data = _mapper.Map<List<EmpresaClienteDTO>>(response);
+                result.Message = "Ok";
+                result.Success = true;
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+                return BadRequest(result);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult InsertarEmpresaCliente(EmpresaClienteDTO _EmpresaClienteDTO)
+        {
+            ServiceResponse<EmpresaClienteDTO> result = new ServiceResponse<EmpresaClienteDTO>();
+            try
+            {
+                EmpresaCliente nuevoEmpresaCliente = _mapper.Map<EmpresaCliente>(_EmpresaClienteDTO);
+                var response = _administrarClienteService.Guardar(nuevoEmpresaCliente);
+
+                result.Data = _mapper.Map<EmpresaClienteDTO>(response);
+                result.Message = "Ok";
+                result.Success = true;
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+                return BadRequest(result);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult ActualizarEmpresaCliente(EmpresaClienteDTO EmpresaClienteDTO)
+        {
+            ServiceResponse<EmpresaClienteDTO> result = new ServiceResponse<EmpresaClienteDTO>();
+            try
+            {
+                EmpresaCliente nuevoEmpresaCliente = _mapper.Map<EmpresaCliente>(EmpresaClienteDTO);
+                var response = _administrarClienteService.Actualizar(nuevoEmpresaCliente);
+
+                result.Data = _mapper.Map<EmpresaClienteDTO>(response);
+                result.Message = "Ok";
+                result.Success = true;
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+                return BadRequest(result);
+            }
+        }
+
+        [HttpDelete]
+        public IActionResult EliminarEmpresaCliente(Guid id)
+        {
+            ServiceResponse<EmpresaClienteDTO> result = new ServiceResponse<EmpresaClienteDTO>();
+            try
+            {
+                _administrarClienteService.Eliminar(id);
+
+                result.Data = null;
+                result.Message = "Ok";
+                result.Success = true;
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+                return BadRequest(result);
+            }
+        }
+        
         [HttpPost]
         public IActionResult InsertarEmpresa(RegistroEmpresaDTO Empresa)
         {
