@@ -88,7 +88,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<EmpresaClienteDTO>>> ObtenerTodoEmpresaCliente()
         {
-            var EnlaceArmado = "api/AdministrarEmpresaCliente";
+            var EnlaceArmado = EnlaceEmpresaCliente + "/ObtenerTodasLasEmpresaClientes";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaClienteDTO>>>(EnlaceArmado);
             return result;
         }
@@ -189,7 +189,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Vehiculo
         public async Task<ServiceResponse<VehiculoDTO>> ActualizarVehiculo(VehiculoDTO vehiculoDTO)
         {
-            var result = await _http.PutAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
+            var EnlaceVechiculoT = EnlaceVehiculo + "/ActualizarVehiculo";
+            var result = await _http.PutAsJsonAsync(EnlaceVechiculoT, vehiculoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
 
             return content;
@@ -197,7 +198,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<VehiculoDTO>> CrearVehiculo(VehiculoDTO vehiculoDTO)
         {
-            var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
+            var EnlaceVechiculoT = EnlaceVehiculo + "/CrearVehiculo";
+            var result = await _http.PostAsJsonAsync(EnlaceVechiculoT, vehiculoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
 
             return content;
@@ -205,15 +207,32 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<VehiculoDTO>> EliminarVehiculo(VehiculoDTO vehiculoDTO)
         {
-            var result = await _http.DeleteAsync($"{EnlaceVehiculo}?Id={vehiculoDTO.Id}");
+            var EnlaceVechiculoT = EnlaceVehiculo + "/EliminarVehiculo";
+            var result = await _http.DeleteAsync($"{EnlaceVechiculoT}?Id={vehiculoDTO.Id}");
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
 
             return content;
         }
 
+        public async Task<ServiceResponse<AsignacionVechiculoConductorDTO>> AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vhconductor)
+        {
+            var EnlaceVechiculoT = EnlaceVehiculo + "/AsignarVehiculoAConductor";
+            var result = await _http.PostAsJsonAsync(EnlaceVechiculoT, vhconductor);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<AsignacionVechiculoConductorDTO>>();
+
+            return content;
+        }
+
+        public async Task<ServiceResponse<List<AsignacionVechiculoConductorDTO>>> ObtenerTodoVehiculoConductor()
+        {
+            var EnlaceVechiculoT = EnlaceVehiculo + "/ObtenerTodoVehiculoConductor";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<AsignacionVechiculoConductorDTO>>>(EnlaceVechiculoT);
+            return result;
+        }
         public async Task<ServiceResponse<List<VehiculoDTO>>> ObtenerTodosLosVehiculos()
         {
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>(EnlaceVehiculo);
+            var EnlaceVechiculoT = EnlaceVehiculo + "/ObtenerTodosLosVehiculos";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>(EnlaceVechiculoT);
             return result;
         }
         #endregion

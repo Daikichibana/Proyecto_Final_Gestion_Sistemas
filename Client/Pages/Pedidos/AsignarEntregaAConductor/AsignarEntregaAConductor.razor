@@ -1,7 +1,161 @@
 ﻿@page "/AsignarEntregaAConductor"
+@inject IDistribuidorasServices _distribuidoraService
+@inject IPedidosServices _pedidoService
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject IPedidosServices _pedidosServices
+@inject IPersonalServices _personalServices
+@inject IInventarioServices _inventarioServices
+@inject IDistribuidorasServices _distribuidoraServices
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
 
-<h3>AsignarEntregaAConductor</h3>
+<h3>Administrar Pedido</h3>
+
+@if (EsDistribuidora)
+{
+    @if (OrdenResponse != null && ClienteResponse != null)
+    {
+        <h4>Pedidos Confirmados</h4>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Necesita Factura</th>
+                    <th scope="col">Aclaracion cliente</th>
+                    <th scope="col">Metodo de Pago</th>
+                    <th scope="col">Estado del pago</th>
+                    <th scope="col">Estado del envio</th>
+                    <th scope="col">Opcion</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var pedido in PedidoResponse.Data)
+                {
+                    @if (pedido.ConductorAsignadoId == Guid.Empty)
+                    {
+                        var orden = @ObtenerOrdenPedido(pedido);
+                        var detalleOrden = @ObtenerDetalleOrdenPedido(orden);
+                        <tr>
+                            <td>@BuscarNombreEmpresaCliente(orden.EmpresaClienteId)</td>
+                            <td>@(orden.DeseaFactura == true ? "Si" : "No")</td>
+                            <td>@orden.AclaracionCliente</td>
+                            <td>@orden.MetodoPago</td>
+                            <td>@pedido.EstadoPago</td>
+                            <td>@pedido.EstadoEnvio</td>
+                            <td>
+                                <button @onclick="() => Seleccionar(pedido)" class="btn btn-primary">Asignar conductor</button>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    }
+    if (MostrarVentana == true)
+    {
+        @if (AsignacionSeleccionada != null)
+        {
+            <select id="department" @bind="AsignacionSeleccionada.Id">
+                @foreach (var vehiculoConductor in TodoAsignacionVechiculo.Data)
+                {
+                    <option value="@vehiculoConductor.Id">@obtenerNombreConductor(vehiculoConductor.ConductorId)</option>
+                }
+            </select>
+             <button @onclick="() => AsignarConductorVechiculo(AsignacionSeleccionada)" class="btn btn-primary">Asignar Conductor</button>
+        }
+    }
+}
+else
+{
+    <p>Este apartado solo tiene acceso las empresas distirbuidoras.</p>
+}
+
 
 @code {
+    public ServiceResponse<List<OrdenPedidoDTO>> OrdenResponse { get; set; }
+    public ServiceResponse<List<OrdenPedidoDTO>> TodosOrdenResponse { get; set; }
+    public ServiceResponse<List<DetalleOrdenPedidoDTO>> TodosDetalleResponse { get; set; }
+    public ServiceResponse<List<PedidoDTO>> PedidoResponse { get; set; }
+    public ServiceResponse<List<EmpresaClienteDTO>> ClienteResponse { get; set; }
+    public ServiceResponse<List<StockDTO>> TodosStockResponse { get; set; }
+    public ServiceResponse<List<ProductoDTO>> TodosProductoResponse { get; set; }
+    public ServiceResponse<List<AsignacionVechiculoConductorDTO>> TodoAsignacionVechiculo { get; set; }
+    public ServiceResponse<List<ConductorDTO>> TodoConductor { get; set; }
+    public bool EsDistribuidora { get; set; } = false;
+    public Guid IdEmpresaSesion { get; set; }
+    public bool MostrarVentana { get; set; } = false;
+    public AsignacionVechiculoConductorDTO AsignacionSeleccionada { get; set; } = new AsignacionVechiculoConductorDTO();
+    public PedidoDTO PedidoSeleccionado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
+        OrdenResponse = await _pedidosServices.ObtenerOrdenesPedidosDistribuidoraPorId(IdEmpresaSesion);
+        TodosOrdenResponse = await _pedidosServices.ObtenerTodosLosOrdenPedido();
+        PedidoResponse = await _pedidosServices.ObtenerPedidosDistribuidoraPorId(IdEmpresaSesion);
+        ClienteResponse = await _distribuidoraServices.ObtenerTodoEmpresaCliente();
+        TodosDetalleResponse = await _pedidosServices.ObtenerTodosLosDetalleOrdenPedido();
+        TodosStockResponse = await _inventarioServices.ObtenerTodoStock();
+        TodosProductoResponse = await _inventarioServices.ObtenerTodoProducto();
+        TodoAsignacionVechiculo = await _distribuidoraService.ObtenerTodoVehiculoConductor();
+        TodoConductor = await _personalServices.ObtenerTodosLosConductores();
+    }
+
+    public async void MostrarDetalle(List<DetalleOrdenPedidoDTO> listaDetalle)
+    {
+        string holamundo = "";
+        decimal totalAPagar = 0;
+
+        foreach (var detalle in listaDetalle)
+        {
+            var stock = TodosStockResponse.Data.Where(p => p.Id.Equals(detalle.StockId)).FirstOrDefault();
+            var producto = TodosProductoResponse.Data.Where(p => p.Id.Equals(stock.ProductoId)).FirstOrDefault();
+            holamundo += "[" + producto.Nombre + ", Cantidad Ordenada: " + detalle.CantidadOrdenada + ", Monto: " + stock.PrecioVentaPromedio * detalle.CantidadOrdenada + "],";
+            totalAPagar += stock.PrecioVentaPromedio * detalle.CantidadOrdenada;
+        }
+
+        holamundo += "[Total a pagar: " + totalAPagar.ToString() + "]";
+        await JsRuntime.InvokeVoidAsync("alert", holamundo);
+    }
+
+    public string obtenerNombreConductor(Guid ConductorId)
+    {
+        return TodoConductor.Data.Where(p => p.Id.Equals(ConductorId)).FirstOrDefault().Nombre;
+    }
+
+    public string BuscarNombreEmpresaCliente(Guid Id)
+    {
+        return ClienteResponse.Data.Where(p => p.Id.Equals(Id)).FirstOrDefault().NombreEmpresa;
+    }
+
+    public OrdenPedidoDTO ObtenerOrdenPedido(PedidoDTO pedido)
+    {
+        return TodosOrdenResponse.Data.Where(p => p.Id.Equals(pedido.OrdenPedidoId)).FirstOrDefault();
+    }
+
+    public List<DetalleOrdenPedidoDTO> ObtenerDetalleOrdenPedido(OrdenPedidoDTO orden)
+    {
+        return TodosDetalleResponse.Data.Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
+    }
+
+    public void Seleccionar(PedidoDTO pedido)
+    {
+        PedidoSeleccionado = pedido;
+        MostrarVentana = true;
+        Console.WriteLine("estamos dentro");
+        StateHasChanged();
+
+    }
+    public async void AsignarConductorVechiculo(AsignacionVechiculoConductorDTO conductorVechiculo)
+    {
+        var response = _distribuidoraService.AsignarVehiculoAConductor(conductorVechiculo);
+        StateHasChanged();
+    }
 
 }

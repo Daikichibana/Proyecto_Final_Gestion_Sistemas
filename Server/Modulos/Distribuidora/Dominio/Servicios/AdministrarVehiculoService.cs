@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
@@ -9,9 +10,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
     public class AdministrarVehiculoService : IAdministrarVehiculoService
     {
         IVehiculoRepository _vehiculoRepository;
-
-        public AdministrarVehiculoService(IVehiculoRepository vehiculoRepository)
+        IAsignacionVechiculoConductorRepository _vehiculoConductorRepository;
+        public AdministrarVehiculoService(IAsignacionVechiculoConductorRepository vehiculoConductor, IVehiculoRepository vehiculoRepository)
         {
+            _vehiculoConductorRepository = vehiculoConductor;
             _vehiculoRepository = vehiculoRepository;
         }
         public Vechiculo Actualizar(Vechiculo entity)
@@ -33,6 +35,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         public IList<Vechiculo> ObtenerTodo()
         {
             return _vehiculoRepository.ObtenerTodo();
+        }
+        public void AsignarVehiculoAConductor(AsignacionVechiculoConductor vhconductor)
+        {
+            _vehiculoConductorRepository.Guardar(vhconductor);
+        }
+
+        public IList<AsignacionVechiculoConductor> ObtenerTodoAsignacionVechiculo()
+        {
+            return _vehiculoConductorRepository.ObtenerTodo();
         }
     }
 }

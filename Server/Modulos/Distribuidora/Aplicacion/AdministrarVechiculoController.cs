@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Distribuidora;
@@ -13,7 +14,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     /// <summary>
     ///  
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarVechiculoController : ControllerBase
     {
@@ -147,5 +148,59 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
+
+        [HttpPost]
+        public IActionResult AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vehiculoDTO)
+        {
+
+            var result = new ServiceResponse<AsignacionVechiculoConductorDTO>();
+
+            try
+            {
+                var vhMapeado = _mapper.Map<AsignacionVechiculoConductor>(vehiculoDTO);
+                _administrarVehiculoService.AsignarVehiculoAConductor(vhMapeado);
+
+                result.Data = null;
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ObtenerTodoVehiculoConductor()
+        {
+
+            var result = new ServiceResponse<List<AsignacionVechiculoConductorDTO>>();
+
+            try
+            {
+                var response = _administrarVehiculoService.ObtenerTodoAsignacionVechiculo().ToList();
+
+                result.Data = _mapper.Map<List<AsignacionVechiculoConductorDTO>>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
     }
 }

@@ -63,6 +63,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarVehiculoService), typeof(AdministrarVehiculoService));
             services.AddScoped(typeof(IAdministrarSucursalesService), typeof(AdministrarSucursalesService));
             services.AddScoped(typeof(IAdministrarProveedorService), typeof(AdministrarProveedorService));
+
             //Repositorios
             services.AddScoped(typeof(IRubroRepository), typeof(RubroRepository));
             services.AddScoped(typeof(INITRepository), typeof(NITRepository));
@@ -73,6 +74,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(ISucursalRepository), typeof(SucursalRepository));
             services.AddScoped(typeof(IClienteDistribuidoraRepository), typeof(ClienteDistribuidoraRepository));
             services.AddScoped(typeof(IProveedorRepository), typeof(ProveedorRepository));
+            services.AddScoped(typeof(IAsignacionVechiculoConductorRepository), typeof(AsignacionVechiculoConductorRepository));
 
             /*** Modulo Inventario ***/
             //Servicios

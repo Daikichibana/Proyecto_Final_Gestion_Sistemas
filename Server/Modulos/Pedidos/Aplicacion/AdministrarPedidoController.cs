@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Compartido;
+using Compartido.Dto.Pedidos;
 using Compartido.Dto.Pedidos.General;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
@@ -52,6 +53,33 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
                 return BadRequest(result);
             }
         }
+
+        [HttpGet]
+        public IActionResult ObtenerPorIdPedido(Guid Id)
+        {
+
+            var result = new ServiceResponse<PedidoDTO>();
+
+            try
+            {
+                var response = _administracionPedidoService.ObtenerPorIdPedido(Id);
+
+                result.Data = _mapper.Map<PedidoDTO>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
 
         [HttpPost]
         public IActionResult InsertarPedido(PedidoDTO entidad)
@@ -164,6 +192,33 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
                 return BadRequest(result);
             }
         }
+
+        [HttpGet]
+        public IActionResult ObtenerOrdenesPedidosPorId(Guid Id)
+        {
+
+            var result = new ServiceResponse<OrdenPedidoDTO>();
+
+            try
+            {
+                var response = _administracionPedidoService.ObtenerOrdenesPedidosPorId(Id);
+
+                result.Data = _mapper.Map<OrdenPedidoDTO>(response);
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
 
         [HttpPost]
         public IActionResult InsertarOrdenPedido(OrdenPedidoDTO entidad)
@@ -418,13 +473,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
         public IActionResult ObtenerPedidosDistribuidoraPorId(Guid Id)
         {
 
-            var result = new ServiceResponse<PedidoDTO>();
+            var result = new ServiceResponse<List<PedidoDTO>>();
 
             try
             {
                 var response = _administracionPedidoService.ObtenerPedidosDistribuidoraPorId(Id);
 
-                result.Data = _mapper.Map<PedidoDTO>(response);
+                result.Data = _mapper.Map<List<PedidoDTO>>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -445,13 +500,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
         public IActionResult ObtenerPedidosClientePorId(Guid Id)
         {
 
-            var result = new ServiceResponse<PedidoDTO>();
+            var result = new ServiceResponse<List<PedidoDTO>>();
 
             try
             {
                 var response = _administracionPedidoService.ObtenerPedidosClientePorId(Id);
 
-                result.Data = _mapper.Map<PedidoDTO>(response);
+                result.Data = _mapper.Map<List<PedidoDTO>>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -468,13 +523,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult ConfirmarOrdenPedido(Guid Id, bool aceptado)
+        public IActionResult ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmarPedidoDTO)
         {
 
             var result = new ServiceResponse<PedidoDTO>();
 
             try
             {
+                Guid Id = confirmarPedidoDTO.Id;
+                bool aceptado = confirmarPedidoDTO.Aceptado;
+
                 _administracionPedidoService.ConfirmarOrdenPedido(Id, aceptado);
 
                 result.Data = null;

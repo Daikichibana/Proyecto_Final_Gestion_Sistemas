@@ -11,5 +11,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
         Vechiculo ObtenerPorId(Guid id);
         Vechiculo Guardar(Vechiculo entity);
         Vechiculo Actualizar(Vechiculo entity);
+        void AsignarVehiculoAConductor(AsignacionVechiculoConductor vhconductor);
+        IList<AsignacionVechiculoConductor> ObtenerTodoAsignacionVechiculo();
     }
 }

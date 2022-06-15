@@ -24,6 +24,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstrac
         OrdenPedido ObtenerPorIdOrdenPedido(Guid id);
         OrdenPedido GuardarOrdenPedido(OrdenPedido entity);
         OrdenPedido ActualizarOrdenPedido(OrdenPedido entity);
+        OrdenPedido ObtenerOrdenesPedidosPorId(Guid Id);
 
         List<OrdenPedido> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id);
         List<OrdenPedido> ObtenerOrdenesPedidosClientePorId(Guid Id);

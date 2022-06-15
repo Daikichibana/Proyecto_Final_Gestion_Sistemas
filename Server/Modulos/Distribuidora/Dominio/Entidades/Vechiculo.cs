@@ -9,6 +9,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.E
         public string Placa { get; set; }
         public string Modelo { get; set; }
         public string Marca { get; set; }
+
         public Vechiculo()
         {
 

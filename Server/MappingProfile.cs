@@ -36,6 +36,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<ClientesDistribuidora, ClientesDistribuidoraDTO>();
             CreateMap<EmpresaProveedor, EmpresaProveedorDTO>();
             CreateMap<EmpresaProveedorDTO, EmpresaProveedor>();
+            CreateMap<AsignacionVechiculoConductor, AsignacionVechiculoConductorDTO>();
+            CreateMap<AsignacionVechiculoConductorDTO, AsignacionVechiculoConductor>();
 
             // Modulo Inventario
             CreateMap<TipoProductoDTO, TipoProducto>();

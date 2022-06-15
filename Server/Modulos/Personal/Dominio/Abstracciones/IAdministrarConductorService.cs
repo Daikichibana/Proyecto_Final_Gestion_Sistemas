@@ -11,5 +11,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
         Conductor ObtenerPorId(Guid id);
         Conductor Guardar(Conductor entity);
         Conductor Actualizar(Conductor entity);
+
     }
 }

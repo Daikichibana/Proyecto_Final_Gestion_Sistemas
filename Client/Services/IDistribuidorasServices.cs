@@ -49,6 +49,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<VehiculoDTO>> CrearVehiculo(VehiculoDTO vehiculoDTO);
         Task<ServiceResponse<VehiculoDTO>> ActualizarVehiculo(VehiculoDTO vehiculoDTO);
         Task<ServiceResponse<VehiculoDTO>> EliminarVehiculo(VehiculoDTO vehiculoDTO);
+        Task<ServiceResponse<AsignacionVechiculoConductorDTO>>  AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vhconductor);
+        Task<ServiceResponse<List<AsignacionVechiculoConductorDTO>>> ObtenerTodoVehiculoConductor();
         #endregion
 
         #region Administrar Proveedor

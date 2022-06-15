@@ -169,18 +169,31 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
         public void ConfirmarOrdenPedido(Guid Id, bool aceptado)
         {
             OrdenPedido orden = _ordenPedidoRepository.ObtenerPorId(Id);
-
+            List<DetalleOrdenPedido> listaDetalle = _DetalleOrdenPedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
             if (orden != null && aceptado)
             {
+                orden.PedidoConfirmado = true;
                 Pedido pedido = new Pedido(orden, null, "Entrega No Asignada", "No pagado", orden.Id, null);
 
                 _pedidoRepository.Guardar(pedido);
             }
             else if(orden != null && !aceptado)
             {
+                foreach (var detalle in listaDetalle) 
+                {
+                    _DetalleOrdenPedidoRepository.Eliminar(detalle.Id);
+                }
+
                 _ordenPedidoRepository.Eliminar(orden.Id);
             }
         }
+
+        public OrdenPedido ObtenerOrdenesPedidosPorId(Guid Id)
+        {
+            return _ordenPedidoRepository.ObtenerPorId(Id);
+        }
+
+
 
     }
 }
