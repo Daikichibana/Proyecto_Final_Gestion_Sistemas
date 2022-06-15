@@ -21,7 +21,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             _http = http;
         }
 
-        #region Tipo Producto
+        #region Administrar Tipo Producto
 
         public async Task<ServiceResponse<TipoProductoDTO>> ActualizarTipoProducto(TipoProductoDTO tipoProducto)
         {
@@ -55,7 +55,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         #endregion
 
-        #region Producto
+        #region Administrar Producto
 
         public async Task<ServiceResponse<ProductoDTO>> ActualizarProducto(ProductoDTO Producto)
         {
@@ -89,7 +89,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         #endregion
 
-        #region Stock
+        #region Actualizar Stock Por Compra
 
         public async Task<ServiceResponse<StockDTO>> ActualizarStock(StockDTO Stock)
         {
@@ -127,6 +127,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             return result;
         }
 
+        #endregion
+
+        #region Realizar Pedido a Proveedor
+        #endregion
+
+        #region Administrar nota de recepcion
         #endregion
     }
 }

@@ -27,7 +27,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             _http = http;
         }
 
-        #region Rubro
+        #region Adminsitrar Rubro
 
         public async Task<ServiceResponse<RubroDTO>> ActualizarRubro(RubroDTO Rubro)
         {
@@ -61,7 +61,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         #endregion
 
-        #region Empresa Distribuidora
+        #region Adminsitrar Empresa Distribuidora
         public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> CrearEmpresaDistribuidora(RegistroEmpresaDTO distribuidora)
         {
             var result = await _http.PostAsJsonAsync(EnlaceEmpresaDistribuidora, distribuidora);
@@ -77,7 +77,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         #endregion
 
-        #region Empresa Cliente
+        #region Administrar Empresa Cliente
         public async Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(RegistroEmpresaDTO cliente)
         {
             var EnlaceArmado = EnlaceEmpresaCliente + "/InsertarEmpresa";
@@ -95,7 +95,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         #endregion
 
-        #region Tarjeta Cliente
+        #region Adminsitrar Tarjeta Cliente
 
         public async Task<ServiceResponse<TarjetaClienteDTO>> ActualizarTarjetaCliente(TarjetaClienteDTO TarjetaCliente)
         {
@@ -154,7 +154,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         #endregion
 
-        #region Sucursales
+        #region Administrar Sucursales
         public async Task<ServiceResponse<SucursalesDTO>> ActualizarSucursal(SucursalesDTO sucursalesDTO)
         {
             var result = await _http.PutAsJsonAsync(EnlaceSucursal, sucursalesDTO);
@@ -186,7 +186,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         #endregion
 
-        #region Vehiculo
+        #region Administrar Vehiculo
         public async Task<ServiceResponse<VehiculoDTO>> ActualizarVehiculo(VehiculoDTO vehiculoDTO)
         {
             var result = await _http.PutAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
@@ -218,7 +218,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         #endregion
 
-        #region Proveedor
+        #region Adminsitrar Proveedor
         public async Task<ServiceResponse<EmpresaProveedorDTO>> ActualizarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
         {
             var result = await _http.PutAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
@@ -248,6 +248,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>(EnlaceProveedor);
             return result;
         }
+        #endregion
+
+        #region Administrar NIT
         #endregion
     }
 }

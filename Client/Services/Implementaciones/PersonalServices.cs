@@ -20,7 +20,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             _http = http;
         }
 
-        #region Usuario
+        #region Administrar Usuario
         public async Task<ServiceResponse<UsuarioDTO>> ActualizarUsuario(UsuarioDTO usuario)
         {
             var Enlace = EnlaceUsuario + "/ActualizarUsuario";
@@ -65,7 +65,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         #endregion
 
-        #region Rol
+        #region Administrar Rol
 
         public async Task<ServiceResponse<RolDTO>> ActualizarRol(RolDTO Rol)
         {
@@ -98,7 +98,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         #endregion
 
-        #region Coonductor
+        #region Administrar Conductor
         public async Task<ServiceResponse<ConductorDTO>> ActualizarConductor(ConductorDTO conductor)
         {
             var result = await _http.PutAsJsonAsync(EnlaceConductor, conductor);
@@ -129,6 +129,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             return result;
         }
 
+        #endregion
+
+        #region Administrar responsable almacen
+        #endregion
+
+        #region Administrar responsable Empresa
         #endregion
     }
 }

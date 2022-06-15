@@ -16,7 +16,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         {
             _http = http;
         }
-        #region Pedido
+        #region Administrar Pedido
         public async Task<ServiceResponse<PedidoDTO>> ActualizarPedido(PedidoDTO pedidoDTO)
         {
             var enlaceConcatenado = EnlacePedido + "/ActualizarPedido";
@@ -50,9 +50,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(enlaceConcatenado);
             return result;
         }
-        #endregion
-
-        #region OrdenPedido
         public async Task<ServiceResponse<OrdenPedidoDTO>> ActualizarOrdenPedido(OrdenPedidoDTO OrdenPedidoDTO)
         {
             var enlaceConcatenado = EnlacePedido + "/ActualizarOrdenPedido";
@@ -86,9 +83,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(enlaceConcatenado);
             return result;
         }
-        #endregion
 
-        #region DetalleOrdenPedido
         public async Task<ServiceResponse<DetalleOrdenPedidoDTO>> ActualizarDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO)
         {
             var enlaceConcatenado = EnlacePedido + "/ActualizarDetalleOrdenPedido";
@@ -122,6 +117,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<DetalleOrdenPedidoDTO>>>(enlaceConcatenado);
             return result;
         }
+        #endregion
+
+        #region Asignar Entrega a conductor
+        #endregion
+
+        #region Realizar Entrega de pedido a cliente
+        #endregion
+
+        #region Realizar entrega de pedido a conductor
+        #endregion
+
+        #region Realizar facturacion cliente
+        #endregion
+
+        #region Realizar Pedido a distribuidora
         #endregion
     }
 }

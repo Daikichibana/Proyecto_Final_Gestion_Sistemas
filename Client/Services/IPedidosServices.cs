@@ -23,5 +23,20 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<DetalleOrdenPedidoDTO>> ActualizarDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO);
         Task<ServiceResponse<DetalleOrdenPedidoDTO>> EliminarDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO);
         #endregion
+
+        #region Asignar Entrega a conductor
+        #endregion
+
+        #region Realizar Entrega de pedido a cliente
+        #endregion
+
+        #region Realizar Entrega de pedido a conductor
+        #endregion
+
+        #region Realizar facturacion cliente
+        #endregion
+
+        #region Realizar Pedido a distribuidora
+        #endregion
     }
 }
