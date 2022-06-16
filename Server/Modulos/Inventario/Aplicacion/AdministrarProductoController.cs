@@ -15,11 +15,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
     [ApiController]
     public class AdministrarProductoController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarProductoService _productoService;
-        public AdministrarProductoController(IMapper mapper, IAdministrarProductoService productoService)
+        public AdministrarProductoController(IAdministrarProductoService productoService)
         {
-            _mapper = mapper;
             _productoService = productoService;
         }
 
@@ -49,18 +47,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult InsertarProducto(Producto _productoDTO)
+        public IActionResult InsertarProducto(ProductoDTO productoDTO)
         {
 
             var result = new ServiceResponse<ProductoDTO>();
 
             try
             {
-                Producto nuevoProducto = _mapper.Map<Producto>(_productoDTO);
+                var response = _productoService.GuardarProducto(productoDTO);
 
-                var response = _productoService.GuardarProducto(nuevoProducto);
-
-                result.Data = _mapper.Map<ProductoDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -83,10 +79,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 
             try
             {
-                Producto nuevoProducto = _mapper.Map<Producto>(ProductoDTO);
-                var response = _productoService.ActualizarProducto(nuevoProducto);
+                var response = _productoService.ActualizarProducto(ProductoDTO);
 
-                result.Data = _mapper.Map<ProductoDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 

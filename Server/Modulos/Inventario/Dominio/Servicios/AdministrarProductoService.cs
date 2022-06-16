@@ -34,19 +34,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
             _productoRepository = productoRepository;
         }
 
-        public Producto ActualizarProducto(Producto entity)
+        public ProductoDTO ActualizarProducto(ProductoDTO entity)
         {
-            return _productoRepository.Actualizar(entity);
+            var producto = _mapper.Map<Producto>(entity);
+            return _mapper.Map<ProductoDTO>(_productoRepository.Actualizar(producto));
         }
         public void EliminarProducto(Guid id)
         {
             _productoRepository.Eliminar(id);
         }
-        public Producto GuardarProducto(Producto entity)
+        public ProductoDTO GuardarProducto(ProductoDTO entity)
         {
-            return _productoRepository.Guardar(entity);
+            var producto = _mapper.Map<Producto>(entity);
+            return _mapper.Map<ProductoDTO>(_productoRepository.Guardar(producto));
         }
-        public Producto ObtenerPorIdProducto(Guid id)
+        public ProductoDTO ObtenerPorIdProducto(Guid id)
         {
             var producto = _productoRepository.ObtenerPorId(id);
 
@@ -57,7 +59,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
             producto.EmpresaDistribuidora.Rubro = _rubroRepository.ObtenerPorId(producto.EmpresaDistribuidora.RubroId);
             producto.TipoProducto = _tipoProductoRepository.ObtenerPorId(producto.TipoProductoId);
 
-            return producto;
+            return _mapper.Map<ProductoDTO>(producto);
         }
         public IList<ProductoDTO> ObtenerTodoProducto()
         {
