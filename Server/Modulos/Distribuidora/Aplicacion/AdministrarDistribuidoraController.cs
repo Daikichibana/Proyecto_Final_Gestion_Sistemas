@@ -11,10 +11,8 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarDistribuidoraController : ControllerBase
     {
@@ -29,14 +27,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpGet]
-        public IActionResult ObtenerTodos()
+        public IActionResult ObtenerTodoDistribuidora()
         {
 
             var result = new ServiceResponse<List<EmpresaDistribuidoraDTO>>();
 
             try
             {
-                IList<EmpresaDistribuidora> Empresas = _AdministrarDistribuidoraService.ObtenerTodo();
+                IList<EmpresaDistribuidora> Empresas = _AdministrarDistribuidoraService.ObtenerTodoDistribuidora();
                 List<EmpresaDistribuidoraDTO> response = new List<EmpresaDistribuidoraDTO>();
 
                 foreach (var EmpresaDistribuidora in Empresas)
@@ -62,7 +60,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
 
         [HttpPost]
-        public IActionResult InsertarEmpresa(RegistroEmpresaDTO Empresa)
+        public IActionResult InsertarDistribuidora(RegistroEmpresaDTO Empresa)
         {
 
             var result = new ServiceResponse<EmpresaDistribuidoraDTO>();
@@ -74,7 +72,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 ResponsableEmpresa responsable = new ResponsableEmpresa(Empresa.NombreResponsable,Empresa.ApellidoResponsable,Empresa.CiResponsable, Empresa.FechaNacimientoResponsable, Empresa.EmailEmpresa, Empresa.TelefonoResponsable, usuario);
                 EmpresaDistribuidora nuevaEmpresa = new EmpresaDistribuidora(Empresa.NombreEmpresa, Empresa.RazonSocialEmpresa, Empresa.EmailEmpresa, Empresa.Rubro.Id, nit, responsable);
 
-                var response = _AdministrarDistribuidoraService.Guardar(nuevaEmpresa);
+                var response = _AdministrarDistribuidoraService.GuardarDistribuidora(nuevaEmpresa);
 
                 result.Data = _mapper.Map<EmpresaDistribuidoraDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -93,14 +91,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPut]
-        public IActionResult ActualizarEmpresa(EmpresaDistribuidoraDTO empresaDistribuidoraDTO)
+        public IActionResult ActualizarDistribuidora(EmpresaDistribuidoraDTO empresaDistribuidoraDTO)
         {
             var result = new ServiceResponse<EmpresaDistribuidoraDTO>();
 
             try
             {
                 EmpresaDistribuidora nuevaEmpresa = _mapper.Map<EmpresaDistribuidora>(empresaDistribuidoraDTO);
-                var response = _AdministrarDistribuidoraService.Actualizar(nuevaEmpresa);
+                var response = _AdministrarDistribuidoraService.ActualizarDistribuidora(nuevaEmpresa);
 
                 result.Data = _mapper.Map<EmpresaDistribuidoraDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -119,13 +117,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpDelete]
-        public IActionResult EliminarEmpresa(Guid id)
+        public IActionResult EliminarDistribuidora(Guid id)
         {
             var result = new ServiceResponse<EmpresaDistribuidoraDTO>();
 
             try
             {
-                _AdministrarDistribuidoraService.Eliminar(id);
+                _AdministrarDistribuidoraService.EliminarDistribuidora(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";

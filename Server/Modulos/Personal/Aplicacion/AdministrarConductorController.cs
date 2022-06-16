@@ -10,16 +10,10 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarConductorController : ControllerBase
     {
-        /// <summary>
-        ///  
-        /// </summary>
         IMapper _mapper;
         IAdministrarConductorService _administrarConductorService;
         public AdministrarConductorController(IMapper mapper, IAdministrarConductorService administrarConductorService)
@@ -27,9 +21,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             _mapper = mapper;
             _administrarConductorService = administrarConductorService;
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpGet]
         public IActionResult ObtenerTodosLosConductores()
         {
@@ -38,7 +30,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<Conductor> Conductores = _administrarConductorService.ObtenerTodo();
+                IList<Conductor> Conductores = _administrarConductorService.ObtenerTodoConductor();
                 List<ConductorDTO> response = new List<ConductorDTO>();
 
                 foreach (var Conductor in Conductores)
@@ -61,9 +53,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
 
         [HttpPost]
         public IActionResult CrearConductor(ConductorDTO conductorDTO)
@@ -75,7 +64,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             {
                 Conductor nuevoConductor = _mapper.Map<Conductor>(conductorDTO);
 
-                var response = _administrarConductorService.Guardar(nuevoConductor);
+                var response = _administrarConductorService.GuardarConductor(nuevoConductor);
 
                 result.Data = _mapper.Map<ConductorDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -92,9 +81,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpPut]
         public IActionResult ActualizarConductor(ConductorDTO conductorDTO)
         {
@@ -103,7 +90,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             try
             {
                 Conductor nuevoConductor = _mapper.Map<Conductor>(conductorDTO);
-                var response = _administrarConductorService.Actualizar(nuevoConductor);
+                var response = _administrarConductorService.ActualizarConductor(nuevoConductor);
 
                 result.Data = _mapper.Map<ConductorDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -120,9 +107,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpDelete]
         public IActionResult EliminarConductor(Guid id)
         {
@@ -130,7 +115,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                _administrarConductorService.Eliminar(id);
+                _administrarConductorService.EliminarConductor(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";

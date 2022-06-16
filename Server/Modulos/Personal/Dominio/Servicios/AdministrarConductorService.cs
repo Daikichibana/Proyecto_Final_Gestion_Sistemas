@@ -14,23 +14,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
         {
             _conductorRepository = conductorRepository;
         }
-        public Conductor Actualizar(Conductor entity)
+        public Conductor ActualizarConductor(Conductor entity)
         {
             return _conductorRepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarConductor(Guid id)
         {
             _conductorRepository.Eliminar(id);
         }
-        public Conductor Guardar(Conductor entity)
+        public Conductor GuardarConductor(Conductor entity)
         {
             return _conductorRepository.Guardar(entity);
         }
-        public Conductor ObtenerPorId(Guid id)
+        public Conductor ObtenerPorIdConductor(Guid id)
         {
             return _conductorRepository.ObtenerPorId(id);
         }
-        public IList<Conductor> ObtenerTodo()
+        public IList<Conductor> ObtenerTodoConductor()
         {
             return _conductorRepository.ObtenerTodo();
         }

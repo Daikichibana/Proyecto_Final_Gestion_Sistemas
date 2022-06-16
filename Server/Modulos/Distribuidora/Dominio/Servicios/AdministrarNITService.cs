@@ -6,7 +6,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Servicios
 {
-    public class AdministrarNITService : INITService
+    public class AdministrarNITService : IAdministrarNITService
     {
         INITRepository _NITrepository;
 
@@ -14,24 +14,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         {
             _NITrepository = nITrepository;
         }
-        public NIT Actualizar(NIT entity)
+        public NIT ActualizarNIT(NIT entity)
         {
             return _NITrepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarNIT(Guid id)
         {
             _NITrepository.Eliminar(id);
         }
-        public NIT Guardar(NIT entity)
+        public NIT GuardarNIT(NIT entity)
         {
             return _NITrepository.Guardar(entity);
         }
-        public NIT ObtenerPorId(Guid id)
+        public NIT ObtenerPorIdNIT(Guid id)
         {
             return _NITrepository.ObtenerPorId(id);
         }
-
-        public IList<NIT> ObtenerTodo()
+        public IList<NIT> ObtenerTodoNIT()
         {
             return _NITrepository.ObtenerTodo();
         }

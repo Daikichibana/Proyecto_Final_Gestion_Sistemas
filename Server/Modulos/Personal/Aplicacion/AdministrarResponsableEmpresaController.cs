@@ -10,7 +10,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarResponsableEmpresaController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             ServiceResponse<List<ResponsableEmpresaDTO>> result = new ServiceResponse<List<ResponsableEmpresaDTO>>();
             try
             {
-                var response = _responsableEmpresaService.ObtenerTodo();
+                var response = _responsableEmpresaService.ObtenerTodoResponsableEmpresa();
 
                 result.Data = _mapper.Map<List<ResponsableEmpresaDTO>>(response);
                 result.Message = "Ok";
@@ -51,7 +51,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             try
             {
                 ResponsableEmpresa nuevoResponsable = _mapper.Map<ResponsableEmpresa>(_responsableDTO);
-                var response = _responsableEmpresaService.Guardar(nuevoResponsable);
+                var response = _responsableEmpresaService.GuardarResponsableEmpresa(nuevoResponsable);
 
                 result.Data = _mapper.Map<ResponsableEmpresaDTO>(response);
                 result.Message = "Ok";
@@ -73,7 +73,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             try
             {
                 ResponsableEmpresa nuevoResponsable = _mapper.Map<ResponsableEmpresa>(responsableDTO);
-                var response = _responsableEmpresaService.Actualizar(nuevoResponsable);
+                var response = _responsableEmpresaService.ActualizarResponsableEmpresa(nuevoResponsable);
 
                 result.Data = _mapper.Map<ResponsableEmpresaDTO>(response);
                 result.Message = "Ok";
@@ -94,7 +94,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             ServiceResponse<ResponsableEmpresaDTO> result = new ServiceResponse<ResponsableEmpresaDTO>();
             try
             {
-                _responsableEmpresaService.Eliminar(id);
+                _responsableEmpresaService.EliminarResponsableEmpresa(id);
 
                 result.Data = null;
                 result.Message = "Ok";

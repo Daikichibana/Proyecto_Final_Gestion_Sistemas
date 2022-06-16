@@ -10,28 +10,19 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    //[Route("api/[controller]")]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarUsuarioController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarUsuarioService _usuarioService;
-        /// <summary>
-        ///  
-        /// </summary>
+
         public AdministrarUsuarioController(IMapper mapper, IAdministrarUsuarioService usuarioService)
         {
             _mapper = mapper;
             _usuarioService = usuarioService;
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpGet]
         public IActionResult ObtenerTodoUsuarios()
         {
@@ -40,7 +31,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<Usuario> usuarios = _usuarioService.ObtenerTodo();
+                IList<Usuario> usuarios = _usuarioService.ObtenerTodoUsuario();
                 List<UsuarioDTO> response = new List<UsuarioDTO>();
 
                 foreach (var usuario in usuarios)
@@ -64,9 +55,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPost]
         public IActionResult InsertarUsuario(UsuarioDTO usuarioDTO)
         {
@@ -77,7 +65,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             {
                 Usuario nuevoUsuario = _mapper.Map<Usuario>(usuarioDTO);
 
-                var response = _usuarioService.Guardar(nuevoUsuario);
+                var response = _usuarioService.GuardarUsuario(nuevoUsuario);
 
                 result.Data = _mapper.Map<UsuarioDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -95,9 +83,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPut]
         public IActionResult ActualizarUsuario(UsuarioDTO _usuarioDTO)
         {
@@ -106,7 +91,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             try
             {
                 Usuario nuevoUsuario = _mapper.Map<Usuario>(_usuarioDTO);
-                var response = _usuarioService.Actualizar(nuevoUsuario);
+                var response = _usuarioService.ActualizarUsuario(nuevoUsuario);
 
                 result.Data = _mapper.Map<UsuarioDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -124,9 +109,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpDelete]
         public IActionResult EliminarUsuario(Guid id)
         {
@@ -134,7 +116,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                _usuarioService.Eliminar(id);
+                _usuarioService.EliminarUsuario(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -180,9 +162,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPost]
         public IActionResult IniciarSesion(UsuarioDTO user)
         {

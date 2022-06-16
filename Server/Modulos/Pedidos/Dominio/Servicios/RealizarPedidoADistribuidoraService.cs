@@ -23,10 +23,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             _ordenRepository.Guardar(orden);
 
             foreach (var producto in ProductoCarrito) {
-                var StockProducto = _actualizarStockPorCompraService.ObtenerPorId(producto.Id);
+                var StockProducto = _actualizarStockPorCompraService.ObtenerPorIdStock(producto.Id);
                 StockProducto.CantidadOrdenada = producto.CantidadOrdenada;
 
-                _actualizarStockPorCompraService.Actualizar(StockProducto);
+                _actualizarStockPorCompraService.ActualizarStock(StockProducto);
                 _detalleOrdenPedidoRepository.Guardar(producto);
             }
         }

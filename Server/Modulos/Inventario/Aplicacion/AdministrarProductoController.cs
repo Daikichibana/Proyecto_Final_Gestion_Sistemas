@@ -10,27 +10,18 @@ using Compartido.Dto.Inventario.General;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarProductoController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarProductoService _productoService;
-        /// <summary>
-        ///  
-        /// </summary>
         public AdministrarProductoController(IMapper mapper, IAdministrarProductoService productoService)
         {
             _mapper = mapper;
             _productoService = productoService;
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpGet]
         public IActionResult ObtenerTodosProductos()
         {
@@ -39,7 +30,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 
             try
             {
-                IList<Producto> Productos = _productoService.ObtenerTodo();
+                IList<Producto> Productos = _productoService.ObtenerTodoProducto();
                 List<ProductoDTO> response = new List<ProductoDTO>();
 
                 foreach (var Producto in Productos)
@@ -63,9 +54,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPost]
         public IActionResult InsertarProducto(ProductoDTO _productoDTO)
         {
@@ -76,7 +64,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             {
                 Producto nuevoProducto = _mapper.Map<Producto>(_productoDTO);
 
-                var response = _productoService.Guardar(nuevoProducto);
+                var response = _productoService.GuardarProducto(nuevoProducto);
 
                 result.Data = _mapper.Map<ProductoDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -94,9 +82,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPut]
         public IActionResult ActualizarProducto(ProductoDTO ProductoDTO)
         {
@@ -105,7 +90,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             try
             {
                 Producto nuevoProducto = _mapper.Map<Producto>(ProductoDTO);
-                var response = _productoService.Actualizar(nuevoProducto);
+                var response = _productoService.ActualizarProducto(nuevoProducto);
 
                 result.Data = _mapper.Map<ProductoDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -123,9 +108,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpDelete]
         public IActionResult EliminarProducto(Guid id)
         {
@@ -133,7 +115,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 
             try
             {
-                _productoService.Eliminar(id);
+                _productoService.EliminarProducto(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -151,5 +133,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
                 return BadRequest(result);
             }
         }
+
     }
 }

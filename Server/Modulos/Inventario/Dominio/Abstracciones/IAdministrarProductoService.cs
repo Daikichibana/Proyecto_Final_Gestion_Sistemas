@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
 {
     public interface IAdministrarProductoService
     {
-        void Eliminar(Guid id);
-        IList<Producto> ObtenerTodo();
-        Producto ObtenerPorId(Guid id);
-        Producto Guardar(Producto entity);
-        Producto Actualizar(Producto entity);
+        void EliminarProducto(Guid id);
+        IList<Producto> ObtenerTodoProducto();
+        Producto ObtenerPorIdProducto(Guid id);
+        Producto GuardarProducto(Producto entity);
+        Producto ActualizarProducto(Producto entity);
     }
 }

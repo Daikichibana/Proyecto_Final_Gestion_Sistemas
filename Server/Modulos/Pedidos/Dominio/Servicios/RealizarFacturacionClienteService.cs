@@ -15,27 +15,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             this._facturaRepository = facturaRepository;
         }
 
-        public Factura Actualizar(Factura entity)
+        public Factura ActualizarFactura(Factura entity)
         {
             return _facturaRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarFactura(Guid id)
         {
             _facturaRepository.Eliminar(id);
         }
 
-        public Factura Guardar(Factura entity)
+        public Factura GuardarFactura(Factura entity)
         {
             return _facturaRepository.Guardar(entity);
         }
 
-        public Factura ObtenerPorId(Guid id)
+        public Factura ObtenerPorIdFactura(Guid id)
         {
             return _facturaRepository.ObtenerPorId(id);
         }
 
-        public IList<Factura> ObtenerTodo()
+        public IList<Factura> ObtenerTodoFactura()
         {
             return _facturaRepository.ObtenerTodo();
         }

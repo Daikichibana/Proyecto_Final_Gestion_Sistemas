@@ -10,14 +10,14 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entid
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarNITController : ControllerBase
     {
         IMapper _mapper;
-        INITService _NITService;
+        IAdministrarNITService _NITService;
 
-        public AdministrarNITController(IMapper mapper, INITService nITService)
+        public AdministrarNITController(IMapper mapper, IAdministrarNITService nITService)
         {
             _mapper = mapper;
             _NITService = nITService;
@@ -29,7 +29,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<List<NITDTO>> result = new ServiceResponse<List<NITDTO>>();
             try
             {
-                var response = _NITService.ObtenerTodo();
+                var response = _NITService.ObtenerTodoNIT();
 
                 result.Data = _mapper.Map<List<NITDTO>>(response);
                 result.Message = "Ok";
@@ -51,7 +51,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 NIT nuevoNIT = _mapper.Map<NIT>(_NITDTO);
-                var response = _NITService.Guardar(nuevoNIT);
+                var response = _NITService.GuardarNIT(nuevoNIT);
 
                 result.Data = _mapper.Map<NITDTO>(response);
                 result.Message = "Ok";
@@ -73,7 +73,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 NIT nuevoNIT = _mapper.Map<NIT>(NITDTO);
-                var response = _NITService.Actualizar(nuevoNIT);
+                var response = _NITService.ActualizarNIT(nuevoNIT);
 
                 result.Data = _mapper.Map<NITDTO>(response);
                 result.Message = "Ok";
@@ -94,7 +94,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<NITDTO> result = new ServiceResponse<NITDTO>();
             try
             {
-                _NITService.Eliminar(id);
+                _NITService.EliminarNIT(id);
 
                 result.Data = null;
                 result.Message = "Ok";

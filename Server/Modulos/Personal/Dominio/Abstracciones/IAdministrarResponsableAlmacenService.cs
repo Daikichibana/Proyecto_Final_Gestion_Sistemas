@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
 {
     public interface IAdministrarResponsableAlmacenService
     {
-        void Eliminar(Guid id);
-        IList<ResponsableAlmacen> ObtenerTodo();
-        ResponsableAlmacen ObtenerPorId(Guid id);
-        ResponsableAlmacen Guardar(ResponsableAlmacen entity);
-        ResponsableAlmacen Actualizar(ResponsableAlmacen entity);
+        void EliminarResponsableAlmacen(Guid id);
+        IList<ResponsableAlmacen> ObtenerTodoResponsableAlmacen();
+        ResponsableAlmacen ObtenerPorIdResponsableAlmacen(Guid id);
+        ResponsableAlmacen GuardarResponsableAlmacen(ResponsableAlmacen entity);
+        ResponsableAlmacen ActualizarResponsableAlmacen(ResponsableAlmacen entity);
     }
 }

@@ -10,18 +10,12 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entid
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarTarjetaClienteController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarTarjetaClienteService _administrarTarjetaClienteService;
-        /// <summary>
-        ///  
-        /// </summary>
         public AdministrarTarjetaClienteController(IMapper mapper, IAdministrarTarjetaClienteService administrarTarjetaClienteService)
         {
             _mapper = mapper;
@@ -34,7 +28,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<List<TarjetaClienteDTO>> result = new ServiceResponse<List<TarjetaClienteDTO>>();
             try
             {
-                var response = _administrarTarjetaClienteService.ObtenerTodo();
+                var response = _administrarTarjetaClienteService.ObtenerTodoTarjetaCliente();
 
                 result.Data = _mapper.Map<List<TarjetaClienteDTO>>(response);
                 result.Message = "Ok";
@@ -57,7 +51,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 TarjetaCliente nuevoTarjetaCliente = _mapper.Map<TarjetaCliente>(_TarjetaClienteDTO);
-                var response = _administrarTarjetaClienteService.Guardar(nuevoTarjetaCliente);
+                var response = _administrarTarjetaClienteService.GuardarTarjetaCliente(nuevoTarjetaCliente);
 
                 result.Data = _mapper.Map<TarjetaClienteDTO>(response);
                 result.Message = "Ok";
@@ -80,7 +74,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 TarjetaCliente nuevoTarjetaCliente = _mapper.Map<TarjetaCliente>(TarjetaClienteDTO);
-                var response = _administrarTarjetaClienteService.Actualizar(nuevoTarjetaCliente);
+                var response = _administrarTarjetaClienteService.ActualizarTarjetaCliente(nuevoTarjetaCliente);
 
                 result.Data = _mapper.Map<TarjetaClienteDTO>(response);
                 result.Message = "Ok";
@@ -102,7 +96,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<TarjetaClienteDTO> result = new ServiceResponse<TarjetaClienteDTO>();
             try
             {
-                _administrarTarjetaClienteService.Eliminar(id);
+                _administrarTarjetaClienteService.EliminarTarjetaCliente(id);
 
                 result.Data = null;
                 result.Message = "Ok";

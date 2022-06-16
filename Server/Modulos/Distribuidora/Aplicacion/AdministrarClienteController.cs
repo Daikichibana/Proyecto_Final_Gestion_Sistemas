@@ -16,9 +16,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     public class AdministrarClienteController : ControllerBase
     {
         IMapper _mapper;
-        IAdministrarEmpresaClienteService _administrarClienteService;
+        IAdministrarClienteService _administrarClienteService;
 
-        public AdministrarClienteController(IMapper mapper, IAdministrarEmpresaClienteService administrarClienteService)
+        public AdministrarClienteController(IMapper mapper, IAdministrarClienteService administrarClienteService)
         {
             _mapper = mapper;
             _administrarClienteService = administrarClienteService;
@@ -30,7 +30,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<List<EmpresaClienteDTO>> result = new ServiceResponse<List<EmpresaClienteDTO>>();
             try
             {
-                var response = _administrarClienteService.ObtenerTodo();
+                var response = _administrarClienteService.ObtenerTodoCliente();
 
                 result.Data = _mapper.Map<List<EmpresaClienteDTO>>(response);
                 result.Message = "Ok";
@@ -53,7 +53,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 EmpresaCliente nuevoEmpresaCliente = _mapper.Map<EmpresaCliente>(_EmpresaClienteDTO);
-                var response = _administrarClienteService.Guardar(nuevoEmpresaCliente);
+                var response = _administrarClienteService.GuardarCliente(nuevoEmpresaCliente);
 
                 result.Data = _mapper.Map<EmpresaClienteDTO>(response);
                 result.Message = "Ok";
@@ -76,7 +76,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 EmpresaCliente nuevoEmpresaCliente = _mapper.Map<EmpresaCliente>(EmpresaClienteDTO);
-                var response = _administrarClienteService.Actualizar(nuevoEmpresaCliente);
+                var response = _administrarClienteService.ActualizarCliente(nuevoEmpresaCliente);
 
                 result.Data = _mapper.Map<EmpresaClienteDTO>(response);
                 result.Message = "Ok";
@@ -98,7 +98,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<EmpresaClienteDTO> result = new ServiceResponse<EmpresaClienteDTO>();
             try
             {
-                _administrarClienteService.Eliminar(id);
+                _administrarClienteService.EliminarCliente(id);
 
                 result.Data = null;
                 result.Message = "Ok";
@@ -127,7 +127,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 ResponsableEmpresa responsable = new ResponsableEmpresa(Empresa.NombreResponsable, Empresa.ApellidoResponsable, Empresa.CiResponsable, Empresa.FechaNacimientoResponsable, Empresa.EmailEmpresa, Empresa.TelefonoResponsable, usuario);
                 EmpresaCliente nuevaEmpresa = new EmpresaCliente(Empresa.NombreEmpresa, Empresa.RazonSocialEmpresa, Empresa.EmailEmpresa, Empresa.Rubro.Id, nit, responsable);
 
-                var response = _administrarClienteService.Guardar(nuevaEmpresa);
+                var response = _administrarClienteService.GuardarCliente(nuevaEmpresa);
 
                 result.Data = _mapper.Map<EmpresaClienteDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";

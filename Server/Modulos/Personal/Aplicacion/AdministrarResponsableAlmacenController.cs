@@ -10,23 +10,20 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarResponsableAlmacenController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarResponsableAlmacenService _responsableAlmacenService;
-        /// <summary>
-        ///  
-        /// </summary>
+
         public AdministrarResponsableAlmacenController(IMapper mapper, IAdministrarResponsableAlmacenService responsableAlmacenService)
         {
             _mapper = mapper;
             _responsableAlmacenService = responsableAlmacenService;
         }
+
         [HttpGet]
         public IActionResult ObtenerTodLosResponsablesDeAlmacen()
         {
@@ -35,7 +32,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<ResponsableAlmacen> Responsables = _responsableAlmacenService.ObtenerTodo();
+                IList<ResponsableAlmacen> Responsables = _responsableAlmacenService.ObtenerTodoResponsableAlmacen();
                 List<ResponsableAlmacenDTO> response = new List<ResponsableAlmacenDTO>();
 
                 foreach (var ResponsableAlmacen in Responsables)
@@ -58,9 +55,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpPost]
         public IActionResult InsertarResponsableAlmacen(ResponsableAlmacenDTO responsableAlmacenDTO)
         {
@@ -71,7 +66,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             {
                 ResponsableAlmacen nuevoResponsableAlmacen = _mapper.Map<ResponsableAlmacen>(responsableAlmacenDTO);
 
-                var response = _responsableAlmacenService.Guardar(nuevoResponsableAlmacen);
+                var response = _responsableAlmacenService.GuardarResponsableAlmacen(nuevoResponsableAlmacen);
 
                 result.Data = _mapper.Map<ResponsableAlmacenDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -88,9 +83,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpPut]
         public IActionResult ActualizarSucursal(ResponsableAlmacenDTO responsableAlmacenDTO)
         {
@@ -99,7 +92,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             try
             {
                 ResponsableAlmacen nuevoResponsableAlmacen = _mapper.Map<ResponsableAlmacen>(responsableAlmacenDTO);
-                var response = _responsableAlmacenService.Actualizar(nuevoResponsableAlmacen);
+                var response = _responsableAlmacenService.ActualizarResponsableAlmacen(nuevoResponsableAlmacen);
 
                 result.Data = _mapper.Map<ResponsableAlmacenDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -116,6 +109,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
                 return BadRequest(result);
             }
         }
+
         [HttpDelete]
         public IActionResult EliminarResponsableAlmacen(Guid id)
         {
@@ -123,7 +117,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                _responsableAlmacenService.Eliminar(id);
+                _responsableAlmacenService.EliminarResponsableAlmacen(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -141,5 +135,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
                 return BadRequest(result);
             }
         }
+
     }
 }

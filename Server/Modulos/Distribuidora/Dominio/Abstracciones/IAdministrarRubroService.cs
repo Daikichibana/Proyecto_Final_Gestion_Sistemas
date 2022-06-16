@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
 {
     public interface IAdministrarRubroService
     {
-        void Eliminar(Guid id);
-        IList<Rubro> ObtenerTodo();
-        Rubro ObtenerPorId(Guid id);
-        Rubro Guardar(Rubro entity);
-        Rubro Actualizar(Rubro entity);
+        void EliminarRubro(Guid id);
+        IList<Rubro> ObtenerTodoRubro();
+        Rubro ObtenerPorIdRubro(Guid id);
+        Rubro GuardarRubro(Rubro entity);
+        Rubro ActualizarRubro(Rubro entity);
     }
 }

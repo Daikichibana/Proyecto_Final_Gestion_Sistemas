@@ -14,23 +14,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         {
             _empresaDistribuidoraRepository = empresaDistribuidoraRepository;
         }
-        public EmpresaDistribuidora Actualizar(EmpresaDistribuidora entity)
+        public EmpresaDistribuidora ActualizarDistribuidora(EmpresaDistribuidora entity)
         {
             return _empresaDistribuidoraRepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarDistribuidora(Guid id)
         {
             _empresaDistribuidoraRepository.Eliminar(id);
         }
-        public EmpresaDistribuidora Guardar(EmpresaDistribuidora entity)
+        public EmpresaDistribuidora GuardarDistribuidora(EmpresaDistribuidora entity)
         {
             return _empresaDistribuidoraRepository.Guardar(entity);
         }
-        public EmpresaDistribuidora ObtenerPorId(Guid id)
+        public EmpresaDistribuidora ObtenerPorIdDistribuidora(Guid id)
         {
             return _empresaDistribuidoraRepository.ObtenerPorId(id);
         }
-        public IList<EmpresaDistribuidora> ObtenerTodo()
+        public IList<EmpresaDistribuidora> ObtenerTodoDistribuidora()
         {
             return _empresaDistribuidoraRepository.ObtenerTodo();
         }

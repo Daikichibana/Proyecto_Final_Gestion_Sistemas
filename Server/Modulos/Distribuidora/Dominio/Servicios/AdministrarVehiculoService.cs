@@ -16,23 +16,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             _vehiculoConductorRepository = vehiculoConductor;
             _vehiculoRepository = vehiculoRepository;
         }
-        public Vechiculo Actualizar(Vechiculo entity)
+        public Vechiculo ActualizarVehiculo(Vechiculo entity)
         {
             return _vehiculoRepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarVehiculo(Guid id)
         {
            _vehiculoRepository.Eliminar(id);
         }
-        public Vechiculo Guardar(Vechiculo entity)
+        public Vechiculo GuardarVehiculo(Vechiculo entity)
         {
             return _vehiculoRepository.Guardar(entity);
         }
-        public Vechiculo ObtenerPorId(Guid id)
+        public Vechiculo ObtenerPorIdVehiculo(Guid id)
         {
             return _vehiculoRepository.ObtenerPorId(id);
         }
-        public IList<Vechiculo> ObtenerTodo()
+        public IList<Vechiculo> ObtenerTodoVehiculo()
         {
             return _vehiculoRepository.ObtenerTodo();
         }

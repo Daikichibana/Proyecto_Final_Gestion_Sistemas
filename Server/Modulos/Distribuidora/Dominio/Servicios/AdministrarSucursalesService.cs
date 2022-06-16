@@ -13,23 +13,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         {
             _sucursalRepository = sucursalRepository;
         }
-        public Sucursales Actualizar(Sucursales entity)
+        public Sucursales ActualizarSucursales(Sucursales entity)
         {
             return _sucursalRepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarSucursales(Guid id)
         {
             _sucursalRepository.Eliminar(id);
         }
-        public Sucursales Guardar(Sucursales entity)
+        public Sucursales GuardarSucursales(Sucursales entity)
         {
             return _sucursalRepository.Guardar(entity);
         }
-        public Sucursales ObtenerPorId(Guid id)
+        public Sucursales ObtenerPorIdSucursales(Guid id)
         {
             return _sucursalRepository.ObtenerPorId(id);
         }
-        public IList<Sucursales> ObtenerTodo()
+        public IList<Sucursales> ObtenerTodoSucursales()
         {
             return _sucursalRepository.ObtenerTodo();
         }

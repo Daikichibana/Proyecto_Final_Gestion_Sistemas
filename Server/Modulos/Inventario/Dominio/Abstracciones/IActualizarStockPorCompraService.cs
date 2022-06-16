@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
 {
     public interface IActualizarStockPorCompraService
     {
-        void Eliminar(Guid id);
-        IList<Stock> ObtenerTodo();
-        Stock ObtenerPorId(Guid Id);
-        Stock Guardar(Stock entity);
-        Stock Actualizar(Stock entity);
+        void EliminarStock(Guid id);
+        IList<Stock> ObtenerTodoStock();
+        Stock ObtenerPorIdStock(Guid Id);
+        Stock GuardarStock(Stock entity);
+        Stock ActualizarStock(Stock entity);
     }
 }

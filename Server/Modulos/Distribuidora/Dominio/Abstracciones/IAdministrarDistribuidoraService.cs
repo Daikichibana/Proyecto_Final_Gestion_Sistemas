@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
 {
     public interface IAdministrarDistribuidoraService
     {
-        void Eliminar(Guid id);
-        IList<EmpresaDistribuidora> ObtenerTodo();
-        EmpresaDistribuidora ObtenerPorId(Guid id);
-        EmpresaDistribuidora Guardar(EmpresaDistribuidora entity);
-        EmpresaDistribuidora Actualizar(EmpresaDistribuidora entity);
+        void EliminarDistribuidora(Guid id);
+        IList<EmpresaDistribuidora> ObtenerTodoDistribuidora();
+        EmpresaDistribuidora ObtenerPorIdDistribuidora(Guid id);
+        EmpresaDistribuidora GuardarDistribuidora(EmpresaDistribuidora entity);
+        EmpresaDistribuidora ActualizarDistribuidora(EmpresaDistribuidora entity);
     }
 }

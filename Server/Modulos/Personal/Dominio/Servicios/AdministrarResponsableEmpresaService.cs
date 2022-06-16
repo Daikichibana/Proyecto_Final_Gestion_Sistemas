@@ -14,24 +14,24 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
         {
             _responsableEmpresaRepository = responsableEmpresaRepository;
         }
-        public ResponsableEmpresa Actualizar(ResponsableEmpresa entity)
+        public ResponsableEmpresa ActualizarResponsableEmpresa(ResponsableEmpresa entity)
         {
             return _responsableEmpresaRepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarResponsableEmpresa(Guid id)
         {
             _responsableEmpresaRepository.Eliminar(id);
         }
-        public ResponsableEmpresa Guardar(ResponsableEmpresa entity)
+        public ResponsableEmpresa GuardarResponsableEmpresa(ResponsableEmpresa entity)
         {
             return _responsableEmpresaRepository.Guardar(entity);
         }
-        public ResponsableEmpresa ObtenerPorId(Guid id)
+        public ResponsableEmpresa ObtenerPorIdResponsableEmpresa(Guid id)
         {
             return _responsableEmpresaRepository.ObtenerPorId(id);
         }
 
-        public IList<ResponsableEmpresa> ObtenerTodo()
+        public IList<ResponsableEmpresa> ObtenerTodoResponsableEmpresa()
         {
             return _responsableEmpresaRepository.ObtenerTodo();
         }

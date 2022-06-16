@@ -51,14 +51,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
                     b => b.MigrationsAssembly("Proyecto_Final_Gestion_Sistemas.Server"))
                 );
 
-            services.AddScoped(typeof(Modulos.Inventario.Tecnica.IRepository<>), typeof(Modulos.Inventario.Tecnica.Repository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             /*** Modulo Distribuidora ***/
             //Servicios
             services.AddScoped(typeof(IAdministrarRubroService), typeof(AdministrarRubroService));
-            services.AddScoped(typeof(INITService), typeof(AdministrarNITService));
+            services.AddScoped(typeof(IAdministrarNITService), typeof(AdministrarNITService));
             services.AddScoped(typeof(IAdministrarTarjetaClienteService), typeof(AdministrarTarjetaClienteService));
-            services.AddScoped(typeof(IAdministrarEmpresaClienteService), typeof(AdministrarEmpresaClienteService));
+            services.AddScoped(typeof(IAdministrarClienteService), typeof(AdministrarEmpresaClienteService));
             services.AddScoped(typeof(IAdministrarDistribuidoraService), typeof(AdministrarDistribuidoraService));
             services.AddScoped(typeof(IAdministrarVehiculoService), typeof(AdministrarVehiculoService));
             services.AddScoped(typeof(IAdministrarSucursalesService), typeof(AdministrarSucursalesService));
@@ -81,6 +81,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
             services.AddScoped(typeof(IAdministrarProductoService), typeof(AdministrarProductoService));
             services.AddScoped(typeof(IActualizarStockPorCompraService), typeof(ActualizarStockPorCompraService));
+            
             //Repositorios
             services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
             services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));
@@ -103,6 +104,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IAdministrarRolService), typeof(AdminsitrarRolService));
             services.AddScoped(typeof(IAdministrarConductorService), typeof(AdministrarConductorService));
             services.AddScoped(typeof(IAdministrarResponsableAlmacenService), typeof(AdministrarResponsableAlmacenService));
+            
             //Repositorios
             services.AddScoped(typeof(IResponsableEmpresaRepository), typeof(ResponsableEmpresaRepository));
             services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));

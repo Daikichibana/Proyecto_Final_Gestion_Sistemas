@@ -6,7 +6,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Servicios
 {
-    public class AdministrarEmpresaClienteService : IAdministrarEmpresaClienteService
+    public class AdministrarEmpresaClienteService : IAdministrarClienteService
     {
         IEmpresaClienteRepository _EmpresaClienteRepository;
         IClienteDistribuidoraRepository _ClienteDistribuidoraRepository;
@@ -16,27 +16,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             _EmpresaClienteRepository = EmpresaClienteRepository;
         }
 
-        public EmpresaCliente Actualizar(EmpresaCliente entity)
+        public EmpresaCliente ActualizarCliente(EmpresaCliente entity)
         {
             return _EmpresaClienteRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarCliente(Guid id)
         {
             _EmpresaClienteRepository.Eliminar(id);
         }
 
-        public EmpresaCliente Guardar(EmpresaCliente entity)
+        public EmpresaCliente GuardarCliente(EmpresaCliente entity)
         {
             return _EmpresaClienteRepository.Guardar(entity);
         }
 
-        public EmpresaCliente ObtenerPorId(Guid id)
+        public EmpresaCliente ObtenerPorIdCliente(Guid id)
         {
             return _EmpresaClienteRepository.ObtenerPorId(id);
         }
 
-        public IList<EmpresaCliente> ObtenerTodo()
+        public IList<EmpresaCliente> ObtenerTodoCliente()
         {
             return _EmpresaClienteRepository.ObtenerTodo();
         }

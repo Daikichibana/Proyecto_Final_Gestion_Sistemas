@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
 {
     public interface IAdministrarSucursalesService
     {
-        void Eliminar(Guid id);
-        IList<Sucursales> ObtenerTodo();
-        Sucursales ObtenerPorId(Guid id);
-        Sucursales Guardar(Sucursales entity);
-        Sucursales Actualizar(Sucursales entity);
+        void EliminarSucursales(Guid id);
+        IList<Sucursales> ObtenerTodoSucursales();
+        Sucursales ObtenerPorIdSucursales(Guid id);
+        Sucursales GuardarSucursales(Sucursales entity);
+        Sucursales ActualizarSucursales(Sucursales entity);
     }
 }

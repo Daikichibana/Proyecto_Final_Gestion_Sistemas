@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
 {
     public interface IAdministrarRolService
     {
-        void Eliminar(Guid id);
-        IList<Rol> ObtenerTodo();
-        Rol ObtenerPorId(Guid id);
-        Rol Guardar(Rol entity);
-        Rol Actualizar(Rol entity);
+        void EliminarRol(Guid id);
+        IList<Rol> ObtenerTodoRol();
+        Rol ObtenerPorIdRol(Guid id);
+        Rol GuardarRol(Rol entity);
+        Rol ActualizarRol(Rol entity);
     }
 }

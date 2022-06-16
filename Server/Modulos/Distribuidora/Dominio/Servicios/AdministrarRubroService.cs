@@ -14,27 +14,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             _rubroRepository = rubroRepository;
         }
 
-        public Rubro Actualizar(Rubro entity)
+        public Rubro ActualizarRubro(Rubro entity)
         {
             return _rubroRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarRubro(Guid id)
         {
             _rubroRepository.Eliminar(id);
         }
 
-        public Rubro Guardar(Rubro entity)
+        public Rubro GuardarRubro(Rubro entity)
         {
             return _rubroRepository.Guardar(entity);
         }
 
-        public Rubro ObtenerPorId(Guid id)
+        public Rubro ObtenerPorIdRubro(Guid id)
         {
             return _rubroRepository.ObtenerPorId(id);
         }
 
-        public IList<Rubro> ObtenerTodo()
+        public IList<Rubro> ObtenerTodoRubro()
         {
             return _rubroRepository.ObtenerTodo();
         }

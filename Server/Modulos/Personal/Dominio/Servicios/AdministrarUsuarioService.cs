@@ -28,27 +28,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
             _usuarioRepository = usuarioRepository;
         }
 
-        public Usuario Actualizar(Usuario entity)
+        public Usuario ActualizarUsuario(Usuario entity)
         {
             return _usuarioRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarUsuario(Guid id)
         {
             _usuarioRepository.Eliminar(id);
         }
 
-        public Usuario Guardar(Usuario entity)
+        public Usuario GuardarUsuario(Usuario entity)
         {
             return _usuarioRepository.Guardar(entity);
         }
 
-        public Usuario ObtenerPorId(Guid id)
+        public Usuario ObtenerPorIdUsuario(Guid id)
         {
             return _usuarioRepository.ObtenerPorId(id);
         }
 
-        public IList<Usuario> ObtenerTodo()
+        public IList<Usuario> ObtenerTodoUsuario()
         {
             return _usuarioRepository.ObtenerTodo();
         }

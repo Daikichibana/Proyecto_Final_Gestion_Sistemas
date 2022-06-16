@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
 {
     public interface IGestionarTipoProductoService
     {
-        void Eliminar(Guid id);
-        IList<TipoProducto> ObtenerTodo();
-        TipoProducto ObtenerPorId(Guid id);
-        TipoProducto Guardar(TipoProducto entity);
-        TipoProducto Actualizar(TipoProducto entity);
+        void EliminarTipoProducto(Guid id);
+        IList<TipoProducto> ObtenerTodoTipoProducto();
+        TipoProducto ObtenerPorIdTipoProducto(Guid id);
+        TipoProducto GuardarTipoProducto(TipoProducto entity);
+        TipoProducto ActualizarTipoProducto(TipoProducto entity);
     }
 }

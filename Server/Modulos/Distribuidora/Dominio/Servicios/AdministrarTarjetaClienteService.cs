@@ -14,27 +14,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             _TarjetaClienteRepository = TarjetaClienteRepository;
         }
 
-        public TarjetaCliente Actualizar(TarjetaCliente entity)
+        public TarjetaCliente ActualizarTarjetaCliente(TarjetaCliente entity)
         {
             return _TarjetaClienteRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarTarjetaCliente(Guid id)
         {
             _TarjetaClienteRepository.Eliminar(id);
         }
 
-        public TarjetaCliente Guardar(TarjetaCliente entity)
+        public TarjetaCliente GuardarTarjetaCliente(TarjetaCliente entity)
         {
             return _TarjetaClienteRepository.Guardar(entity);
         }
 
-        public TarjetaCliente ObtenerPorId(Guid id)
+        public TarjetaCliente ObtenerPorIdTarjetaCliente(Guid id)
         {
             return _TarjetaClienteRepository.ObtenerPorId(id);
         }
 
-        public IList<TarjetaCliente> ObtenerTodo()
+        public IList<TarjetaCliente> ObtenerTodoTarjetaCliente()
         {
             return _TarjetaClienteRepository.ObtenerTodo();
         }

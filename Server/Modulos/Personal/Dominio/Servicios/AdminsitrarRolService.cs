@@ -14,27 +14,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
             _rolRepository = rolRepository;
         }
 
-        public Rol Actualizar(Rol entity)
+        public Rol ActualizarRol(Rol entity)
         {
             return _rolRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarRol(Guid id)
         {
             _rolRepository.Eliminar(id);
         }
 
-        public Rol Guardar(Rol entity)
+        public Rol GuardarRol(Rol entity)
         {
             return _rolRepository.Guardar(entity);
         }
 
-        public Rol ObtenerPorId(Guid id)
+        public Rol ObtenerPorIdRol(Guid id)
         {
             return _rolRepository.ObtenerPorId(id);
         }
 
-        public IList<Rol> ObtenerTodo()
+        public IList<Rol> ObtenerTodoRol()
         {
             return _rolRepository.ObtenerTodo();
         }

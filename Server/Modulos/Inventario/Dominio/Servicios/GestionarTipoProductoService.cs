@@ -15,27 +15,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
             _tipoProductoRepository = tipoProductoRepository;
         }
 
-        public TipoProducto Actualizar(TipoProducto entity)
+        public TipoProducto ActualizarTipoProducto(TipoProducto entity)
         {
             return _tipoProductoRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarTipoProducto(Guid id)
         {
             _tipoProductoRepository.Eliminar(id);
         }
 
-        public TipoProducto Guardar(TipoProducto entity)
+        public TipoProducto GuardarTipoProducto(TipoProducto entity)
         {
             return _tipoProductoRepository.Guardar(entity);
         }
 
-        public TipoProducto ObtenerPorId(Guid id)
+        public TipoProducto ObtenerPorIdTipoProducto(Guid id)
         {
             return _tipoProductoRepository.ObtenerPorId(id);
         }
 
-        public IList<TipoProducto> ObtenerTodo()
+        public IList<TipoProducto> ObtenerTodoTipoProducto()
         {
             return _tipoProductoRepository.ObtenerTodo();
         }

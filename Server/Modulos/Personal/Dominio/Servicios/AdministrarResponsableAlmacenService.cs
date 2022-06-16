@@ -13,23 +13,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
         {
             _responsableAlmacenRepository = responsableAlmacenRepository;
         }
-        public ResponsableAlmacen Actualizar(ResponsableAlmacen entity)
+        public ResponsableAlmacen ActualizarResponsableAlmacen(ResponsableAlmacen entity)
         {
             return _responsableAlmacenRepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarResponsableAlmacen(Guid id)
         {
             _responsableAlmacenRepository.Eliminar(id);
         }
-        public ResponsableAlmacen Guardar(ResponsableAlmacen entity)
+        public ResponsableAlmacen GuardarResponsableAlmacen(ResponsableAlmacen entity)
         {
             return _responsableAlmacenRepository.Guardar(entity);
         }
-        public ResponsableAlmacen ObtenerPorId(Guid id)
+        public ResponsableAlmacen ObtenerPorIdResponsableAlmacen(Guid id)
         {
             return _responsableAlmacenRepository.ObtenerPorId(id);
         }
-        public IList<ResponsableAlmacen> ObtenerTodo()
+        public IList<ResponsableAlmacen> ObtenerTodoResponsableAlmacen()
         {
             return _responsableAlmacenRepository.ObtenerTodo();
         }

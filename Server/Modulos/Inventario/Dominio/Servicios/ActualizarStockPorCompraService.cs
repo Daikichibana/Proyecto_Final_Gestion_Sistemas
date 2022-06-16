@@ -17,27 +17,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
             _stockRepository = stockRepository;
         }
 
-        public Stock Actualizar(Stock entity)
+        public Stock ActualizarStock(Stock entity)
         {
             return _stockRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarStock(Guid id)
         {
             _stockRepository.Eliminar(id);
         }
 
-        public Stock Guardar(Stock entity)
+        public Stock GuardarStock(Stock entity)
         {
             return _stockRepository.Guardar(entity);
         }
 
-        public Stock ObtenerPorId(Guid Id)
+        public Stock ObtenerPorIdStock(Guid Id)
         {
             return _stockRepository.ObtenerPorId(Id);
         }
 
-        public IList<Stock> ObtenerTodo()
+        public IList<Stock> ObtenerTodoStock()
         {
             return _stockRepository.ObtenerTodo();
         }

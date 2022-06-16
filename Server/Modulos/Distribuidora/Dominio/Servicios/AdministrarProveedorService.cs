@@ -15,27 +15,27 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             _proveedorRepository = proveedorRepository;
         }
 
-        public EmpresaProveedor Actualizar(EmpresaProveedor entity)
+        public EmpresaProveedor ActualizarProveedor(EmpresaProveedor entity)
         {
             return _proveedorRepository.Actualizar(entity);
         }
 
-        public void Eliminar(Guid id)
+        public void EliminarProveedor(Guid id)
         {
             _proveedorRepository.Eliminar(id);
         }
 
-        public EmpresaProveedor Guardar(EmpresaProveedor entity)
+        public EmpresaProveedor GuardarProveedor(EmpresaProveedor entity)
         {
             return _proveedorRepository.Guardar(entity);
         }
 
-        public EmpresaProveedor ObtenerPorId(Guid id)
+        public EmpresaProveedor ObtenerPorIdProveedor(Guid id)
         {
             return _proveedorRepository.ObtenerPorId(id);
         }
 
-        public IList<EmpresaProveedor> ObtenerTodo()
+        public IList<EmpresaProveedor> ObtenerTodoProveedor()
         {
             return _proveedorRepository.ObtenerTodo();
         }

@@ -4,13 +4,13 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entid
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones
 {
-    public interface IAdministrarEmpresaClienteService
+    public interface IAdministrarClienteService
     {
-        void Eliminar(Guid id);
-        IList<EmpresaCliente> ObtenerTodo();
-        EmpresaCliente ObtenerPorId(Guid id);
-        EmpresaCliente Guardar(EmpresaCliente entity);
-        EmpresaCliente Actualizar(EmpresaCliente entity);
+        void EliminarCliente(Guid id);
+        IList<EmpresaCliente> ObtenerTodoCliente();
+        EmpresaCliente ObtenerPorIdCliente(Guid id);
+        EmpresaCliente GuardarCliente(EmpresaCliente entity);
+        EmpresaCliente ActualizarCliente(EmpresaCliente entity);
         
         IList<ClientesDistribuidora> ObtenerDistribuidorasDeCliente();
         void EliminarDistribuidorasDeCliente(Guid Id);

@@ -15,23 +15,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
             _productoRepository = productoRepository;
         }
 
-        public Producto Actualizar(Producto entity)
+        public Producto ActualizarProducto(Producto entity)
         {
             return _productoRepository.Actualizar(entity);
         }
-        public void Eliminar(Guid id)
+        public void EliminarProducto(Guid id)
         {
             _productoRepository.Eliminar(id);
         }
-        public Producto Guardar(Producto entity)
+        public Producto GuardarProducto(Producto entity)
         {
             return _productoRepository.Guardar(entity);
         }
-        public Producto ObtenerPorId(Guid id)
+        public Producto ObtenerPorIdProducto(Guid id)
         {
             return _productoRepository.ObtenerPorId(id);
         }
-        public IList<Producto> ObtenerTodo()
+        public IList<Producto> ObtenerTodoProducto()
         {
             return _productoRepository.ObtenerTodo();
         }

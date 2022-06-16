@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 { 
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ActualizarStockPorCompraController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 
             try
             {
-                IList<Stock> Stock = _StockService.ObtenerTodo();
+                IList<Stock> Stock = _StockService.ObtenerTodoStock();
                 List<StockDTO> response = new List<StockDTO>();
 
                 foreach (var st in Stock)
@@ -63,7 +63,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             {
                 var nuevoProducto = _mapper.Map<Stock>(_StockDTO);
 
-                var response = _StockService.Guardar(nuevoProducto);
+                var response = _StockService.GuardarStock(nuevoProducto);
 
                 result.Data = _mapper.Map<StockDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -89,7 +89,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             try
             {
                 var nuevoProducto = _mapper.Map<Stock>(_StockDTO);
-                var response = _StockService.Actualizar(nuevoProducto);
+                var response = _StockService.ActualizarStock(nuevoProducto);
 
                 result.Data = _mapper.Map<StockDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -114,7 +114,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 
             try
             {
-                _StockService.Eliminar(id);
+                _StockService.EliminarStock(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";

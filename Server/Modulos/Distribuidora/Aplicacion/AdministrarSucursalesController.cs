@@ -10,18 +10,12 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entid
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarSucursalesController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarSucursalesService _AdministrarSucursalesService;
-        /// <summary>
-        ///  
-        /// </summary>
         public AdministrarSucursalesController(IMapper mapper, IAdministrarSucursalesService administrarSucursalesService)
         {
             _mapper = mapper;
@@ -35,7 +29,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
             try
             {
-                IList<Sucursales> Sucursal = _AdministrarSucursalesService.ObtenerTodo();
+                IList<Sucursales> Sucursal = _AdministrarSucursalesService.ObtenerTodoSucursales();
                 List<SucursalesDTO> response = new List<SucursalesDTO>();
 
                 foreach (var Sucursales in Sucursal)
@@ -58,9 +52,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpPost]
         public IActionResult InsertarSucursal(SucursalesDTO sucursalesDTO)
         {
@@ -71,7 +63,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             {
                 Sucursales nuevaSucursal = _mapper.Map<Sucursales>(sucursalesDTO);
 
-                var response = _AdministrarSucursalesService.Guardar(nuevaSucursal);
+                var response = _AdministrarSucursalesService.GuardarSucursales(nuevaSucursal);
 
                 result.Data = _mapper.Map<SucursalesDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -88,9 +80,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpPut]
         public IActionResult ActualizarSucursal(SucursalesDTO sucursalesDTO)
         {
@@ -99,7 +89,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 Sucursales nuevaSucursal = _mapper.Map<Sucursales>(sucursalesDTO);
-                var response = _AdministrarSucursalesService.Actualizar(nuevaSucursal);
+                var response = _AdministrarSucursalesService.ActualizarSucursales(nuevaSucursal);
 
                 result.Data = _mapper.Map<SucursalesDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -116,6 +106,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
+
         [HttpDelete]
         public IActionResult EliminarSucursal(Guid id)
         {
@@ -123,7 +114,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
             try
             {
-                _AdministrarSucursalesService.Eliminar(id);
+                _AdministrarSucursalesService.EliminarSucursales(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";

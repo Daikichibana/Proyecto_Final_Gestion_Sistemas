@@ -9,33 +9,26 @@ using System.Collections.Generic;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarProveedorController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarProveedorService _administrarProveedorService;
-        /// <summary>
-        ///  
-        /// </summary>
+
         public AdministrarProveedorController(IMapper mapper, IAdministrarProveedorService administrarProveedorService)
         {
             _mapper = mapper;
             _administrarProveedorService = administrarProveedorService;
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpGet]
         public IActionResult ObtenerTodosLosProveedores()
         {
             ServiceResponse<List<EmpresaProveedorDTO>> result = new ServiceResponse<List<EmpresaProveedorDTO>>();
             try
             {
-                var response = _administrarProveedorService.ObtenerTodo();
+                var response = _administrarProveedorService.ObtenerTodoProveedor();
 
                 result.Data = _mapper.Map<List<EmpresaProveedorDTO>>(response);
                 result.Message = "Ok";
@@ -50,9 +43,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpPost]
         public IActionResult InsertarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
         {
@@ -60,7 +51,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 EmpresaProveedor nuevoProveedor = _mapper.Map<EmpresaProveedor>(empresaProveedorDTO);
-                var response = _administrarProveedorService.Guardar(nuevoProveedor);
+                var response = _administrarProveedorService.GuardarProveedor(nuevoProveedor);
 
                 result.Data = _mapper.Map<EmpresaProveedorDTO>(response);
                 result.Message = "Ok";
@@ -75,9 +66,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpPut]
         public IActionResult ActualizarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
         {
@@ -85,7 +74,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             try
             {
                 EmpresaProveedor nuevoProveedor = _mapper.Map<EmpresaProveedor>(empresaProveedorDTO);
-                var response = _administrarProveedorService.Actualizar(nuevoProveedor);
+                var response = _administrarProveedorService.ActualizarProveedor(nuevoProveedor);
 
                 result.Data = _mapper.Map<EmpresaProveedorDTO>(response);
                 result.Message = "Ok";
@@ -100,16 +89,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        /// <summary>
-        ///  
-        /// </summary>
+
         [HttpDelete]
         public IActionResult EliminarProveedor(Guid id)
         {
             ServiceResponse<EmpresaProveedorDTO> result = new ServiceResponse<EmpresaProveedorDTO>();
             try
             {
-                _administrarProveedorService.Eliminar(id);
+                _administrarProveedorService.EliminarProveedor(id);
 
                 result.Data = null;
                 result.Message = "Ok";

@@ -10,28 +10,19 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 {
-    /// <summary>
-    ///  
-    /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdministrarRolesController : ControllerBase
     {
         IMapper _mapper;
         IAdministrarRolService _rolService;
 
-        /// <summary>
-        ///  
-        /// </summary>
         public AdministrarRolesController(IMapper mapper, IAdministrarRolService rolService)
         {
             _mapper = mapper;
             _rolService = rolService;
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpGet]
         public IActionResult ObtenerTodoRoles()
         {
@@ -40,7 +31,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<Rol> roles = _rolService.ObtenerTodo();
+                IList<Rol> roles = _rolService.ObtenerTodoRol();
                 List<RolDTO> response = new List<RolDTO>();
 
                 foreach (var rol in roles)
@@ -64,9 +55,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPost]
         public IActionResult InsertarUsuario(RolDTO _rolDTO)
         {
@@ -77,7 +65,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             {
                 Rol nuevoRol = _mapper.Map<Rol>(_rolDTO);
 
-                var response = _rolService.Guardar(nuevoRol);
+                var response = _rolService.GuardarRol(nuevoRol);
 
                 result.Data = _mapper.Map<RolDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -95,9 +83,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpPut]
         public IActionResult ActualizarUsuario(RolDTO _rolDTO)
         {
@@ -106,7 +91,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             try
             {
                 Rol nuevoRol = _mapper.Map<Rol>(_rolDTO);
-                var response = _rolService.Actualizar(nuevoRol);
+                var response = _rolService.ActualizarRol(nuevoRol);
 
                 result.Data = _mapper.Map<RolDTO>(response);
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -124,9 +109,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
             }
         }
 
-        /// <summary>
-        ///  
-        /// </summary>
         [HttpDelete]
         public IActionResult EliminarUsuario(Guid id)
         {
@@ -134,7 +116,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                _rolService.Eliminar(id);
+                _rolService.EliminarRol(id);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";

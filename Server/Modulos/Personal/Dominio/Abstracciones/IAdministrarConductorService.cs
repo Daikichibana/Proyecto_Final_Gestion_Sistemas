@@ -6,11 +6,11 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
 {
     public interface IAdministrarConductorService
     {
-        void Eliminar(Guid id);
-        IList<Conductor> ObtenerTodo();
-        Conductor ObtenerPorId(Guid id);
-        Conductor Guardar(Conductor entity);
-        Conductor Actualizar(Conductor entity);
+        void EliminarConductor(Guid id);
+        IList<Conductor> ObtenerTodoConductor();
+        Conductor ObtenerPorIdConductor(Guid id);
+        Conductor GuardarConductor(Conductor entity);
+        Conductor ActualizarConductor(Conductor entity);
 
     }
 }

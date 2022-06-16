@@ -6,10 +6,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
 {
     public interface IAdministrarTarjetaClienteService
     {
-        void Eliminar(Guid id);
-        IList<TarjetaCliente> ObtenerTodo();
-        TarjetaCliente ObtenerPorId(Guid id);
-        TarjetaCliente Guardar(TarjetaCliente entity);
-        TarjetaCliente Actualizar(TarjetaCliente entity);
+        void EliminarTarjetaCliente(Guid id);
+        IList<TarjetaCliente> ObtenerTodoTarjetaCliente();
+        TarjetaCliente ObtenerPorIdTarjetaCliente(Guid id);
+        TarjetaCliente GuardarTarjetaCliente(TarjetaCliente entity);
+        TarjetaCliente ActualizarTarjetaCliente(TarjetaCliente entity);
     }
 }
