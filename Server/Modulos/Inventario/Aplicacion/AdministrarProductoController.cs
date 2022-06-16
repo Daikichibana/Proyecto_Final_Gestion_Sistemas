@@ -7,6 +7,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidade
 using Compartido;
 using Compartido.Dto.Inventario;
 using Compartido.Dto.Inventario.General;
+using System.Linq;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 {
@@ -25,18 +26,11 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         [HttpGet]
         public IActionResult ObtenerTodosProductos()
         {
-
             var result = new ServiceResponse<List<ProductoDTO>>();
 
             try
             {
-                IList<Producto> Productos = _productoService.ObtenerTodoProducto();
-                List<ProductoDTO> response = new List<ProductoDTO>();
-
-                foreach (var Producto in Productos)
-                {
-                    response.Add(_mapper.Map<ProductoDTO>(Producto));
-                }
+                var response = _productoService.ObtenerTodoProducto().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -55,7 +49,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult InsertarProducto(ProductoDTO _productoDTO)
+        public IActionResult InsertarProducto(Producto _productoDTO)
         {
 
             var result = new ServiceResponse<ProductoDTO>();
