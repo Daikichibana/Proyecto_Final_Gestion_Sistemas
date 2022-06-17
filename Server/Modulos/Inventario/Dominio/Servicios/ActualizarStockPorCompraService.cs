@@ -1,6 +1,10 @@
-﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracciones;
+﻿using AutoMapper;
+using Compartido.Dto.Inventario.General;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,36 +14,73 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
     public class ActualizarStockPorCompraService : IActualizarStockPorCompraService
     {
         IProductoRepository _productoRepository;
+        ITipoProductoRepository _tipoProductoRepository;
         IStockRepository _stockRepository;
-        public ActualizarStockPorCompraService(IProductoRepository productoRepository, IStockRepository stockRepository)
+        IEmpresaDistribuidoraRepository _distribuidoraRepository;
+        IResponsableEmpresaRepository _responsableDistribuidoraRepository;
+        INITRepository _nitRepository;
+        IRubroRepository _rubroRepository;
+        IUsuarioRepository _usuarioRepository;
+        IMapper _mapper;
+        public ActualizarStockPorCompraService(IMapper mapper, IUsuarioRepository usuarioRepository, IEmpresaDistribuidoraRepository distribuidoraRepository, IResponsableEmpresaRepository responsableEmpresaRepository, INITRepository nITRepository, IRubroRepository rubroRepository, ITipoProductoRepository tipoProductoRepository, IProductoRepository productoRepository, IStockRepository stockRepository)
         {
+            _tipoProductoRepository = tipoProductoRepository;
             _productoRepository = productoRepository;
             _stockRepository = stockRepository;
+            _distribuidoraRepository = distribuidoraRepository;
+            _responsableDistribuidoraRepository = responsableEmpresaRepository;
+            _nitRepository = nITRepository;
+            _rubroRepository = rubroRepository;
+            _usuarioRepository = usuarioRepository;
+            _mapper = mapper;
         }
 
-        public Stock ActualizarStock(Stock entity)
+        public IList<StockDTO> ActualizarStock(IList<StockDTO> entity)
         {
-            return _stockRepository.Actualizar(entity);
+            var result = new List<Stock>();
+            var ListaStock = _mapper.Map<List<Stock>>(entity);
+            
+            foreach (var stock in ListaStock)
+            { 
+                var stockActualizado = _stockRepository.Actualizar(stock);
+                result.Add(stockActualizado);
+            }
+
+            _stockRepository.GuardarCambios();
+
+            return _mapper.Map<List<StockDTO>>(result);
         }
 
-        public void EliminarStock(Guid id)
+        public StockDTO ObtenerPorIdStock(Guid Id)
         {
-            _stockRepository.Eliminar(id);
+            var stock = _stockRepository.ObtenerPorId(Id);
+            stock.Producto = _productoRepository.ObtenerPorId(stock.ProductoId);
+            stock.Producto.EmpresaDistribuidora = _distribuidoraRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidoraId);
+            stock.Producto.EmpresaDistribuidora.NIT = _nitRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.NITId);
+            stock.Producto.EmpresaDistribuidora.Responsable = _responsableDistribuidoraRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.ResponsableId);
+            stock.Producto.EmpresaDistribuidora.Rubro = _rubroRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.RubroId);
+            stock.Producto.EmpresaDistribuidora.Responsable.Usuario = _usuarioRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.Responsable.UsuarioId);
+            stock.Producto.TipoProducto = _tipoProductoRepository.ObtenerPorId(stock.Producto.TipoProductoId);
+
+            return _mapper.Map<StockDTO>(stock);
         }
 
-        public Stock GuardarStock(Stock entity)
+        public IList<StockDTO> ObtenerTodoStock()
         {
-            return _stockRepository.Guardar(entity);
-        }
+            var ListaStock = _stockRepository.ObtenerTodo();
 
-        public Stock ObtenerPorIdStock(Guid Id)
-        {
-            return _stockRepository.ObtenerPorId(Id);
-        }
+            foreach (var stock in ListaStock) 
+            {
+                stock.Producto = _productoRepository.ObtenerPorId(stock.ProductoId);
+                stock.Producto.EmpresaDistribuidora = _distribuidoraRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidoraId);
+                stock.Producto.EmpresaDistribuidora.NIT = _nitRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.NITId);
+                stock.Producto.EmpresaDistribuidora.Responsable = _responsableDistribuidoraRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.ResponsableId);
+                stock.Producto.EmpresaDistribuidora.Rubro = _rubroRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.RubroId);
+                stock.Producto.EmpresaDistribuidora.Responsable.Usuario = _usuarioRepository.ObtenerPorId(stock.Producto.EmpresaDistribuidora.Responsable.UsuarioId);
+                stock.Producto.TipoProducto = _tipoProductoRepository.ObtenerPorId(stock.Producto.TipoProductoId);
+            }
 
-        public IList<Stock> ObtenerTodoStock()
-        {
-            return _stockRepository.ObtenerTodo();
+            return _mapper.Map<List<StockDTO>>(ListaStock);
         }
 
     }

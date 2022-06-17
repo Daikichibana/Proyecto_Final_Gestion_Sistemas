@@ -6,6 +6,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracc
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 { 
@@ -29,13 +30,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 
             try
             {
-                IList<Stock> Stock = _StockService.ObtenerTodoStock();
-                List<StockDTO> response = new List<StockDTO>();
-
-                foreach (var st in Stock)
-                {
-                    response.Add(_mapper.Map<StockDTO>(st));
-                }
+                var response = _StockService.ObtenerTodoStock().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -53,19 +48,17 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             }
         }
 
-        [HttpPost]
-        public IActionResult InsertarStock(StockDTO _StockDTO)
+        [HttpGet]
+        public IActionResult ObtenerPorIdStock(Guid Id)
         {
 
             var result = new ServiceResponse<StockDTO>();
 
             try
             {
-                var nuevoProducto = _mapper.Map<Stock>(_StockDTO);
+                var response = _StockService.ObtenerPorIdStock(Id);
 
-                var response = _StockService.GuardarStock(nuevoProducto);
-
-                result.Data = _mapper.Map<StockDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -82,16 +75,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPut]
-        public IActionResult ActualizarStock(StockDTO _StockDTO)
+        public IActionResult ActualizarStock(List<StockDTO> nuevoStock)
         {
-            var result = new ServiceResponse<StockDTO>();
+            var result = new ServiceResponse<List<StockDTO>>();
 
             try
             {
-                var nuevoProducto = _mapper.Map<Stock>(_StockDTO);
-                var response = _StockService.ActualizarStock(nuevoProducto);
+                var response = _StockService.ActualizarStock(nuevoStock).ToList();
 
-                result.Data = _mapper.Map<StockDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -106,33 +98,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
                 return BadRequest(result);
             }
         }
-
-        [HttpDelete]
-        public IActionResult EliminarStock(Guid id)
-        {
-            var result = new ServiceResponse<StockDTO>();
-
-            try
-            {
-                _StockService.EliminarStock(id);
-
-                result.Data = null;
-                result.Message = "Se ha realizado la operacion correctamente.";
-                result.Success = true;
-
-                return Ok(result);
-
-            }
-            catch (Exception error)
-            {
-                result.Data = null;
-                result.Message = error.Message;
-                result.Success = false;
-
-                return BadRequest(result);
-            }
-        }
-
 
     }
 }
