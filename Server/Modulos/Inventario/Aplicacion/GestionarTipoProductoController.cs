@@ -7,6 +7,8 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Entidade
 using Compartido;
 using Compartido.Dto.Inventario;
 using Compartido.Dto.Inventario.General;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 {
@@ -14,11 +16,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
     [ApiController]
     public class GestionarTipoProductoController : ControllerBase
     {
-        IMapper _mapper;
         IGestionarTipoProductoService _tipoProductoService;
-        public GestionarTipoProductoController(IMapper mapper, IGestionarTipoProductoService tipoProductoService)
+        public GestionarTipoProductoController(IGestionarTipoProductoService tipoProductoService)
         {
-            _mapper = mapper;
             _tipoProductoService = tipoProductoService;
         }
 
@@ -29,13 +29,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
 
             try
             {
-                IList<TipoProducto> TiposProductos = _tipoProductoService.ObtenerTodoTipoProducto();
-                List<TipoProductoDTO> response = new List<TipoProductoDTO>();
-
-                foreach (var TipoProducto in TiposProductos)
-                {
-                    response.Add(_mapper.Map<TipoProductoDTO>(TipoProducto));
-                }
+                var response = _tipoProductoService.ObtenerTodoTipoProducto().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -54,17 +48,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult InsertarTipoProducto(TipoProductoDTO _tipoProductoDTO) {
+        public IActionResult InsertarTipoProducto(List<TipoProductoDTO> tipoProductoDTO) {
 
-            var result = new ServiceResponse<TipoProductoDTO>();
+            var result = new ServiceResponse<List<TipoProductoDTO>>();
 
             try
             {
-                TipoProducto nuevoTipoProducto = _mapper.Map<TipoProducto>(_tipoProductoDTO);
+                var response = _tipoProductoService.GuardarTipoProducto(tipoProductoDTO).ToList();
 
-                var response = _tipoProductoService.GuardarTipoProducto(nuevoTipoProducto);
-
-                result.Data = _mapper.Map<TipoProductoDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -80,16 +72,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPut]
-        public IActionResult ActualizarTipoProducto(TipoProductoDTO tipoProductoDTO)
+        public IActionResult ActualizarTipoProducto(List<TipoProductoDTO> tipoProductoDTO)
         {
-            var result = new ServiceResponse<TipoProductoDTO>();
+            var result = new ServiceResponse<List<TipoProductoDTO>>();
 
             try
             {
-                TipoProducto nuevoTipoProducto = _mapper.Map<TipoProducto>(tipoProductoDTO);
-                var response = _tipoProductoService.ActualizarTipoProducto(nuevoTipoProducto);
+                var response = _tipoProductoService.ActualizarTipoProducto(tipoProductoDTO).ToList();
 
-                result.Data = _mapper.Map<TipoProductoDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -106,7 +97,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpDelete]
-        public IActionResult EliminarTipoProducto(Guid id)
+        public IActionResult EliminarTipoProducto(List<Guid> id)
         {
             var result = new ServiceResponse<TipoProductoDTO>();
 

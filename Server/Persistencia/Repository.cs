@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos;
 
@@ -13,6 +14,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
         T ObtenerPorId(Guid id);
         T Guardar(T entity);
         T Actualizar(T entity);
+        void GuardarCambios();
+
     }
 
     public class Repository<T> : IRepository<T> where T : class, IEntity
@@ -33,13 +36,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
             if (tmp != null)
             {
                 _tabla.Remove(tmp);
-                _ctx.SaveChanges();
+                //_ctx.SaveChanges();
             }
         }
 
         public IList<T> ObtenerTodo()
         {
-            return _tabla.ToList();
+            return _tabla.AsNoTracking().ToList();
         }
 
         public T ObtenerPorId(Guid id)
@@ -50,18 +53,20 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
         public T Guardar(T entity)
         {
             _tabla.Add(entity);
-            _ctx.SaveChanges();
+            //_ctx.SaveChanges();
             return entity;
         }
 
         public T Actualizar(T entity)
         {
-
             _tabla.Update(entity);
-
-            _ctx.SaveChanges();
-
+            //_ctx.SaveChanges();
             return entity;
+        }
+
+        public void GuardarCambios()
+        {
+            _ctx.SaveChanges();
         }
     }
 }

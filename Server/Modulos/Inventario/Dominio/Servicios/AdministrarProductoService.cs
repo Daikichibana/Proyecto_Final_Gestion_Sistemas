@@ -21,10 +21,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
         IResponsableEmpresaRepository _responsableEmpresaRepository;
         IRubroRepository _rubroRepository;
         IUsuarioRepository _usuarioRepository;
+        IStockRepository _stockRepository;
         IMapper _mapper;
-        public AdministrarProductoService(IMapper mapper, IUsuarioRepository usuarioRepository, IRubroRepository rubroRepository, IResponsableEmpresaRepository responsableEmpresaRepository, INITRepository nitRepository, IEmpresaDistribuidoraRepository distribuidoraRepository, ITipoProductoRepository tipoProductoRepository, IProductoRepository productoRepository)
+        public AdministrarProductoService(IMapper mapper,IStockRepository stockRepository, IUsuarioRepository usuarioRepository, IRubroRepository rubroRepository, IResponsableEmpresaRepository responsableEmpresaRepository, INITRepository nitRepository, IEmpresaDistribuidoraRepository distribuidoraRepository, ITipoProductoRepository tipoProductoRepository, IProductoRepository productoRepository)
         {
             _mapper = mapper;
+            _stockRepository = stockRepository;
             _usuarioRepository = usuarioRepository;
             _rubroRepository = rubroRepository;
             _nitRepository = nitRepository;
@@ -34,19 +36,67 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
             _productoRepository = productoRepository;
         }
 
-        public ProductoDTO ActualizarProducto(ProductoDTO entity)
+        public IList<ProductoDTO> ActualizarProducto(IList<ProductoDTO> entity)
         {
-            var producto = _mapper.Map<Producto>(entity);
-            return _mapper.Map<ProductoDTO>(_productoRepository.Actualizar(producto));
+            var productos = _mapper.Map<List<Producto>>(entity);
+            var productosActualizados = new List<Producto>();
+
+            foreach (var producto in productos)
+            {
+                var ProductoExistente = _productoRepository.ObtenerTodo().Where(p => p.Nombre.Equals(producto.Nombre)).ToList();
+
+                if (ProductoExistente.Count > 0)
+                    if (!ProductoExistente.FirstOrDefault().Id.Equals(producto.Id))
+                        throw new Exception("Ya existe otro producto con el mismo nombre.");
+
+                var productoActualizado = _productoRepository.Actualizar(producto);
+                productosActualizados.Add(productoActualizado);
+            }
+
+            _productoRepository.GuardarCambios();
+            return _mapper.Map<List<ProductoDTO>>(productosActualizados);
         }
-        public void EliminarProducto(Guid id)
+        public void EliminarProducto(List<Guid> id)
         {
-            _productoRepository.Eliminar(id);
+            foreach (var idProducto in id)
+            {
+                var stock = _stockRepository.ObtenerTodo().Where(p => p.ProductoId.Equals(idProducto)).FirstOrDefault();
+                if (stock != null)
+                {
+                    _stockRepository.Eliminar(stock.Id);
+                }
+                _productoRepository.Eliminar(idProducto);
+            }
+
+            _stockRepository.GuardarCambios();
+            _productoRepository.GuardarCambios();
         }
-        public ProductoDTO GuardarProducto(ProductoDTO entity)
+        public IList<ProductoDTO> GuardarProducto(IList<ProductoDTO> entity)
         {
-            var producto = _mapper.Map<Producto>(entity);
-            return _mapper.Map<ProductoDTO>(_productoRepository.Guardar(producto));
+            var productos = _mapper.Map<List<Producto>>(entity);
+            var productosRegistrados = new List<Producto>();
+            foreach (var producto in productos)
+            {
+                var productoExistente = _productoRepository.ObtenerTodo().Where(p => p.Nombre.Equals(producto.Nombre)).ToList();
+
+                if (productoExistente.Count > 0)
+                    throw new Exception("Un producto con el mismo nombre ya se encuentra registrado.");
+
+                var productoRegistrado = _productoRepository.Guardar(producto);
+                productosRegistrados.Add(productoRegistrado);
+
+                Stock nuevoStock = new Stock(producto, 0, 0, 0, 0, 0, productoRegistrado.Id);
+
+                if (nuevoStock.Producto == null || nuevoStock.ProductoId == Guid.Empty)
+                    throw new Exception("No se puede registrar el stock por que faltan datos del producto.");
+
+                _stockRepository.Guardar(nuevoStock);
+            }
+
+            _productoRepository.GuardarCambios();
+            _stockRepository.GuardarCambios();
+            
+            return _mapper.Map<List<ProductoDTO>>(productosRegistrados);
         }
         public ProductoDTO ObtenerPorIdProducto(Guid id)
         {
@@ -74,6 +124,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
                 item.EmpresaDistribuidora.Rubro = _rubroRepository.ObtenerPorId(item.EmpresaDistribuidora.RubroId);
                 item.TipoProducto = _tipoProductoRepository.ObtenerPorId(item.TipoProductoId);
             }
+            
             return _mapper.Map<IList<ProductoDTO>>(producto);
         }
     }

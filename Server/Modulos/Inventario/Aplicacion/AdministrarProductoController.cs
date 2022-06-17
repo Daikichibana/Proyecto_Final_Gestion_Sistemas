@@ -47,14 +47,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult InsertarProducto(ProductoDTO productoDTO)
+        public IActionResult InsertarProducto(List<ProductoDTO> productoDTO)
         {
 
-            var result = new ServiceResponse<ProductoDTO>();
+            var result = new ServiceResponse<List<ProductoDTO>>();
 
             try
             {
-                var response = _productoService.GuardarProducto(productoDTO);
+                var response = _productoService.GuardarProducto(productoDTO).ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -73,13 +73,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpPut]
-        public IActionResult ActualizarProducto(ProductoDTO ProductoDTO)
+        public IActionResult ActualizarProducto(List<ProductoDTO> ProductoDTO)
         {
-            var result = new ServiceResponse<ProductoDTO>();
+            var result = new ServiceResponse<List<ProductoDTO>>();
 
             try
             {
-                var response = _productoService.ActualizarProducto(ProductoDTO);
+                var response = _productoService.ActualizarProducto(ProductoDTO).ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -98,7 +98,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpDelete]
-        public IActionResult EliminarProducto(Guid id)
+        public IActionResult EliminarProducto(List<Guid> id)
         {
             var result = new ServiceResponse<ProductoDTO>();
 
