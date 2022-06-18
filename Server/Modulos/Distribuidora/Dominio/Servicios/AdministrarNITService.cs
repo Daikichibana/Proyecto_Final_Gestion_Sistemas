@@ -14,9 +14,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         UnidadDeTrabajo _unidadDeTrabajo;
         IMapper _mapper;
 
-        public AdministrarNITService (IMapper mapper, UnidadDeTrabajo unidadDeTrabajo)
+        public AdministrarNITService (IMapper mapper, BaseDatosContext contexto)
         {
-            _unidadDeTrabajo = unidadDeTrabajo;
+            _unidadDeTrabajo = new UnidadDeTrabajo(contexto);
             _mapper = mapper;
         }
         public NITDTO ActualizarNIT(NITDTO entity)

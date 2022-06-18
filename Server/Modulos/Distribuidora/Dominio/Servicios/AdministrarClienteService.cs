@@ -15,9 +15,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
     {
         UnidadDeTrabajo _unidadDeTrabajo;
         IMapper _mapper;
-        public AdministrarEmpresaClienteService(IMapper mapper, UnidadDeTrabajo unidadDeTrabajo)
+        public AdministrarEmpresaClienteService(IMapper mapper, BaseDatosContext context)
         {
-            _unidadDeTrabajo = unidadDeTrabajo;
+            _unidadDeTrabajo = new UnidadDeTrabajo(context);
             _mapper = mapper;
         }
 

@@ -16,9 +16,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         UnidadDeTrabajo _unidadDeTrabajo;
         IMapper _mapper;
 
-        public AdministrarDistribuidoraService(IMapper mapper, UnidadDeTrabajo unidadDeTrabajo)
+        public AdministrarDistribuidoraService(IMapper mapper, BaseDatosContext contexto)
         {
-            _unidadDeTrabajo = unidadDeTrabajo;
+            _unidadDeTrabajo = new UnidadDeTrabajo(contexto);
             _mapper = mapper;
         }
         public EmpresaDistribuidoraDTO ActualizarDistribuidora(EmpresaDistribuidoraDTO entity)

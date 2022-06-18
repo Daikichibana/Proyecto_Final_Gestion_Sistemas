@@ -16,10 +16,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         IMapper _mapper;
         UnidadDeTrabajo _unidadDeTrabajo;
 
-        public AdministrarProveedorService(IMapper mapper, UnidadDeTrabajo unidadDeTrabajo)
+        public AdministrarProveedorService(IMapper mapper, BaseDatosContext context)
         {
             _mapper = mapper;
-            _unidadDeTrabajo = unidadDeTrabajo;
+            _unidadDeTrabajo = new UnidadDeTrabajo(context);
 
             
         }
