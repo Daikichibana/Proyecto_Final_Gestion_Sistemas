@@ -2,16 +2,48 @@
 
 <div class="page">
 
+    @*
     <div class="sidebar">
-        <NavMenu />
+    <NavMenu />
     </div>
+    *@
+
 
     <div class="main">
+        @*
         <div class="top-row px-4">
         </div>
+        *@
+        <nav class="navbar navbar-dark bg-dark">
 
+            <a class="navbar-brand" href="/">
+                <img src="https://cdn-icons-png.flaticon.com/512/3649/3649204.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Sistema de pedido
+            </a>
+
+            <form class="form-inline">
+                <AuthorizeView>
+                    <Authorized>   
+                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" >Cerrar Sesion</button>
+                    </Authorized>
+                    <NotAuthorized>
+                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" >Registrarse</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" >Iniciar Sesion</button>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </form>
+
+        </nav>
         <div class="content px-4">
             @Body
         </div>
     </div>
 </div>
+
+@code {
+
+    public void Redireccionar(string direccion)
+    {
+        
+    }
+}
