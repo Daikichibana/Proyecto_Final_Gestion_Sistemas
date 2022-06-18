@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Distribuidora;
@@ -14,24 +15,22 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarNITController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarNITService _NITService;
 
-        public AdministrarNITController(IMapper mapper, IAdministrarNITService nITService)
+        public AdministrarNITController(IAdministrarNITService nITService)
         {
-            _mapper = mapper;
             _NITService = nITService;
         }
 
         [HttpGet]
         public IActionResult ObtenerTodosLosNIT()
         {
-            ServiceResponse<List<NITDTO>> result = new ServiceResponse<List<NITDTO>>();
+            var result = new ServiceResponse<List<NITDTO>>();
             try
             {
-                var response = _NITService.ObtenerTodoNIT();
+                var response = _NITService.ObtenerTodoNIT().ToList();
 
-                result.Data = _mapper.Map<List<NITDTO>>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -47,13 +46,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpPost]
         public IActionResult InsertarNIT(NITDTO _NITDTO)
         {
-            ServiceResponse<NITDTO> result = new ServiceResponse<NITDTO>();
+            var result = new ServiceResponse<NITDTO>();
             try
             {
-                NIT nuevoNIT = _mapper.Map<NIT>(_NITDTO);
-                var response = _NITService.GuardarNIT(nuevoNIT);
-
-                result.Data = _mapper.Map<NITDTO>(response);
+                var response = _NITService.GuardarNIT(_NITDTO);
+                                
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -69,13 +67,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpPut]
         public IActionResult ActualizarNIT(NITDTO NITDTO)
         {
-            ServiceResponse<NITDTO> result = new ServiceResponse<NITDTO>();
+            var result = new ServiceResponse<NITDTO>();
             try
             {
-                NIT nuevoNIT = _mapper.Map<NIT>(NITDTO);
-                var response = _NITService.ActualizarNIT(nuevoNIT);
+                var response = _NITService.ActualizarNIT(NITDTO);
 
-                result.Data = _mapper.Map<NITDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -91,7 +88,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpDelete]
         public IActionResult EliminarNIT(Guid id)
         {
-            ServiceResponse<NITDTO> result = new ServiceResponse<NITDTO>();
+            var result = new ServiceResponse<NITDTO>();
             try
             {
                 _NITService.EliminarNIT(id);

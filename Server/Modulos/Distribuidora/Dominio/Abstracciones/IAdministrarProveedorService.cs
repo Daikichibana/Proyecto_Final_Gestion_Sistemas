@@ -1,4 +1,5 @@
-﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
+﻿using Compartido.Dto.Distribuidora.General;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 
@@ -7,9 +8,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
     public interface IAdministrarProveedorService
     {
         void EliminarProveedor(Guid id);
-        IList<EmpresaProveedor> ObtenerTodoProveedor();
-        EmpresaProveedor ObtenerPorIdProveedor(Guid id);
-        EmpresaProveedor GuardarProveedor(EmpresaProveedor entity);
-        EmpresaProveedor ActualizarProveedor(EmpresaProveedor entity);
+        IList<EmpresaProveedorDTO> ObtenerTodoProveedor();
+        EmpresaProveedorDTO ObtenerPorIdProveedor(Guid id);
+        List<EmpresaProveedorDTO> GuardarProveedor(List<EmpresaProveedorDTO> entity);
+        List<EmpresaProveedorDTO> ActualizarProveedor(List<EmpresaProveedorDTO> entity);
     }
 }
