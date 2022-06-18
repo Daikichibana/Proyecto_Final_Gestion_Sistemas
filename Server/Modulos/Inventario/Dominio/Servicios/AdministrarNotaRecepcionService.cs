@@ -1,5 +1,7 @@
-﻿using Compartido.Dto.Inventario.General;
+﻿using AutoMapper;
+using Compartido.Dto.Inventario.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abstracciones;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Tecnica;
 using System;
 using System.Collections.Generic;
 
@@ -7,17 +9,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
 {
     public class AdministrarNotaRecepcionService : IAdministrarNotaRecepcionService
     {
-        public NotaRecepcionDTO ActualizarNotaRecepcion(NotaRecepcionDTO entity)
-        {
-            throw new NotImplementedException();
+        INotaRecepcionRepository _notaRecepcionRepository;
+        IMapper _mapper;
+        public AdministrarNotaRecepcionService(INotaRecepcionRepository notaRecepcionRepository, IMapper mapper) {
+            _notaRecepcionRepository = notaRecepcionRepository;
+            _mapper = mapper;
         }
 
-        public void EliminarNotaRecepcion(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public NotaRecepcionDTO GuardarNotaRecepcion(NotaRecepcionDTO entity)
+        public IList<NotaRecepcionDTO> GuardarNotaRecepcion(IList<NotaRecepcionDTO> entity)
         {
             throw new NotImplementedException();
         }

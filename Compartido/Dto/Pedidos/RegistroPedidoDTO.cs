@@ -9,7 +9,16 @@ namespace Compartido.Dto.Pedidos
 {
     public class RegistroPedidoDTO
     {
-        public OrdenPedidoDTO Orden { get; set; }
-        public List<DetalleOrdenPedidoDTO> ProductoCarrito { get; set; }
+        public Guid Id { get; set; }
+        public bool DeseaFactura { get; set; }
+        public bool PedidoConfirmado { get; set; }
+        public string AclaracionCliente { get; set; }
+        public string AclaracionDistribuidor { get; set; }
+        public string MetodoPago { get; set; }
+        public byte[] CodigoQR { get; set; }
+
+        public Guid EmpresaClienteId { get; set; }
+        public Guid EmpresaDistribuidoraId { get; set; }
+        public List<RegistroPedidoDetalleDTO> DetallesOrdenes { get; set; }
     }
 }

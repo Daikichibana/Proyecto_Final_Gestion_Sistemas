@@ -1,7 +1,11 @@
-﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio;
+﻿using AutoMapper;
+using Compartido.Dto.Pedidos;
+using Compartido.Dto.Pedidos.General;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,190 +14,177 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
 {
     public class AdministrarPedidoService : IAdministrarPedidoService
     {
-        IPedidoRepository _pedidoRepository;
-        IOrdenPedidoRepository _ordenPedidoRepository;
-        IDetalleOrdenPedidoRepository _DetalleOrdenPedidoRepository;
-
-        public AdministrarPedidoService(IPedidoRepository pedidoRepository, IDetalleOrdenPedidoRepository DetalleOrdenPedidoRepository, IOrdenPedidoRepository ordenPedidoRepository)
+        IMapper _mapper;
+        UnidadDeTrabajo _unidad;
+        BaseDatosContext _contexto;
+        public AdministrarPedidoService(IMapper mapper, BaseDatosContext contexto)
         {
-            _pedidoRepository = pedidoRepository;
-            _ordenPedidoRepository = ordenPedidoRepository;
-            _DetalleOrdenPedidoRepository = DetalleOrdenPedidoRepository;
-        }
-
-        public Pedido ActualizarPedido(Pedido entity)
-        {
-            return _pedidoRepository.Actualizar(entity);
-        }
-
-        public DetalleOrdenPedido ActualizarDetalleOrdenPedido(DetalleOrdenPedido entity)
-        {
-            return _DetalleOrdenPedidoRepository.Actualizar(entity);
-        }
-
-        public OrdenPedido ActualizarOrdenPedido(OrdenPedido entity)
-        {
-            return _ordenPedidoRepository.Actualizar(entity);
+            _mapper = mapper;
+            _contexto = contexto;
+            _unidad = new UnidadDeTrabajo(_contexto);
         }
 
         public void EliminarPedido(Guid id)
         {
-            _pedidoRepository.Eliminar(id);
+            _unidad.pedidoRepository.Eliminar(id);
+            _unidad.Complete();
         }
-
-        public void EliminarDetalleOrdenPedido(Guid id)
-        {
-            _DetalleOrdenPedidoRepository.Eliminar(id);
-        }
-
         public void EliminarOrdenPedido(Guid id)
         {
-            _ordenPedidoRepository.Eliminar(id);
+            _unidad.ordenPedidoRepository.Eliminar(id);
+            _unidad.Complete();
         }
 
-        public Pedido GuardarPedido(Pedido entity)
+        public PedidoDTO ObtenerPorIdPedido(Guid id)
         {
-            return _pedidoRepository.Guardar(entity);
+            return _mapper.Map<PedidoDTO>(_unidad.pedidoRepository.ObtenerPorId(id));
         }
 
-        public DetalleOrdenPedido GuardarDetalleOrdenPedido(DetalleOrdenPedido entity)
+        public OrdenPedidoDTO ObtenerPorIdOrdenPedido(Guid id)
         {
-            return _DetalleOrdenPedidoRepository.Guardar(entity);
+            return _mapper.Map<OrdenPedidoDTO>(_unidad.ordenPedidoRepository.ObtenerPorId(id));
         }
 
-        public OrdenPedido GuardarOrdenPedido(OrdenPedido entity)
+        public List<OrdenPedidoDTO> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id)
         {
-            return _ordenPedidoRepository.Guardar(entity);
-        }
-
-        public Pedido ObtenerPorIdPedido(Guid id)
-        {
-            return _pedidoRepository.ObtenerPorId(id);
-        }
-
-        public DetalleOrdenPedido ObtenerPorIdDetalleOrdenPedido(Guid id)
-        {
-            return _DetalleOrdenPedidoRepository.ObtenerPorId(id);
-        }
-
-        public OrdenPedido ObtenerPorIdOrdenPedido(Guid id)
-        {
-            return _ordenPedidoRepository.ObtenerPorId(id);
-        }
-
-        public IList<Pedido> ObtenerTodoPedido()
-        {
-            return _pedidoRepository.ObtenerTodo();
-        }
-
-        public IList<DetalleOrdenPedido> ObtenerTodoDetalleOrdenPedido()
-        {
-            return _DetalleOrdenPedidoRepository.ObtenerTodo();
-        }
-
-        public IList<OrdenPedido> ObtenerTodoOrdenPedido()
-        {
-            return _ordenPedidoRepository.ObtenerTodo();
-        }
-        
-        public List<OrdenPedido> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id)
-        {
-            List<OrdenPedido> listaOrdenPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaDistribuidoraId.Equals(Id)).ToList();
-            List<OrdenPedido> result = new List<OrdenPedido>();
+            var listaOrdenPedido = _unidad.ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaDistribuidoraId.Equals(Id));
 
             foreach (var orden in listaOrdenPedido)
             {
-                var pedidoConfirmado = _pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
+                orden.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(orden.EmpresaClienteId);
+                orden.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(orden.EmpresaCliente.NITId);
+                orden.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(orden.EmpresaCliente.ResponsableId);
+                orden.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(orden.EmpresaCliente.RubroId);
+                orden.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(orden.EmpresaCliente.Responsable.UsuarioId);
 
-                if (pedidoConfirmado.Count == 0)
-                {
-                    result.Add(orden);
-                }
+                orden.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(orden.EmpresaDistribuidoraId);
+                orden.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(orden.EmpresaDistribuidora.NITId);
+                orden.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(orden.EmpresaDistribuidora.ResponsableId);
+                orden.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(orden.EmpresaDistribuidora.RubroId);
+                orden.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(orden.EmpresaDistribuidora.Responsable.UsuarioId);
             }
+
+            return _mapper.Map<List<OrdenPedidoDTO>>(listaOrdenPedido);
+        }
+
+        public List<OrdenPedidoDTO> ObtenerOrdenesPedidosClientePorId(Guid Id)
+        {
+            List<OrdenPedido> listaOrdenPedido = _unidad.ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaClienteId.Equals(Id)).ToList();
             
-            return result;
-        }
-
-        public List<OrdenPedido> ObtenerOrdenesPedidosClientePorId(Guid Id)
-        {
-            List<OrdenPedido> listaOrdenPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaClienteId.Equals(Id)).ToList();
-            List<OrdenPedido> result = new List<OrdenPedido>();
-
             foreach (var orden in listaOrdenPedido)
             {
-                var pedidoConfirmado = _pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
+                orden.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(orden.EmpresaClienteId);
+                orden.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(orden.EmpresaCliente.NITId);
+                orden.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(orden.EmpresaCliente.ResponsableId);
+                orden.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(orden.EmpresaCliente.RubroId);
+                orden.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(orden.EmpresaCliente.Responsable.UsuarioId);
 
-                if (pedidoConfirmado.Count == 0)
-                {
-                    result.Add(orden);
-                }
+                orden.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(orden.EmpresaDistribuidoraId);
+                orden.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(orden.EmpresaDistribuidora.NITId);
+                orden.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(orden.EmpresaDistribuidora.ResponsableId);
+                orden.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(orden.EmpresaDistribuidora.RubroId);
+                orden.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(orden.EmpresaDistribuidora.Responsable.UsuarioId);
+            
             }
 
-            return result;
+            return _mapper.Map<List<OrdenPedidoDTO>>(listaOrdenPedido);
         }
 
-        public List<Pedido> ObtenerPedidosDistribuidoraPorId(Guid Id)
+        public List<PedidoDTO> ObtenerPedidosDistribuidoraPorId(Guid Id)
         {
-            List<OrdenPedido> ordenesPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaDistribuidoraId.Equals(Id)).ToList();
-            List<Pedido> pedidosEmpresa = _pedidoRepository.ObtenerTodo().ToList();
+            List<OrdenPedido> ordenesPedido = _unidad.ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaDistribuidoraId.Equals(Id)).ToList();
             List<Pedido> resultado = new List<Pedido>();
 
-            foreach (var pedido in pedidosEmpresa)
+            foreach (var orden in ordenesPedido)
             {
-                if (ordenesPedido.Contains(pedido.OrdenPedido))
-                { 
-                    resultado.Add(pedido);
+                var pedido = _unidad.pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).FirstOrDefault();
+                
+                pedido.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(pedido.OrdenPedidoId);
+                pedido.OrdenPedido.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaClienteId);
+                pedido.OrdenPedido.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.NITId);
+                pedido.OrdenPedido.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.ResponsableId);
+                pedido.OrdenPedido.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.RubroId);
+                pedido.OrdenPedido.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.Responsable.UsuarioId);
+                pedido.OrdenPedido.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidoraId);
+                pedido.OrdenPedido.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.NITId);
+                pedido.OrdenPedido.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.ResponsableId);
+                pedido.OrdenPedido.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.RubroId);
+                pedido.OrdenPedido.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.Responsable.UsuarioId);
+
+                if (pedido.ConductorAsignadoId != null) {
+                    pedido.ConductorAsignado = _unidad.asignacionVechiculoConductorRepository.ObtenerPorId(pedido.ConductorAsignadoId);
+                    pedido.ConductorAsignado.Conductor = _unidad.conductorRepository.ObtenerPorId(pedido.ConductorAsignado.ConductorId);
+                    pedido.ConductorAsignado.Vechiculo = _unidad.vechiculoRepository.ObtenerPorId(pedido.ConductorAsignado.VechiculoId);
+                    pedido.ConductorAsignado.Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.ConductorAsignado.Conductor.UsuarioId);
                 }
+                resultado.Add(pedido);
             }
 
-            return resultado;
+            return _mapper.Map<List<PedidoDTO>>(resultado);
         }
 
-        public List<Pedido> ObtenerPedidosClientePorId(Guid Id)
+        public List<PedidoDTO> ObtenerPedidosClientePorId(Guid Id)
         {
-            List<OrdenPedido> ordenesPedido = _ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaClienteId.Equals(Id)).ToList();
-            List<Pedido> pedidosEmpresa = _pedidoRepository.ObtenerTodo().ToList();
+            List<OrdenPedido> ordenesPedido = _unidad.ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaClienteId.Equals(Id)).ToList();
             List<Pedido> resultado = new List<Pedido>();
 
-            foreach (var pedido in pedidosEmpresa)
+            foreach (var orden in ordenesPedido)
             {
-                if (ordenesPedido.Contains(pedido.OrdenPedido))
+                var pedido = _unidad.pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).FirstOrDefault();
+
+                pedido.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(pedido.OrdenPedidoId);
+                pedido.OrdenPedido.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaClienteId);
+                pedido.OrdenPedido.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.NITId);
+                pedido.OrdenPedido.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.ResponsableId);
+                pedido.OrdenPedido.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.RubroId);
+                pedido.OrdenPedido.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.Responsable.UsuarioId);
+                pedido.OrdenPedido.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidoraId);
+                pedido.OrdenPedido.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.NITId);
+                pedido.OrdenPedido.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.ResponsableId);
+                pedido.OrdenPedido.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.RubroId);
+                pedido.OrdenPedido.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.Responsable.UsuarioId);
+
+                if (pedido.ConductorAsignadoId != null)
                 {
-                    resultado.Add(pedido);
+                    pedido.ConductorAsignado = _unidad.asignacionVechiculoConductorRepository.ObtenerPorId(pedido.ConductorAsignadoId);
+                    pedido.ConductorAsignado.Conductor = _unidad.conductorRepository.ObtenerPorId(pedido.ConductorAsignado.ConductorId);
+                    pedido.ConductorAsignado.Vechiculo = _unidad.vechiculoRepository.ObtenerPorId(pedido.ConductorAsignado.VechiculoId);
+                    pedido.ConductorAsignado.Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.ConductorAsignado.Conductor.UsuarioId);
                 }
+                resultado.Add(pedido);
             }
 
-            return resultado;
+            return _mapper.Map<List<PedidoDTO>>(resultado);
         }
 
-        public void ConfirmarOrdenPedido(Guid Id, bool aceptado)
+        public void ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmarPedidoDTO)
         {
-            OrdenPedido orden = _ordenPedidoRepository.ObtenerPorId(Id);
-            List<DetalleOrdenPedido> listaDetalle = _DetalleOrdenPedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
+            Guid Id = confirmarPedidoDTO.Id;
+            bool aceptado = confirmarPedidoDTO.Aceptado;
+
+            OrdenPedido orden = _unidad.ordenPedidoRepository.ObtenerPorId(Id);
+            List<DetalleOrdenPedido> listaDetalle = _unidad.detalleOrdenPedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
             if (orden != null && aceptado)
             {
                 orden.PedidoConfirmado = true;
-                Pedido pedido = new Pedido(orden, null, "Entrega No Asignada", "No pagado", orden.Id, null);
+                Pedido pedido = new Pedido(null, null, "Entrega No Asignada", "No pagado", orden.Id, null);
 
-                _pedidoRepository.Guardar(pedido);
+                _unidad.pedidoRepository.Guardar(pedido);
+                orden.PedidoConfirmado = true;
+                _unidad.ordenPedidoRepository.Actualizar(orden);
             }
             else if(orden != null && !aceptado)
             {
                 foreach (var detalle in listaDetalle) 
                 {
-                    _DetalleOrdenPedidoRepository.Eliminar(detalle.Id);
+                    _unidad.detalleOrdenPedidoRepository.Eliminar(detalle.Id);
                 }
 
-                _ordenPedidoRepository.Eliminar(orden.Id);
+                _unidad.ordenPedidoRepository.Eliminar(orden.Id);
             }
+
+            _unidad.Complete();
         }
-
-        public OrdenPedido ObtenerOrdenesPedidosPorId(Guid Id)
-        {
-            return _ordenPedidoRepository.ObtenerPorId(Id);
-        }
-
-
 
     }
 }

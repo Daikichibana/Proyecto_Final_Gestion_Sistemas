@@ -10,6 +10,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
         void EliminarProducto(List<Guid> id);
         IList<ProductoDTO> ObtenerTodoProducto();
         ProductoDTO ObtenerPorIdProducto(Guid id);
+        IList<ProductoDTO> ObtenerTodoProductoPorIdEmpresa(Guid IdEmpresa);
         IList<ProductoDTO> GuardarProducto(IList<ProductoDTO> entity);
         IList<ProductoDTO> ActualizarProducto(IList<ProductoDTO> entity);
     }

@@ -14,13 +14,11 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
     public class GestionarTipoProductoService : IGestionarTipoProductoService
     {
         IMapper _mapper;
-        ITipoProductoRepository _tipoProductoRepository;
-        IProductoRepository _productoRepository;
-        public GestionarTipoProductoService(IMapper mapper, ITipoProductoRepository tipoProductoRepository, IProductoRepository productoRepository)
+        UnidadDeTrabajo _unidad;
+        public GestionarTipoProductoService(IMapper mapper, BaseDatosContext context)
         {
             _mapper = mapper;
-            _tipoProductoRepository = tipoProductoRepository;
-            _productoRepository = productoRepository;
+            _unidad = new UnidadDeTrabajo(context);
         }
 
         public IList<TipoProductoDTO> ActualizarTipoProducto(IList<TipoProductoDTO> entity)
@@ -30,7 +28,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
 
             foreach (var tipoProducto in tipoProductos)
             {
-                var tipoProductoExistente = _tipoProductoRepository.ObtenerTodo().Where(p => p.Nombre.Equals(tipoProducto.Nombre)).ToList();
+                var tipoProductoExistente = _unidad.tipoProductoRepository.ObtenerTodo().Where(p => p.Nombre.Equals(tipoProducto.Nombre)).ToList();
 
                 if (tipoProductoExistente.Count > 0)
                 {
@@ -38,10 +36,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
                         throw new Exception("El tipo de producto ya se encuentra registrado.");
                 }
 
-                result.Add(_tipoProductoRepository.Actualizar(tipoProducto));
+                result.Add(_unidad.tipoProductoRepository.Actualizar(tipoProducto));
             }
 
-            _tipoProductoRepository.GuardarCambios();
+            _unidad.tipoProductoRepository.GuardarCambios();
 
             return _mapper.Map<List<TipoProductoDTO>>(result);
         }
@@ -50,15 +48,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
         {
             foreach (var idTipoProducto in id)
             {
-                var productoExistente = _productoRepository.ObtenerTodo().Where(p => p.Id.Equals(idTipoProducto)).ToList();
+                var productoExistente = _unidad.productoRepository.ObtenerTodo().Where(p => p.Id.Equals(idTipoProducto)).ToList();
 
                 if (productoExistente.Count > 0)
                     throw new Exception("El tipo de producto no puede ser eliminado ya que tiene asociado uno o mas productos.");
 
-                _tipoProductoRepository.Eliminar(idTipoProducto);
+                _unidad.tipoProductoRepository.Eliminar(idTipoProducto);
             }
 
-            _tipoProductoRepository.GuardarCambios();
+            _unidad.Complete();
         }
 
         public IList<TipoProductoDTO> GuardarTipoProducto(IList<TipoProductoDTO> entity)
@@ -68,29 +66,29 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
 
             foreach (var tipoProducto in tipoProductos)
             {
-                var tipoProductoExistente = _tipoProductoRepository.ObtenerTodo().Where(p => p.Nombre.Equals(tipoProducto.Nombre)).ToList();
+                var tipoProductoExistente = _unidad.tipoProductoRepository.ObtenerTodo().Where(p => p.Nombre.Equals(tipoProducto.Nombre)).ToList();
 
                 if (tipoProductoExistente.Count > 0)
                 {
                     throw new Exception("El tipo de producto ya se encuentra registrado.");
                 }
 
-                result.Add(_tipoProductoRepository.Guardar(tipoProducto));
+                result.Add(_unidad.tipoProductoRepository.Guardar(tipoProducto));
             }
 
-            _tipoProductoRepository.GuardarCambios();
+            _unidad.Complete();
 
             return _mapper.Map<List<TipoProductoDTO>>(result);
         }
 
         public TipoProductoDTO ObtenerPorIdTipoProducto(Guid id)
         {
-            return _mapper.Map<TipoProductoDTO>(_tipoProductoRepository.ObtenerPorId(id));
+            return _mapper.Map<TipoProductoDTO>(_unidad.tipoProductoRepository.ObtenerPorId(id));
         }
 
         public IList<TipoProductoDTO> ObtenerTodoTipoProducto()
         {
-            return _mapper.Map<IList<TipoProductoDTO>>(_tipoProductoRepository.ObtenerTodo());
+            return _mapper.Map<IList<TipoProductoDTO>>(_unidad.tipoProductoRepository.ObtenerTodo());
         }
     }
 }

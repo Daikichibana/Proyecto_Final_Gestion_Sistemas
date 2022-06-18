@@ -123,5 +123,30 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             }
         }
 
+        [HttpGet]
+        public IActionResult ObtenerTodoProductoPorIdEmpresa(Guid idEmpresa)
+        {
+            var result = new ServiceResponse<List<ProductoDTO>>();
+
+            try
+            {
+                var response = _productoService.ObtenerTodoProductoPorIdEmpresa(idEmpresa).ToList();
+
+                result.Data = response;
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
     }
 }
