@@ -21,11 +21,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidad
         {
 
         }
-        public DetalleOrdenPedido(OrdenPedido ordenPedido, Stock stock, int cantidadOrdenada)
+        public DetalleOrdenPedido(OrdenPedido ordenPedido, Stock stock, int cantidadOrdenada, Guid ordenPedidoId, Guid stockId)
         {
             OrdenPedido = ordenPedido;
             Stock = stock;
             CantidadOrdenada = cantidadOrdenada;
+            OrdenPedidoId = ordenPedidoId;
+            StockId = stockId;
         }
     }
 }

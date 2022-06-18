@@ -10,5 +10,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
         IList<StockDTO> ObtenerTodoStock();
         StockDTO ObtenerPorIdStock(Guid Id);
         IList<StockDTO> ActualizarStock(IList<StockDTO> entity);
+        IList<StockDTO> ObtenerTodoStockPorIdEmpresa(Guid id);
     }
 }

@@ -15,25 +15,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
     public class RealizarPedidoADistribuidoraController : ControllerBase
     {
         IRealizarPedidoADistribuidoraService _realizarPedidoADistribuidoraService;
-        IMapper _mapper;
 
-        public RealizarPedidoADistribuidoraController(IMapper mapper, IRealizarPedidoADistribuidoraService realizarPedidoADistribuidoraService)
+        public RealizarPedidoADistribuidoraController(IRealizarPedidoADistribuidoraService realizarPedidoADistribuidoraService)
         {
             _realizarPedidoADistribuidoraService = realizarPedidoADistribuidoraService;
-            _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult RealizarOrdenPedido(RegistroPedidoDTO registro)
         { 
             var result = new ServiceResponse<object>();
 
             try
             {
-                OrdenPedido orden = _mapper.Map<OrdenPedido>(registro.Orden);
-                List<DetalleOrdenPedido> detalle = _mapper.Map<List<DetalleOrdenPedido>>(registro.ProductoCarrito);
 
-                _realizarPedidoADistribuidoraService.RealizarOrdenPedido(orden, detalle);
+                _realizarPedidoADistribuidoraService.RealizarOrdenPedido(registro);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";

@@ -28,7 +28,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidad
 
         }
 
-        public OrdenPedido(EmpresaCliente empresaCliente, bool deseaFactura, bool pedidoConfirmado, string aclaracionCliente, string aclaracionDistribuidor, string metodoPago, byte[] codigoQR)
+        public OrdenPedido(EmpresaCliente empresaCliente, bool deseaFactura, bool pedidoConfirmado, string aclaracionCliente, string aclaracionDistribuidor, string metodoPago, byte[] codigoQR, Guid empresaClienteId, Guid empresaDistribuidoraId)
         {
             EmpresaCliente = empresaCliente;
             DeseaFactura = deseaFactura;
@@ -37,6 +37,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidad
             AclaracionDistribuidor = aclaracionDistribuidor;
             MetodoPago = metodoPago;
             CodigoQR = codigoQR;
+            EmpresaClienteId = empresaClienteId;
+            EmpresaDistribuidoraId = empresaDistribuidoraId;
         }
     }
 }

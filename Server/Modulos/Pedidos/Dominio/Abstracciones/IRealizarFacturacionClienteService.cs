@@ -1,4 +1,5 @@
-﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades;
+﻿using Compartido.Dto.Pedidos.General;
+using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 
@@ -7,9 +8,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstrac
     public interface IRealizarFacturacionClienteService
     {
         void EliminarFactura(Guid id);
-        IList<Factura> ObtenerTodoFactura();
-        Factura ObtenerPorIdFactura(Guid id);
-        Factura GuardarFactura(Factura entity);
-        Factura ActualizarFactura(Factura entity);
+        IList<FacturaDTO> ObtenerTodoFactura();
+        FacturaDTO ObtenerPorIdFactura(Guid id);
+        void ConfirmarPago(Guid IdPedido);
     }
 }

@@ -6,10 +6,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
 {
     public interface IAdministrarNotaRecepcionService
     {
-        void EliminarNotaRecepcion(Guid id);
         IList<NotaRecepcionDTO> ObtenerTodoNotaRecepcion();
         NotaRecepcionDTO ObtenerPorIdNotaRecepcion(Guid id);
-        NotaRecepcionDTO GuardarNotaRecepcion(NotaRecepcionDTO entity);
-        NotaRecepcionDTO ActualizarNotaRecepcion(NotaRecepcionDTO entity);
+        IList<NotaRecepcionDTO> GuardarNotaRecepcion(IList<NotaRecepcionDTO> entity);
     }
 }

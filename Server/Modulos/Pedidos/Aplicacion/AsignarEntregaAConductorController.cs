@@ -12,13 +12,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
     public class AsignarEntregaAConductorController : ControllerBase
     {
         IAsignarEntregaAConductorService _asignarEntregaAConductorService;
-        IMapper _mapper;
         public AsignarEntregaAConductorController(IAsignarEntregaAConductorService asignarEntregaAConductorService)
         {
             _asignarEntregaAConductorService = asignarEntregaAConductorService;
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult AsignarEntregaAconductor(Guid IdConductorVehiculo, Guid IdPedido)
         {
             var result = new ServiceResponse<Object>();

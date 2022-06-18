@@ -74,6 +74,32 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
             }
         }
 
+        [HttpGet]
+        public IActionResult ObtenerTodoStockPorIdEmpresa(Guid Id)
+        {
+
+            var result = new ServiceResponse<List<StockDTO>>();
+
+            try
+            {
+                var response = _StockService.ObtenerTodoStockPorIdEmpresa(Id).ToList();
+
+                result.Data = response;
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
+
         [HttpPut]
         public IActionResult ActualizarStock(List<StockDTO> nuevoStock)
         {

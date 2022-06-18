@@ -11,7 +11,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
     {
         void Eliminar(Guid id);
         IList<T> ObtenerTodo();
-        T ObtenerPorId(Guid id);
+        T ObtenerPorId(Guid? id);
         T Guardar(T entity);
         T Actualizar(T entity);
         void GuardarCambios();
@@ -45,7 +45,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Persistencia
             return _tabla.AsNoTracking().ToList();
         }
 
-        public T ObtenerPorId(Guid id)
+        public T ObtenerPorId(Guid? id)
         {
             return _tabla.Find(id);
         }

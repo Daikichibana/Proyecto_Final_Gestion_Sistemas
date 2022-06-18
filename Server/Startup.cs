@@ -48,7 +48,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddDbContext<BaseDatosContext>(options =>
                     //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Proyecto_Final_Gestion_Sistemas.Server"))
+                    b => b.MigrationsAssembly("Proyecto_Final_Gestion_Sistemas.Server")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 );
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -90,6 +90,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             /*** Modulo Pedidos ***/
             //Servicios
             services.AddScoped(typeof(IAdministrarPedidoService), typeof(AdministrarPedidoService));
+            services.AddScoped(typeof(IRealizarPedidoADistribuidoraService), typeof(RealizarPedidoADistribuidoraService));
 
             //Repositorios
             services.AddScoped(typeof(IDetalleOrdenPedidoRepository), typeof(DetalleOrdenPedidoRepository));
