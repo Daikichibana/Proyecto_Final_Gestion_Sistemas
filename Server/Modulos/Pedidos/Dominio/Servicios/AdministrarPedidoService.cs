@@ -151,6 +151,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
                     pedido.ConductorAsignado.Vechiculo = _unidad.vechiculoRepository.ObtenerPorId(pedido.ConductorAsignado.VechiculoId);
                     pedido.ConductorAsignado.Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.ConductorAsignado.Conductor.UsuarioId);
                 }
+
                 resultado.Add(pedido);
             }
 

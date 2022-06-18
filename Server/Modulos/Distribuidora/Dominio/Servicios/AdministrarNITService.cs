@@ -1,38 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
+using Compartido.Dto.Distribuidora.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Servicios
 {
     public class AdministrarNITService : IAdministrarNITService
     {
-        INITRepository _NITrepository;
+        UnidadDeTrabajo _unidadDeTrabajo;
+        IMapper _mapper;
 
-        public AdministrarNITService (INITRepository nITrepository)
+        public AdministrarNITService (IMapper mapper, UnidadDeTrabajo unidadDeTrabajo)
         {
-            _NITrepository = nITrepository;
+            _unidadDeTrabajo = unidadDeTrabajo;
+            _mapper = mapper;
         }
-        public NIT ActualizarNIT(NIT entity)
+        public NITDTO ActualizarNIT(NITDTO entity)
         {
-            return _NITrepository.Actualizar(entity);
+            var nit = _mapper.Map<NIT>(entity);
+            var nitActualizado = _unidadDeTrabajo.nitRepository.Actualizar(nit);
+
+            _unidadDeTrabajo.nitRepository.GuardarCambios();
+            return _mapper.Map<NITDTO>(nitActualizado);
         }
         public void EliminarNIT(Guid id)
         {
-            _NITrepository.Eliminar(id);
+            _unidadDeTrabajo.nitRepository.Eliminar(id);
+            _unidadDeTrabajo.nitRepository.GuardarCambios();
         }
-        public NIT GuardarNIT(NIT entity)
+        public NITDTO GuardarNIT(NITDTO entity)
         {
-            return _NITrepository.Guardar(entity);
+            var nit = _mapper.Map<NIT>(entity);
+            _unidadDeTrabajo.nitRepository.Guardar(nit);
+
+            _unidadDeTrabajo.nitRepository.GuardarCambios();
+            return _mapper.Map<NITDTO>(nit);
         }
-        public NIT ObtenerPorIdNIT(Guid id)
+        public NITDTO ObtenerPorIdNIT(Guid id)
         {
-            return _NITrepository.ObtenerPorId(id);
+            var nit = _mapper.Map<NIT>(_unidadDeTrabajo.nitRepository.ObtenerPorId(id));
+            return _mapper.Map<NITDTO>(nit);
         }
-        public IList<NIT> ObtenerTodoNIT()
+        public IList<NITDTO> ObtenerTodoNIT()
         {
-            return _NITrepository.ObtenerTodo();
+            var nit = _unidadDeTrabajo.nitRepository.ObtenerTodo();
+            return _mapper.Map<IList<NITDTO>>(nit);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Compartido.Dto.Distribuidora.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones
@@ -7,13 +8,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
     public interface IAdministrarClienteService
     {
         void EliminarCliente(Guid id);
-        IList<EmpresaCliente> ObtenerTodoCliente();
-        EmpresaCliente ObtenerPorIdCliente(Guid id);
-        EmpresaCliente GuardarCliente(EmpresaCliente entity);
-        EmpresaCliente ActualizarCliente(EmpresaCliente entity);
+        IList<EmpresaClienteDTO> ObtenerTodoCliente();
+        EmpresaClienteDTO ObtenerPorIdCliente(Guid id);
+        EmpresaClienteDTO GuardarCliente(EmpresaClienteDTO entity);
+        EmpresaClienteDTO ActualizarCliente(EmpresaClienteDTO entity);
         
-        IList<ClientesDistribuidora> ObtenerDistribuidorasDeCliente();
+        IList<ClientesDistribuidoraDTO> ObtenerDistribuidorasDeCliente(Guid id);
         void EliminarDistribuidorasDeCliente(Guid Id);
-        ClientesDistribuidora InsertarDistribuidorasDeCliente(ClientesDistribuidora clienteDistribuidora);
+        ClientesDistribuidoraDTO InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO clienteDistribuidora);
     }
 }

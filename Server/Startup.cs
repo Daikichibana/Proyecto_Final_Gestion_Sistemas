@@ -91,6 +91,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             //Servicios
             services.AddScoped(typeof(IAdministrarPedidoService), typeof(AdministrarPedidoService));
             services.AddScoped(typeof(IRealizarPedidoADistribuidoraService), typeof(RealizarPedidoADistribuidoraService));
+            services.AddScoped(typeof(IAsignarEntregaAConductorService), typeof(AsignarEntregaAConductorService));
+            services.AddScoped(typeof(IRealizarEntregaDePedidoAClienteService), typeof(RealizarEntregaDePedidoAClienteService));
+            services.AddScoped(typeof(IRealizarFacturacionClienteService), typeof(RealizarFacturacionClienteService));
 
             //Repositorios
             services.AddScoped(typeof(IDetalleOrdenPedidoRepository), typeof(DetalleOrdenPedidoRepository));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Distribuidora;
@@ -16,13 +17,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarDistribuidoraController : ControllerBase
     {
-
-        IMapper _mapper;
         IAdministrarDistribuidoraService _AdministrarDistribuidoraService;
 
-        public AdministrarDistribuidoraController(IMapper mapper, IAdministrarDistribuidoraService administrarDistribuidoraService)
+        public AdministrarDistribuidoraController( IAdministrarDistribuidoraService administrarDistribuidoraService)
         {
-            _mapper = mapper;
             _AdministrarDistribuidoraService = administrarDistribuidoraService;
         }
 
@@ -34,13 +32,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
             try
             {
-                IList<EmpresaDistribuidora> Empresas = _AdministrarDistribuidoraService.ObtenerTodoDistribuidora();
-                List<EmpresaDistribuidoraDTO> response = new List<EmpresaDistribuidoraDTO>();
-
-                foreach (var EmpresaDistribuidora in Empresas)
-                {
-                    response.Add(_mapper.Map<EmpresaDistribuidoraDTO>(EmpresaDistribuidora));
-                }
+                var response = _AdministrarDistribuidoraService.ObtenerTodoDistribuidora().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -60,21 +52,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
 
         [HttpPost]
-        public IActionResult InsertarDistribuidora(RegistroEmpresaDTO Empresa)
+        public IActionResult InsertarDistribuidora(EmpresaDistribuidoraDTO Empresa)
         {
 
             var result = new ServiceResponse<EmpresaDistribuidoraDTO>();
 
             try
             {
-                NIT nit = new NIT(Empresa.NombreFacturacion,Empresa.NumeroNIT);
+                /*NIT nit = new NIT(Empresa.NombreFacturacion,Empresa.NumeroNIT);
                 Usuario usuario = new Usuario(Empresa.NombreUsuario, Empresa.ClaveUsuario);
                 ResponsableEmpresa responsable = new ResponsableEmpresa(Empresa.NombreResponsable,Empresa.ApellidoResponsable,Empresa.CiResponsable, Empresa.FechaNacimientoResponsable, Empresa.EmailEmpresa, Empresa.TelefonoResponsable, usuario);
                 EmpresaDistribuidora nuevaEmpresa = new EmpresaDistribuidora(Empresa.NombreEmpresa, Empresa.RazonSocialEmpresa, Empresa.EmailEmpresa, Empresa.Rubro.Id, nit, responsable);
+                */
+                var response = _AdministrarDistribuidoraService.GuardarDistribuidora(Empresa);
 
-                var response = _AdministrarDistribuidoraService.GuardarDistribuidora(nuevaEmpresa);
-
-                result.Data = _mapper.Map<EmpresaDistribuidoraDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -97,10 +89,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
             try
             {
-                EmpresaDistribuidora nuevaEmpresa = _mapper.Map<EmpresaDistribuidora>(empresaDistribuidoraDTO);
-                var response = _AdministrarDistribuidoraService.ActualizarDistribuidora(nuevaEmpresa);
+                var response = _AdministrarDistribuidoraService.ActualizarDistribuidora(empresaDistribuidoraDTO);
 
-                result.Data = _mapper.Map<EmpresaDistribuidoraDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
