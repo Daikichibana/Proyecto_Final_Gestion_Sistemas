@@ -6,6 +6,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstr
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
@@ -13,24 +14,22 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarProveedorController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarProveedorService _administrarProveedorService;
 
-        public AdministrarProveedorController(IMapper mapper, IAdministrarProveedorService administrarProveedorService)
+        public AdministrarProveedorController( IAdministrarProveedorService administrarProveedorService)
         {
-            _mapper = mapper;
             _administrarProveedorService = administrarProveedorService;
         }
 
         [HttpGet]
         public IActionResult ObtenerTodosLosProveedores()
         {
-            ServiceResponse<List<EmpresaProveedorDTO>> result = new ServiceResponse<List<EmpresaProveedorDTO>>();
+            var result = new ServiceResponse<List<EmpresaProveedorDTO>>();
             try
             {
-                var response = _administrarProveedorService.ObtenerTodoProveedor();
+                var response = _administrarProveedorService.ObtenerTodoProveedor().ToList();
 
-                result.Data = _mapper.Map<List<EmpresaProveedorDTO>>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -45,15 +44,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPost]
-        public IActionResult InsertarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
+        public IActionResult InsertarProveedor(List<EmpresaProveedorDTO> empresaProveedorDTO)
         {
-            ServiceResponse<EmpresaProveedorDTO> result = new ServiceResponse<EmpresaProveedorDTO>();
+            var result = new ServiceResponse<List<EmpresaProveedorDTO>>();
             try
             {
-                EmpresaProveedor nuevoProveedor = _mapper.Map<EmpresaProveedor>(empresaProveedorDTO);
-                var response = _administrarProveedorService.GuardarProveedor(nuevoProveedor);
-
-                result.Data = _mapper.Map<EmpresaProveedorDTO>(response);
+                var response = _administrarProveedorService.GuardarProveedor(empresaProveedorDTO);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -68,15 +65,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPut]
-        public IActionResult ActualizarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
+        public IActionResult ActualizarProveedor(List<EmpresaProveedorDTO> empresaProveedorDTO)
         {
-            ServiceResponse<EmpresaProveedorDTO> result = new ServiceResponse<EmpresaProveedorDTO>();
+            var result = new ServiceResponse<List<EmpresaProveedorDTO>>();
             try
             {
-                EmpresaProveedor nuevoProveedor = _mapper.Map<EmpresaProveedor>(empresaProveedorDTO);
-                var response = _administrarProveedorService.ActualizarProveedor(nuevoProveedor);
+                var response = _administrarProveedorService.ActualizarProveedor(empresaProveedorDTO).ToList();
 
-                result.Data = _mapper.Map<EmpresaProveedorDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -93,7 +89,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpDelete]
         public IActionResult EliminarProveedor(Guid id)
         {
-            ServiceResponse<EmpresaProveedorDTO> result = new ServiceResponse<EmpresaProveedorDTO>();
+            var result = new ServiceResponse<EmpresaProveedorDTO>();
             try
             {
                 _administrarProveedorService.EliminarProveedor(id);

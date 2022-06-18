@@ -8,6 +8,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entid
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacion
 {
@@ -15,24 +16,22 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarClienteController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarClienteService _administrarClienteService;
 
-        public AdministrarClienteController(IMapper mapper, IAdministrarClienteService administrarClienteService)
+        public AdministrarClienteController(IAdministrarClienteService administrarClienteService)
         {
-            _mapper = mapper;
             _administrarClienteService = administrarClienteService;
         }
         
         [HttpGet]
         public IActionResult ObtenerTodasLasEmpresaClientes()
         {
-            ServiceResponse<List<EmpresaClienteDTO>> result = new ServiceResponse<List<EmpresaClienteDTO>>();
+            var result = new ServiceResponse<List<EmpresaClienteDTO>>();
             try
             {
-                var response = _administrarClienteService.ObtenerTodoCliente();
+                var response = _administrarClienteService.ObtenerTodoCliente().ToList();
 
-                result.Data = _mapper.Map<List<EmpresaClienteDTO>>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -49,13 +48,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpPost]
         public IActionResult InsertarEmpresaCliente(EmpresaClienteDTO _EmpresaClienteDTO)
         {
-            ServiceResponse<EmpresaClienteDTO> result = new ServiceResponse<EmpresaClienteDTO>();
+            var result = new ServiceResponse<EmpresaClienteDTO>();
             try
             {
-                EmpresaCliente nuevoEmpresaCliente = _mapper.Map<EmpresaCliente>(_EmpresaClienteDTO);
-                var response = _administrarClienteService.GuardarCliente(nuevoEmpresaCliente);
+                var response = _administrarClienteService.GuardarCliente(_EmpresaClienteDTO);
 
-                result.Data = _mapper.Map<EmpresaClienteDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -72,13 +70,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpPut]
         public IActionResult ActualizarEmpresaCliente(EmpresaClienteDTO EmpresaClienteDTO)
         {
-            ServiceResponse<EmpresaClienteDTO> result = new ServiceResponse<EmpresaClienteDTO>();
+            var result = new ServiceResponse<EmpresaClienteDTO>();
             try
             {
-                EmpresaCliente nuevoEmpresaCliente = _mapper.Map<EmpresaCliente>(EmpresaClienteDTO);
-                var response = _administrarClienteService.ActualizarCliente(nuevoEmpresaCliente);
+                var response = _administrarClienteService.ActualizarCliente(EmpresaClienteDTO);
 
-                result.Data = _mapper.Map<EmpresaClienteDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -115,21 +112,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
         
         [HttpPost]
-        public IActionResult InsertarEmpresa(RegistroEmpresaDTO Empresa)
+        public IActionResult InsertarEmpresa(EmpresaClienteDTO Empresa)
         {
 
             var result = new ServiceResponse<EmpresaClienteDTO>();
 
             try
             {
-                NIT nit = new NIT(Empresa.NombreFacturacion, Empresa.NumeroNIT);
+               /* NIT nit = new NIT(Empresa.NombreFacturacion, Empresa.NumeroNIT);
                 Usuario usuario = new Usuario(Empresa.NombreUsuario, Empresa.ClaveUsuario);
                 ResponsableEmpresa responsable = new ResponsableEmpresa(Empresa.NombreResponsable, Empresa.ApellidoResponsable, Empresa.CiResponsable, Empresa.FechaNacimientoResponsable, Empresa.EmailEmpresa, Empresa.TelefonoResponsable, usuario);
                 EmpresaCliente nuevaEmpresa = new EmpresaCliente(Empresa.NombreEmpresa, Empresa.RazonSocialEmpresa, Empresa.EmailEmpresa, Empresa.Rubro.Id, nit, responsable);
+               */
+                var response = _administrarClienteService.GuardarCliente(Empresa);
 
-                var response = _administrarClienteService.GuardarCliente(nuevaEmpresa);
-
-                result.Data = _mapper.Map<EmpresaClienteDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -147,16 +144,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
 
         [HttpGet]
-        public IActionResult ObtenerDistribuidorasDeCliente()
+        public IActionResult ObtenerDistribuidorasDeCliente(Guid id)
         {
 
             var result = new ServiceResponse<List<ClientesDistribuidoraDTO>>();
 
             try
             {
-                var response = _administrarClienteService.ObtenerDistribuidorasDeCliente();
+                var response = _administrarClienteService.ObtenerDistribuidorasDeCliente(id).ToList();
 
-                result.Data = _mapper.Map<List<ClientesDistribuidoraDTO>>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -180,10 +177,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
 
             try
             {
-                var ClienteDist = _mapper.Map<ClientesDistribuidora>(clienteDistribuidora);
-                var response = _administrarClienteService.InsertarDistribuidorasDeCliente(ClienteDist);
+                var response = _administrarClienteService.InsertarDistribuidorasDeCliente(clienteDistribuidora);
 
-                result.Data = _mapper.Map<ClientesDistribuidoraDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
