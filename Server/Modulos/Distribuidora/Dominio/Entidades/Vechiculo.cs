@@ -10,15 +10,22 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.E
         public string Modelo { get; set; }
         public string Marca { get; set; }
 
+        public EmpresaDistribuidora EmpresaDistribuidora { get; set; }
+        
+        [ForeignKey("EmpresaDistribuidora")]
+        public Guid EmpresaDistribuidoraId { get; set; }
+
         public Vechiculo()
         {
 
         }
-        public Vechiculo(string placa, string modelo, string marca)
+        public Vechiculo(string placa, string modelo, string marca, EmpresaDistribuidora empresaDistribuidora, Guid empresaDistribuidoraId)
         {
             Placa = placa;
             Modelo = modelo;
             Marca = marca;
+            EmpresaDistribuidora = empresaDistribuidora;
+            EmpresaDistribuidoraId = empresaDistribuidoraId;
         }
     }
 }
