@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Personal;
@@ -32,13 +33,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<ResponsableAlmacen> Responsables = _responsableAlmacenService.ObtenerTodoResponsableAlmacen();
-                List<ResponsableAlmacenDTO> response = new List<ResponsableAlmacenDTO>();
-
-                foreach (var ResponsableAlmacen in Responsables)
-                {
-                    response.Add(_mapper.Map<ResponsableAlmacenDTO>(ResponsableAlmacen));
-                }
+                var response = _responsableAlmacenService.ObtenerTodoResponsableAlmacen().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -57,18 +52,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult InsertarResponsableAlmacen(ResponsableAlmacenDTO responsableAlmacenDTO)
+        public IActionResult InsertarResponsableAlmacen(List<ResponsableAlmacenDTO> responsableAlmacenDTO)
         {
 
-            var result = new ServiceResponse<ResponsableAlmacenDTO>();
+            var result = new ServiceResponse<List<ResponsableAlmacenDTO>>();
 
             try
             {
-                ResponsableAlmacen nuevoResponsableAlmacen = _mapper.Map<ResponsableAlmacen>(responsableAlmacenDTO);
+                var response = _responsableAlmacenService.GuardarResponsableAlmacen(responsableAlmacenDTO).ToList();
 
-                var response = _responsableAlmacenService.GuardarResponsableAlmacen(nuevoResponsableAlmacen);
-
-                result.Data = _mapper.Map<ResponsableAlmacenDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -85,16 +78,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         }
 
         [HttpPut]
-        public IActionResult ActualizarSucursal(ResponsableAlmacenDTO responsableAlmacenDTO)
+        public IActionResult ActualizarResponsableAlmacen(List<ResponsableAlmacenDTO> responsableAlmacenDTO)
         {
-            var result = new ServiceResponse<ResponsableAlmacenDTO>();
+            var result = new ServiceResponse<List<ResponsableAlmacenDTO>>();
 
             try
             {
-                ResponsableAlmacen nuevoResponsableAlmacen = _mapper.Map<ResponsableAlmacen>(responsableAlmacenDTO);
-                var response = _responsableAlmacenService.ActualizarResponsableAlmacen(nuevoResponsableAlmacen);
+                var response = _responsableAlmacenService.ActualizarResponsableAlmacen(responsableAlmacenDTO).ToList();
 
-                result.Data = _mapper.Map<ResponsableAlmacenDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 

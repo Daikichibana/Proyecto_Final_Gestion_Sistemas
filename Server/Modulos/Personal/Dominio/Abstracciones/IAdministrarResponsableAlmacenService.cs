@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Compartido.Dto.Personal.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones
@@ -7,9 +8,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
     public interface IAdministrarResponsableAlmacenService
     {
         void EliminarResponsableAlmacen(Guid id);
-        IList<ResponsableAlmacen> ObtenerTodoResponsableAlmacen();
-        ResponsableAlmacen ObtenerPorIdResponsableAlmacen(Guid id);
-        ResponsableAlmacen GuardarResponsableAlmacen(ResponsableAlmacen entity);
-        ResponsableAlmacen ActualizarResponsableAlmacen(ResponsableAlmacen entity);
+        IList<ResponsableAlmacenDTO> ObtenerTodoResponsableAlmacen();
+        ResponsableAlmacenDTO ObtenerPorIdResponsableAlmacen(Guid id);
+        IList<ResponsableAlmacenDTO> GuardarResponsableAlmacen(IList<ResponsableAlmacenDTO> entity);
+        IList<ResponsableAlmacenDTO> ActualizarResponsableAlmacen(IList<ResponsableAlmacenDTO> entity);
     }
 }

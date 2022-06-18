@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoMapper;
+using System.Linq;
 using Compartido;
-using Compartido.Dto.Personal;
 using Compartido.Dto.Personal.General;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 {
@@ -14,11 +12,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
     [ApiController]
     public class AdministrarConductorController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarConductorService _administrarConductorService;
-        public AdministrarConductorController(IMapper mapper, IAdministrarConductorService administrarConductorService)
-        {
-            _mapper = mapper;
+        public AdministrarConductorController(IAdministrarConductorService administrarConductorService)
+        { 
             _administrarConductorService = administrarConductorService;
         }
 
@@ -30,13 +26,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<Conductor> Conductores = _administrarConductorService.ObtenerTodoConductor();
-                List<ConductorDTO> response = new List<ConductorDTO>();
-
-                foreach (var Conductor in Conductores)
-                {
-                    response.Add(_mapper.Map<ConductorDTO>(Conductor));
-                }
+                var response= _administrarConductorService.ObtenerTodoConductor().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -55,18 +45,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult CrearConductor(ConductorDTO conductorDTO)
+        public IActionResult CrearConductor(List<ConductorDTO> conductorDTO)
         {
 
-            var result = new ServiceResponse<ConductorDTO>();
+            var result = new ServiceResponse<List<ConductorDTO>>();
 
             try
             {
-                Conductor nuevoConductor = _mapper.Map<Conductor>(conductorDTO);
+                var response = _administrarConductorService.GuardarConductor(conductorDTO).ToList();
 
-                var response = _administrarConductorService.GuardarConductor(nuevoConductor);
-
-                result.Data = _mapper.Map<ConductorDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -83,16 +71,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         }
 
         [HttpPut]
-        public IActionResult ActualizarConductor(ConductorDTO conductorDTO)
+        public IActionResult ActualizarConductor(List<ConductorDTO> conductorDTO)
         {
-            var result = new ServiceResponse<ConductorDTO>();
+            var result = new ServiceResponse<List<ConductorDTO>>();
 
             try
             {
-                Conductor nuevoConductor = _mapper.Map<Conductor>(conductorDTO);
-                var response = _administrarConductorService.ActualizarConductor(nuevoConductor);
+                var response = _administrarConductorService.ActualizarConductor(conductorDTO).ToList();
 
-                result.Data = _mapper.Map<ConductorDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 

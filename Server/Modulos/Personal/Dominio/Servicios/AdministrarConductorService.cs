@@ -1,38 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
+using Compartido.Dto.Personal.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
-using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servicios
 {
     public class AdministrarConductorService : IAdministrarConductorService
     {
-        IConductorRepository _conductorRepository;
+        IMapper _mapper;
+        UnidadDeTrabajo _unidad;
+        public AdministrarConductorService(IMapper mapper, BaseDatosContext contexto)
+        {
+            _unidad = new UnidadDeTrabajo(contexto);
+            _mapper = mapper;
+        }
+        public IList<ConductorDTO> ActualizarConductor(IList<ConductorDTO> entity)
+        {
+            var ListaConductores = _mapper.Map<List<Conductor>>(entity);
+            var result = new List<Conductor>();
 
-        public AdministrarConductorService(IConductorRepository conductorRepository)
-        {
-            _conductorRepository = conductorRepository;
+            foreach (var conductor in ListaConductores)
+            {
+                result.Add(_unidad.conductorRepository.Actualizar(conductor));
+            }
+
+            _unidad.Complete();
+            return _mapper.Map<List<ConductorDTO>>(result);
         }
-        public Conductor ActualizarConductor(Conductor entity)
-        {
-            return _conductorRepository.Actualizar(entity);
-        }
+        
         public void EliminarConductor(Guid id)
         {
-            _conductorRepository.Eliminar(id);
+            _unidad.conductorRepository.Eliminar(id);
+            _unidad.Complete();
         }
-        public Conductor GuardarConductor(Conductor entity)
+        
+        public IList<ConductorDTO> GuardarConductor(IList<ConductorDTO> entity)
         {
-            return _conductorRepository.Guardar(entity);
+            var ListaConductores = _mapper.Map<List<Conductor>>(entity);
+            var result = new List<Conductor>();
+
+            foreach (var conductor in ListaConductores)
+            {
+                result.Add(_unidad.conductorRepository.Guardar(conductor));
+            }
+
+            _unidad.Complete();
+            return _mapper.Map<List<ConductorDTO>>(result);
         }
-        public Conductor ObtenerPorIdConductor(Guid id)
+
+        public ConductorDTO ObtenerPorIdConductor(Guid id)
         {
-            return _conductorRepository.ObtenerPorId(id);
+            var Conductor = _unidad.conductorRepository.ObtenerPorId(id);
+            Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(Conductor.UsuarioId);
+            return _mapper.Map<ConductorDTO>(Conductor);
         }
-        public IList<Conductor> ObtenerTodoConductor()
+        
+        public IList<ConductorDTO> ObtenerTodoConductor()
         {
-            return _conductorRepository.ObtenerTodo();
+            var ListaConductores = _unidad.conductorRepository.ObtenerTodo();
+
+            foreach (var conductor in ListaConductores)
+            { 
+                conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(conductor.UsuarioId);
+            }
+
+            return _mapper.Map<IList<ConductorDTO>>(ListaConductores);
         }
 
     }
