@@ -4,6 +4,7 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstr
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +14,12 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
     public class AdministrarProveedorService : IAdministrarProveedorService
     {
         IMapper _mapper;
-        IProveedorRepository _proveedorRepository;
-        IEmpresaDistribuidoraRepository _empresaDistribuidoraRepository;
-        IRubroRepository _rubroRepository;
-        INITRepository _NITRepository;
-        IResponsableEmpresaRepository _responsableEmpresaRepository;
-        IUsuarioRepository _usuarioRepository;
+        UnidadDeTrabajo _unidadDeTrabajo;
 
-        public AdministrarProveedorService(IMapper mapper,IProveedorRepository proveedorRepository,IUsuarioRepository usuarioRepository, IEmpresaDistribuidoraRepository empresaDistribuidoraRepository, IRubroRepository rubroRepository, INITRepository nITRepository, IResponsableEmpresaRepository responsableEmpresaRepository)
+        public AdministrarProveedorService(IMapper mapper, UnidadDeTrabajo unidadDeTrabajo)
         {
             _mapper = mapper;
-            _proveedorRepository = proveedorRepository;
-            _empresaDistribuidoraRepository = empresaDistribuidoraRepository;
-            _rubroRepository = rubroRepository;
-            _NITRepository = nITRepository;
-            _responsableEmpresaRepository = responsableEmpresaRepository;
-            _usuarioRepository = usuarioRepository;
+            _unidadDeTrabajo = unidadDeTrabajo;
 
             
         }
@@ -40,32 +31,32 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
 
             foreach(var proveedor in proveedores)
             {
-                var proveedorExistente = _proveedorRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(proveedor.NombreEmpresa)).ToList();
+                var proveedorExistente = _unidadDeTrabajo.empresaProveedorRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(proveedor.NombreEmpresa)).ToList();
                 if (proveedorExistente.Count > 0)
                     if (proveedorExistente.FirstOrDefault().Id.Equals(proveedor.Id))
                         throw new Exception("Ya existe un proveedor con el mismo nombre");
 
-                var proveedorActualizado = _proveedorRepository.Actualizar(proveedor);
+                var proveedorActualizado = _unidadDeTrabajo.empresaProveedorRepository.Actualizar(proveedor);
                 proveedorActualizados.Add(proveedorActualizado);
             }
 
-            _proveedorRepository.GuardarCambios();
+            _unidadDeTrabajo.empresaProveedorRepository.GuardarCambios();
             return _mapper.Map<List<EmpresaProveedorDTO>>(proveedorActualizados);
         }
 
         public void EliminarProveedor(Guid id)
         {
-            var proveedor = _proveedorRepository.ObtenerPorId(id);
+            var proveedor = _unidadDeTrabajo.empresaProveedorRepository.ObtenerPorId(id);
             
-            _usuarioRepository.Eliminar(proveedor.Responsable.UsuarioId);
-            _responsableEmpresaRepository.Eliminar(proveedor.ResponsableId);
-            _NITRepository.Eliminar(proveedor.NITId);
-            _proveedorRepository.Eliminar(id);
+            _unidadDeTrabajo.usuarioRepository.Eliminar(proveedor.Responsable.UsuarioId);
+            _unidadDeTrabajo.responsableDistribuidoraRepository.Eliminar(proveedor.ResponsableId);
+            _unidadDeTrabajo.nitRepository.Eliminar(proveedor.NITId);
+            _unidadDeTrabajo.empresaProveedorRepository.Eliminar(id);
 
-            _proveedorRepository.GuardarCambios();
-            _usuarioRepository.GuardarCambios();
-            _responsableEmpresaRepository.GuardarCambios();
-            _NITRepository.GuardarCambios();
+            _unidadDeTrabajo.empresaProveedorRepository.GuardarCambios();
+            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
+            _unidadDeTrabajo.responsableDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.nitRepository.GuardarCambios();
         }
 
         public List<EmpresaProveedorDTO> GuardarProveedor(List<EmpresaProveedorDTO> entity)
@@ -74,50 +65,50 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             var proveedoresRegistrados = new List<EmpresaProveedor>();
             foreach(var prov in proveedores)
             {
-                var proveedorExistente = _proveedorRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(prov.NombreEmpresa)).ToList();
+                var proveedorExistente = _unidadDeTrabajo.empresaProveedorRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(prov.NombreEmpresa)).ToList();
                 if (proveedorExistente.Count > 0)
                     throw new Exception("Un proveedor con el mismo nombre ya se necuentra registrado");
 
-                var proveedorReg = _proveedorRepository.Guardar(prov);
+                var proveedorReg = _unidadDeTrabajo.empresaProveedorRepository.Guardar(prov);
                 proveedoresRegistrados.Add(prov);
                                 
             }
-            _proveedorRepository.GuardarCambios();
+            _unidadDeTrabajo.empresaProveedorRepository.GuardarCambios();
             return _mapper.Map<List<EmpresaProveedorDTO>>(proveedoresRegistrados);
 
         }
 
         public EmpresaProveedorDTO ObtenerPorIdProveedor(Guid id)
         {
-            var proveedor = _proveedorRepository.ObtenerPorId(id);
+            var proveedor = _unidadDeTrabajo.empresaProveedorRepository.ObtenerPorId(id);
 
-            proveedor.EmpresaDistribuidora = _empresaDistribuidoraRepository.ObtenerPorId(proveedor.EmpresaDistribuidoraId);
-            proveedor.EmpresaDistribuidora.Rubro = _rubroRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.RubroId);
-            proveedor.EmpresaDistribuidora.NIT = _NITRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.NITId);
-            proveedor.EmpresaDistribuidora.Responsable = _responsableEmpresaRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.ResponsableId);
-            proveedor.EmpresaDistribuidora.Responsable.Usuario = _usuarioRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.Responsable.UsuarioId);
-            proveedor.Rubro = _rubroRepository.ObtenerPorId(proveedor.RubroId);
-            proveedor.NIT = _NITRepository.ObtenerPorId(proveedor.NITId);
-            proveedor.Responsable = _responsableEmpresaRepository.ObtenerPorId(proveedor.ResponsableId);
-            proveedor.Responsable.Usuario = _usuarioRepository.ObtenerPorId(proveedor.Responsable.UsuarioId);
+            proveedor.EmpresaDistribuidora = _unidadDeTrabajo.distribuidoraRepository.ObtenerPorId(proveedor.EmpresaDistribuidoraId);
+            proveedor.EmpresaDistribuidora.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.RubroId);
+            proveedor.EmpresaDistribuidora.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.NITId);
+            proveedor.EmpresaDistribuidora.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.ResponsableId);
+            proveedor.EmpresaDistribuidora.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.Responsable.UsuarioId);
+            proveedor.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(proveedor.RubroId);
+            proveedor.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(proveedor.NITId);
+            proveedor.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(proveedor.ResponsableId);
+            proveedor.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(proveedor.Responsable.UsuarioId);
 
             return _mapper.Map<EmpresaProveedorDTO>(proveedor);
         }
 
         public IList<EmpresaProveedorDTO> ObtenerTodoProveedor()
         {
-            var item = _proveedorRepository.ObtenerTodo();
+            var item = _unidadDeTrabajo.empresaProveedorRepository.ObtenerTodo();
             foreach(var proveedor in item)
             {
-                proveedor.EmpresaDistribuidora = _empresaDistribuidoraRepository.ObtenerPorId(proveedor.EmpresaDistribuidoraId);
-                proveedor.EmpresaDistribuidora.Rubro = _rubroRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.RubroId);
-                proveedor.EmpresaDistribuidora.NIT = _NITRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.NITId);
-                proveedor.EmpresaDistribuidora.Responsable = _responsableEmpresaRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.ResponsableId);
-                proveedor.EmpresaDistribuidora.Responsable.Usuario = _usuarioRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.Responsable.UsuarioId);
-                proveedor.Rubro = _rubroRepository.ObtenerPorId(proveedor.RubroId);
-                proveedor.NIT = _NITRepository.ObtenerPorId(proveedor.NITId);
-                proveedor.Responsable = _responsableEmpresaRepository.ObtenerPorId(proveedor.ResponsableId);
-                proveedor.Responsable.Usuario = _usuarioRepository.ObtenerPorId(proveedor.Responsable.UsuarioId);
+                proveedor.EmpresaDistribuidora = _unidadDeTrabajo.distribuidoraRepository.ObtenerPorId(proveedor.EmpresaDistribuidoraId);
+                proveedor.EmpresaDistribuidora.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.RubroId);
+                proveedor.EmpresaDistribuidora.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.NITId);
+                proveedor.EmpresaDistribuidora.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.ResponsableId);
+                proveedor.EmpresaDistribuidora.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(proveedor.EmpresaDistribuidora.Responsable.UsuarioId);
+                proveedor.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(proveedor.RubroId);
+                proveedor.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(proveedor.NITId);
+                proveedor.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(proveedor.ResponsableId);
+                proveedor.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(proveedor.Responsable.UsuarioId);
 
             }
 

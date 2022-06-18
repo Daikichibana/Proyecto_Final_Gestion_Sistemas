@@ -7,86 +7,79 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstr
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Servicios
 {
     public class AdministrarDistribuidoraService : IAdministrarDistribuidoraService
     {
-        IEmpresaDistribuidoraRepository _empresaDistribuidoraRepository;
-        IRubroRepository _rubroRepository;
-        INITRepository _nITRepository;
-        IResponsableEmpresaRepository _responsableEmpresaRepository;
-        IUsuarioRepository _usuarioRepository;
+        UnidadDeTrabajo _unidadDeTrabajo;
         IMapper _mapper;
 
-        public AdministrarDistribuidoraService(IMapper mapper,IUsuarioRepository usuarioRepository, IResponsableEmpresaRepository responsableEmpresaRepository, INITRepository nITRepository, IRubroRepository rubroRepository, IEmpresaDistribuidoraRepository empresaDistribuidoraRepository)
+        public AdministrarDistribuidoraService(IMapper mapper, UnidadDeTrabajo unidadDeTrabajo)
         {
-            _empresaDistribuidoraRepository = empresaDistribuidoraRepository;
-            _rubroRepository = rubroRepository;
-            _nITRepository = nITRepository;
-            _responsableEmpresaRepository = responsableEmpresaRepository;
-            _usuarioRepository = usuarioRepository;
+            _unidadDeTrabajo = unidadDeTrabajo;
             _mapper = mapper;
         }
         public EmpresaDistribuidoraDTO ActualizarDistribuidora(EmpresaDistribuidoraDTO entity)
         {
             var distribuidora = _mapper.Map<EmpresaDistribuidora>(entity);
-            var distribuidorasRegistradas = _empresaDistribuidoraRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(distribuidora.NombreEmpresa)).ToList();
+            var distribuidorasRegistradas = _unidadDeTrabajo.distribuidoraRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(distribuidora.NombreEmpresa)).ToList();
             if (distribuidorasRegistradas.Count > 0)
                 throw new Exception("Ya existe una distribuidora registrada con ese nombre");
             
-            var distribuidoraActualizada = _empresaDistribuidoraRepository.Actualizar(distribuidora);
-            _empresaDistribuidoraRepository.GuardarCambios();
+            var distribuidoraActualizada = _unidadDeTrabajo.distribuidoraRepository.Actualizar(distribuidora);
+            _unidadDeTrabajo.distribuidoraRepository.GuardarCambios();
 
             return _mapper.Map<EmpresaDistribuidoraDTO>(distribuidoraActualizada);
         }
         public void EliminarDistribuidora(Guid id)
         {
-            var distribuidora = _empresaDistribuidoraRepository.ObtenerPorId(id);
+            var distribuidora = _unidadDeTrabajo.distribuidoraRepository.ObtenerPorId(id);
 
-            _usuarioRepository.Eliminar(distribuidora.Responsable.UsuarioId);
-            _responsableEmpresaRepository.Eliminar(distribuidora.ResponsableId);
-            _nITRepository.Eliminar(distribuidora.NITId);
-            _empresaDistribuidoraRepository.Eliminar(id);
+            _unidadDeTrabajo.usuarioRepository.Eliminar(distribuidora.Responsable.UsuarioId);
+            _unidadDeTrabajo.responsableDistribuidoraRepository.Eliminar(distribuidora.ResponsableId);
+            _unidadDeTrabajo.nitRepository.Eliminar(distribuidora.NITId);
+            _unidadDeTrabajo.distribuidoraRepository.Eliminar(id);
 
-            _usuarioRepository.GuardarCambios();
-            _responsableEmpresaRepository.GuardarCambios();
-            _nITRepository.GuardarCambios();
-            _empresaDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
+            _unidadDeTrabajo.responsableDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.nitRepository.GuardarCambios();
+            _unidadDeTrabajo.distribuidoraRepository.GuardarCambios();
         }
         public EmpresaDistribuidoraDTO GuardarDistribuidora(EmpresaDistribuidoraDTO entity)
         {
             var distribuidora = _mapper.Map<EmpresaDistribuidora>(entity);
-            var distribuidorasRegistradas = _empresaDistribuidoraRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(distribuidora.NombreEmpresa)).ToList();
+            var distribuidorasRegistradas = _unidadDeTrabajo.distribuidoraRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(distribuidora.NombreEmpresa)).ToList();
             if (distribuidorasRegistradas.Count > 0)
                 throw new Exception("Ya existe una distribuidora registrada con ese nombre");
 
-            var distribuidoraActualizada = _empresaDistribuidoraRepository.Guardar(distribuidora);
-            _empresaDistribuidoraRepository.GuardarCambios();
+            var distribuidoraActualizada = _unidadDeTrabajo.distribuidoraRepository.Guardar(distribuidora);
+            _unidadDeTrabajo.distribuidoraRepository.GuardarCambios();
 
             return _mapper.Map<EmpresaDistribuidoraDTO>(distribuidoraActualizada);
         }
         public EmpresaDistribuidoraDTO ObtenerPorIdDistribuidora(Guid id)
         {
-            var distribuidora = _empresaDistribuidoraRepository.ObtenerPorId(id);
+            var distribuidora = _unidadDeTrabajo.distribuidoraRepository.ObtenerPorId(id);
 
-            distribuidora.Rubro = _rubroRepository.ObtenerPorId(distribuidora.RubroId);
-            distribuidora.NIT = _nITRepository.ObtenerPorId(distribuidora.NITId);
-            distribuidora.Responsable = _responsableEmpresaRepository.ObtenerPorId(distribuidora.ResponsableId);
-            distribuidora.Responsable.Usuario = _usuarioRepository.ObtenerPorId(distribuidora.Responsable.UsuarioId);
+            distribuidora.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(distribuidora.RubroId);
+            distribuidora.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(distribuidora.NITId);
+            distribuidora.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(distribuidora.ResponsableId);
+            distribuidora.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(distribuidora.Responsable.UsuarioId);
 
             return _mapper.Map<EmpresaDistribuidoraDTO>(distribuidora);
         }
         public IList<EmpresaDistribuidoraDTO> ObtenerTodoDistribuidora()
         {
-            var item = _empresaDistribuidoraRepository.ObtenerTodo();
+            var item = _unidadDeTrabajo.distribuidoraRepository.ObtenerTodo();
 
             foreach(var distribuidora in item)
             {
-                distribuidora.Rubro = _rubroRepository.ObtenerPorId(distribuidora.RubroId);
-                distribuidora.NIT = _nITRepository.ObtenerPorId(distribuidora.NITId);
-                distribuidora.Responsable = _responsableEmpresaRepository.ObtenerPorId(distribuidora.ResponsableId);
-                distribuidora.Responsable.Usuario = _usuarioRepository.ObtenerPorId(distribuidora.Responsable.UsuarioId);
+                distribuidora.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(distribuidora.RubroId);
+                distribuidora.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(distribuidora.NITId);
+                distribuidora.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(distribuidora.ResponsableId);
+                distribuidora.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(distribuidora.Responsable.UsuarioId);
             }
 
             return _mapper.Map<List<EmpresaDistribuidoraDTO>>(item);
