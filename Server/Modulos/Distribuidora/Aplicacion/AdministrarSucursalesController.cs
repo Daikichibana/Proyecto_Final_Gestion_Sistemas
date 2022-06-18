@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Distribuidora;
@@ -14,28 +15,22 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarSucursalesController : ControllerBase
     {
-        IMapper _mapper;
+        
         IAdministrarSucursalesService _AdministrarSucursalesService;
-        public AdministrarSucursalesController(IMapper mapper, IAdministrarSucursalesService administrarSucursalesService)
+        public AdministrarSucursalesController(IAdministrarSucursalesService administrarSucursalesService)
         {
-            _mapper = mapper;
             _AdministrarSucursalesService = administrarSucursalesService;
         }
         [HttpGet]
         public IActionResult ObtenerTodasLasSucursales()
         {
 
-            var result = new ServiceResponse<List<SucursalesDTO>>();
+            ServiceResponse<List<SucursalesDTO>> result = new ServiceResponse<List<SucursalesDTO>>();
 
             try
             {
-                IList<Sucursales> Sucursal = _AdministrarSucursalesService.ObtenerTodoSucursales();
-                List<SucursalesDTO> response = new List<SucursalesDTO>();
+                var response = _AdministrarSucursalesService.ObtenerTodoSucursales().ToList();
 
-                foreach (var Sucursales in Sucursal)
-                {
-                    response.Add(_mapper.Map<SucursalesDTO>(Sucursales));
-                }
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -54,18 +49,17 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPost]
-        public IActionResult InsertarSucursal(SucursalesDTO sucursalesDTO)
+        public IActionResult InsertarSucursal(IList<SucursalesDTO> sucursalesDTO)
         {
 
-            var result = new ServiceResponse<SucursalesDTO>();
+            ServiceResponse<IList<SucursalesDTO>> result = new ServiceResponse<IList<SucursalesDTO>>();
 
             try
             {
-                Sucursales nuevaSucursal = _mapper.Map<Sucursales>(sucursalesDTO);
+                var response = _AdministrarSucursalesService.GuardarSucursales(sucursalesDTO).ToList();
 
-                var response = _AdministrarSucursalesService.GuardarSucursales(nuevaSucursal);
 
-                result.Data = _mapper.Map<SucursalesDTO>(response);
+                result.Data =response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -82,16 +76,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPut]
-        public IActionResult ActualizarSucursal(SucursalesDTO sucursalesDTO)
+        public IActionResult ActualizarSucursal(IList<SucursalesDTO> sucursalesDTO)
         {
-            var result = new ServiceResponse<SucursalesDTO>();
+            ServiceResponse<IList<SucursalesDTO>> result = new ServiceResponse<IList<SucursalesDTO>>();
 
             try
             {
-                Sucursales nuevaSucursal = _mapper.Map<Sucursales>(sucursalesDTO);
-                var response = _AdministrarSucursalesService.ActualizarSucursales(nuevaSucursal);
+                var response = _AdministrarSucursalesService.ActualizarSucursales(sucursalesDTO);
 
-                result.Data = _mapper.Map<SucursalesDTO>(response);
+
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -110,7 +104,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpDelete]
         public IActionResult EliminarSucursal(Guid id)
         {
-            var result = new ServiceResponse<SucursalesDTO>();
+            ServiceResponse<IList<SucursalesDTO>> result = new ServiceResponse<IList<SucursalesDTO>>();
 
             try
             {

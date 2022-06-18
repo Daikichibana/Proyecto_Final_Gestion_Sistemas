@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Compartido.Dto.Distribuidora.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones
@@ -7,9 +8,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.A
     public interface IAdministrarTarjetaClienteService
     {
         void EliminarTarjetaCliente(Guid id);
-        IList<TarjetaCliente> ObtenerTodoTarjetaCliente();
-        TarjetaCliente ObtenerPorIdTarjetaCliente(Guid id);
-        TarjetaCliente GuardarTarjetaCliente(TarjetaCliente entity);
-        TarjetaCliente ActualizarTarjetaCliente(TarjetaCliente entity);
+        IList<TarjetaClienteDTO> ObtenerTodoTarjetaCliente();
+        TarjetaClienteDTO ObtenerPorIdTarjetaCliente(Guid id);
+        IList<TarjetaClienteDTO>GuardarTarjetaCliente(IList<TarjetaClienteDTO>entity);
+        IList<TarjetaClienteDTO> ActualizarTarjetaCliente(IList<TarjetaClienteDTO >entity);
     }
 }

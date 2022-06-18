@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Distribuidora;
@@ -14,11 +15,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarTarjetaClienteController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarTarjetaClienteService _administrarTarjetaClienteService;
-        public AdministrarTarjetaClienteController(IMapper mapper, IAdministrarTarjetaClienteService administrarTarjetaClienteService)
+        public AdministrarTarjetaClienteController(IAdministrarTarjetaClienteService administrarTarjetaClienteService)
         {
-            _mapper = mapper;
             _administrarTarjetaClienteService = administrarTarjetaClienteService;
         }
 
@@ -28,9 +27,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<List<TarjetaClienteDTO>> result = new ServiceResponse<List<TarjetaClienteDTO>>();
             try
             {
-                var response = _administrarTarjetaClienteService.ObtenerTodoTarjetaCliente();
+                var response = _administrarTarjetaClienteService.ObtenerTodoTarjetaCliente().ToList();
 
-                result.Data = _mapper.Map<List<TarjetaClienteDTO>>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -45,15 +44,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPost]
-        public IActionResult InsertarTarjetaCliente(TarjetaClienteDTO _TarjetaClienteDTO)
+        public IActionResult InsertarTarjetaCliente(IList<TarjetaClienteDTO> _TarjetaClienteDTO)
         {
-            ServiceResponse<TarjetaClienteDTO> result = new ServiceResponse<TarjetaClienteDTO>();
+            ServiceResponse<IList<TarjetaClienteDTO>> result = new ServiceResponse<IList<TarjetaClienteDTO>>();
             try
             {
-                TarjetaCliente nuevoTarjetaCliente = _mapper.Map<TarjetaCliente>(_TarjetaClienteDTO);
-                var response = _administrarTarjetaClienteService.GuardarTarjetaCliente(nuevoTarjetaCliente);
+                
+                var response = _administrarTarjetaClienteService.GuardarTarjetaCliente(_TarjetaClienteDTO).ToList();
 
-                result.Data = _mapper.Map<TarjetaClienteDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -68,15 +67,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPut]
-        public IActionResult ActualizarTarjetaCliente(TarjetaClienteDTO TarjetaClienteDTO)
+        public IActionResult ActualizarTarjetaCliente(IList<TarjetaClienteDTO> _TarjetaClienteDTO)
         {
-            ServiceResponse<TarjetaClienteDTO> result = new ServiceResponse<TarjetaClienteDTO>();
+            ServiceResponse<IList<TarjetaClienteDTO>> result = new ServiceResponse<IList<TarjetaClienteDTO>>();
             try
             {
-                TarjetaCliente nuevoTarjetaCliente = _mapper.Map<TarjetaCliente>(TarjetaClienteDTO);
-                var response = _administrarTarjetaClienteService.ActualizarTarjetaCliente(nuevoTarjetaCliente);
+                var response = _administrarTarjetaClienteService.ActualizarTarjetaCliente(_TarjetaClienteDTO);
 
-                result.Data = _mapper.Map<TarjetaClienteDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
