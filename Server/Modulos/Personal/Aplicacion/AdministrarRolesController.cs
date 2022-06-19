@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Personal;
@@ -14,12 +15,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
     [ApiController]
     public class AdministrarRolesController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarRolService _rolService;
 
-        public AdministrarRolesController(IMapper mapper, IAdministrarRolService rolService)
+        public AdministrarRolesController(IAdministrarRolService rolService)
         {
-            _mapper = mapper;
             _rolService = rolService;
         }
 
@@ -31,13 +30,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<Rol> roles = _rolService.ObtenerTodoRol();
-                List<RolDTO> response = new List<RolDTO>();
-
-                foreach (var rol in roles)
-                {
-                    response.Add(_mapper.Map<RolDTO>(rol));
-                }
+                var response = _rolService.ObtenerTodoRol().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -63,11 +56,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                Rol nuevoRol = _mapper.Map<Rol>(_rolDTO);
 
-                var response = _rolService.GuardarRol(nuevoRol);
+                var response = _rolService.GuardarRol(_rolDTO);
 
-                result.Data = _mapper.Map<RolDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -90,10 +82,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                Rol nuevoRol = _mapper.Map<Rol>(_rolDTO);
-                var response = _rolService.ActualizarRol(nuevoRol);
+                var response = _rolService.ActualizarRol(_rolDTO);
 
-                result.Data = _mapper.Map<RolDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
