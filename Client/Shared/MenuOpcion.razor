@@ -1,0 +1,30 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="card opcion m-3" style="width: 12rem;">
+  <img src=@EnlaceImagen class="card-img-top p-3" alt="..." @onclick="() => Redireccionar(EnlaceDestino)">
+  <div class="card-body">
+    <p class="card-text">@Texto</p>
+  </div>
+</div>
+
+<style>
+    .opcion:hover {
+        opacity: 70%;
+    }
+
+</style>
+@code {
+    [Parameter]
+    public string Texto { get; set; }
+
+    [Parameter]
+    public string EnlaceImagen { get; set; }
+
+    [Parameter]
+    public string EnlaceDestino { get; set; }
+
+    public void Redireccionar(string direccion)
+    {
+        NavigationManager.NavigateTo(direccion);
+    }
+}

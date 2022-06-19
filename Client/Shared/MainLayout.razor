@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
 
 <div class="page">
 
@@ -24,11 +27,11 @@
             <form class="form-inline">
                 <AuthorizeView>
                     <Authorized>   
-                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" >Cerrar Sesion</button>
+                        <button class="btn btn-outline-danger my-2 my-sm-0 m-1" @onclick= "() => CerrarSesion()" @onclick:preventDefault="true">Cerrar Sesion</button>
                     </Authorized>
                     <NotAuthorized>
-                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" >Registrarse</button>
-                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" >Iniciar Sesion</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" @onclick= "() => Redireccionar(LinkRegister)" @onclick:preventDefault="true" >Registrarse</button>
+                        <button class="btn btn-outline-success my-2 my-sm-0 m-1" @onclick= "() => Redireccionar(LinkLogin)" @onclick:preventDefault="true" >Iniciar Sesion</button>
                     </NotAuthorized>
                 </AuthorizeView>
             </form>
@@ -41,9 +44,24 @@
 </div>
 
 @code {
+    public string LinkLogin { get; set; } = "/login";
+    public string LinkRegister { get; set; } = "/registro";
 
     public void Redireccionar(string direccion)
     {
-        
+        NavigationManager.NavigateTo(direccion, forceLoad: true);
+    }
+
+    public async void CerrarSesion()
+    {
+        List<string> variableLocalStorage = new List<string>();
+        variableLocalStorage.Add("username");
+        variableLocalStorage.Add("idEmpresa");
+        variableLocalStorage.Add("roles");
+        variableLocalStorage.Add("EsDistribuidora");
+        variableLocalStorage.Add("NombreEmpresa");
+
+        await LocalStorage.RemoveItemsAsync(variableLocalStorage);
+        await AuthStateProvider.GetAuthenticationStateAsync();
     }
 }

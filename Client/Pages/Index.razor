@@ -4,20 +4,28 @@
 
 <AuthorizeView>
     <Authorized>
-        <h1>@NombreEmpresa</h1>
-        <p>Muchas gracias por utilizar nuestros servicios.</p>
+        @if (EsDistribuidora)
+        {
+            <IndexDistribuidora />
+        }
+        else
+        {
+            <IndexCliente />
+        }
     </Authorized>
     <NotAuthorized>
-        <h1>Bienvenido</h1>
-        <p>Debes iniciar sesion para poder acceder al panel de administracion.</p>
+        <InicioSesion />
     </NotAuthorized>
 </AuthorizeView>
 
+
 @code {
     public string NombreEmpresa { get; set; }
+    public bool EsDistribuidora { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         NombreEmpresa = await LocalStorage.GetItemAsync<string>("NombreEmpresa");
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
     }
 }

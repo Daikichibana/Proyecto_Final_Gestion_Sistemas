@@ -7,21 +7,37 @@
 @inject IPersonalServices _personalService
 @inject IJSRuntime JsRuntime
 
-<h3>Inicio sesion</h3>
+<div class="container">
+    <EditForm class="formulario" Model="user" OnSubmit="HandleLogin">
+        <legend>Inicio Sesion</legend>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <InputText id="username" @bind-Value="user.NombreUsuario" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <InputText id="password" @bind-Value="user.Clave" type="password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+    </EditForm>
+</div>
+<style>
+    .container {
+        width: 40vw;
+        height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
 
-<EditForm Model="user" OnSubmit="HandleLogin">
-    <div class="form-group">
-        <label for="username">Username</label>
-        <InputText id="username" @bind-Value="user.NombreUsuario" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <InputText id="password" @bind-Value="user.Clave" type="password" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
-</EditForm>
-
-
+    .formulario {
+        border: 1px solid black;
+        padding: 30px;
+        width: 100%;
+        display: block;
+    }
+</style>
 @code {
 
     private UsuarioDTO user = new UsuarioDTO();
