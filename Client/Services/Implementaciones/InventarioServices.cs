@@ -12,9 +12,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
     {
 
         private readonly HttpClient _http;
-        private string EnlaceTipoProducto = "api/GestionarTipoProducto";
-        private string EnlaceProducto = "api/AdministrarProducto";
-        private string EnlaceStock = "api/ActualizarStockPorCompra";
+        private string BaseTipoProducto = "api/GestionarTipoProducto";
+        private string BaseProducto = "api/AdministrarProducto";
+        private string BaseStock = "api/ActualizarStockPorCompra";
 
         public InventarioServices(HttpClient http)
         {
@@ -25,6 +25,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<TipoProductoDTO>> ActualizarTipoProducto(TipoProductoDTO tipoProducto)
         {
+            string EnlaceTipoProducto = BaseTipoProducto + "/";
             var result = await _http.PutAsJsonAsync(EnlaceTipoProducto, tipoProducto);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
 
@@ -33,6 +34,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<TipoProductoDTO>> CrearTipoProducto(TipoProductoDTO tipoProducto)
         {
+            string EnlaceTipoProducto = BaseTipoProducto + "/";
             var result = await _http.PostAsJsonAsync(EnlaceTipoProducto, tipoProducto);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
 
@@ -41,7 +43,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<TipoProductoDTO>> EliminarTipoProducto(TipoProductoDTO tipoProducto)
         {
-            var result = await _http.DeleteAsync($"{EnlaceTipoProducto}?Id={tipoProducto.Id}");
+            string EnlaceTipoProducto = BaseTipoProducto + $"/?Id={tipoProducto.Id}";
+            var result = await _http.DeleteAsync(EnlaceTipoProducto);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
 
             return content;
@@ -49,6 +52,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<List<TipoProductoDTO>>> ObtenerTodoTipoProducto()
         {
+            string EnlaceTipoProducto = BaseTipoProducto + "/";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<TipoProductoDTO>>>(EnlaceTipoProducto);
             return result;
         }
@@ -59,6 +63,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<ProductoDTO>> ActualizarProducto(ProductoDTO Producto)
         {
+            string EnlaceProducto = BaseProducto + "/";
             var result = await _http.PutAsJsonAsync(EnlaceProducto, Producto);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
 
@@ -67,6 +72,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<ProductoDTO>> CrearProducto(ProductoDTO Producto)
         {
+            string EnlaceProducto = BaseProducto + "/";
             var result = await _http.PostAsJsonAsync(EnlaceProducto, Producto);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
 
@@ -75,7 +81,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<ProductoDTO>> EliminarProducto(ProductoDTO Producto)
         {
-            var result = await _http.DeleteAsync($"{EnlaceProducto}/?Id={Producto.Id}");
+            string EnlaceProducto = BaseProducto + $"/?Id={Producto.Id}";
+            var result = await _http.DeleteAsync(EnlaceProducto);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
 
             return content;
@@ -83,6 +90,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodoProducto()
         {
+            string EnlaceProducto = BaseProducto + "/";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<ProductoDTO>>>(EnlaceProducto);
             return result;
         }
@@ -93,8 +101,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<StockDTO>> ActualizarStock(StockDTO Stock)
         {
-            var enlaceConcatenado = EnlaceStock + "";
-            var result = await _http.PutAsJsonAsync(enlaceConcatenado, Stock);
+            var EnlaceStock = BaseStock + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceStock, Stock);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
 
             return content;
@@ -102,8 +110,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<StockDTO>> CrearStock(StockDTO Stock)
         {
-            var enlaceConcatenado = EnlaceStock + "";
-            var result = await _http.PostAsJsonAsync(enlaceConcatenado, Stock);
+            var EnlaceStock = BaseStock + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceStock, Stock);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
 
             return content;
@@ -111,9 +119,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<StockDTO>> EliminarStock(StockDTO Stock)
         {
-            var enlaceConcatenado = EnlaceStock + "";
+            var EnlaceStock = BaseStock + "/?Id={Stock.Id}";
 
-            var result = await _http.DeleteAsync($"{enlaceConcatenado}/?Id={Stock.Id}");
+            var result = await _http.DeleteAsync(EnlaceStock);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
 
             return content;
@@ -121,9 +129,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStock()
         {
-            var enlaceConcatenado = EnlaceStock + "";
+            var EnlaceStock = BaseStock + "";
 
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<StockDTO>>>(enlaceConcatenado);
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<StockDTO>>>(EnlaceStock);
             return result;
         }
 
