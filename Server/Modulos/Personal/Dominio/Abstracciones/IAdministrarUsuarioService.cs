@@ -9,11 +9,11 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstra
     public interface IAdministrarUsuarioService
     {
         void EliminarUsuario(Guid id);
-        IList<Usuario> ObtenerTodoUsuario();
-        Usuario ObtenerPorIdUsuario(Guid id);
-        Usuario GuardarUsuario(Usuario entity);
-        Usuario ActualizarUsuario(Usuario entity);
-        IList<UsuariosRoles> AsignarRolesAUsuario(List<UsuariosRoles> usuarioRoles);
+        IList<UsuarioDTO> ObtenerTodoUsuario();
+        UsuarioDTO ObtenerPorIdUsuario(Guid id);
+        UsuarioDTO GuardarUsuario(UsuarioDTO entity);
+        UsuarioDTO ActualizarUsuario(UsuarioDTO entity);
+        IList<UsuariosRolesDTO> AsignarRolesAUsuario(List<UsuariosRolesDTO> usuarioRoles);
         IniciarSesionDTO IniciarSesion(UsuarioDTO usuario);
     }
 }

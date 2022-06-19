@@ -8,66 +8,84 @@ using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servicios
 {
     public class AdministrarUsuarioService : IAdministrarUsuarioService
     {
-        IUsuarioRepository _usuarioRepository;
-        IResponsableEmpresaRepository _responsableEmpresaRepository;
-        IEmpresaDistribuidoraRepository _empresaDistribuidoraRepository;
-        IEmpresaClienteRepository _empresaClienteRepository;
-        IUsuariosRolesRepository _usuariosRolesRepository;
+        UnidadDeTrabajo _unidadDeTrabajo;
+        IMapper _mapper;
         
-        public AdministrarUsuarioService( IUsuarioRepository usuarioRepository, IUsuariosRolesRepository usuariosRolesRepository,IResponsableEmpresaRepository responsableEmpresaRepository, IEmpresaClienteRepository clienteRepository, IEmpresaDistribuidoraRepository distribuidoraRepository)
+        public AdministrarUsuarioService( BaseDatosContext context, IMapper mapper)
         {
-            _usuariosRolesRepository = usuariosRolesRepository;
-            _responsableEmpresaRepository = responsableEmpresaRepository;
-            _empresaDistribuidoraRepository = distribuidoraRepository;
-            _empresaClienteRepository = clienteRepository;
-            _usuarioRepository = usuarioRepository;
+            _unidadDeTrabajo = new UnidadDeTrabajo(context);
+            _mapper = mapper;
         }
 
-        public Usuario ActualizarUsuario(Usuario entity)
+        public UsuarioDTO ActualizarUsuario(UsuarioDTO entity)
         {
-            return _usuarioRepository.Actualizar(entity);
+            var usuario = _mapper.Map<Usuario>(entity);
+            var usuariosExistentes = _unidadDeTrabajo.usuarioRepository.ObtenerTodo().Where(p => p.NombreUsuario.Equals(usuario.NombreUsuario)).ToList();
+            if (usuariosExistentes.Count() > 0)
+                throw new Exception("Ya existe un usuario registrado con ese nombre");
+
+            var usuarioActualizado = _unidadDeTrabajo.usuarioRepository.Actualizar(usuario);
+            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
+
+            return _mapper.Map<UsuarioDTO>(usuarioActualizado);
         }
 
         public void EliminarUsuario(Guid id)
         {
-            _usuarioRepository.Eliminar(id);
+            _unidadDeTrabajo.usuarioRepository.Eliminar(id);
+
+            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
         }
 
-        public Usuario GuardarUsuario(Usuario entity)
+        public UsuarioDTO GuardarUsuario(UsuarioDTO entity)
         {
-            return _usuarioRepository.Guardar(entity);
+            var usuario = _mapper.Map<Usuario>(entity);
+            var usuarioExistente = _unidadDeTrabajo.usuarioRepository.ObtenerTodo().Where(p => p.NombreUsuario.Equals(usuario.NombreUsuario)).ToList();
+            if (usuarioExistente.Count > 0)
+                throw new Exception("Ya existe un usuario con ese nombre");
+
+            _unidadDeTrabajo.usuarioRepository.Guardar(usuario);
+            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
+
+            return _mapper.Map<UsuarioDTO>(usuario);
         }
 
-        public Usuario ObtenerPorIdUsuario(Guid id)
+        public UsuarioDTO ObtenerPorIdUsuario(Guid id)
         {
-            return _usuarioRepository.ObtenerPorId(id);
+            var usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(id);
+
+            return _mapper.Map<UsuarioDTO>(usuario);
         }
 
-        public IList<Usuario> ObtenerTodoUsuario()
+        public IList<UsuarioDTO> ObtenerTodoUsuario()
         {
-            return _usuarioRepository.ObtenerTodo();
-        }
-        public IList<UsuariosRoles> AsignarRolesAUsuario(List<UsuariosRoles> usuarioRoles)
-        {
-            List<UsuariosRoles> result = new List<UsuariosRoles>();
+            var usuarios = _unidadDeTrabajo.usuarioRepository.ObtenerTodo();
 
-            foreach(UsuariosRoles usuarioRole in usuarioRoles)
+            return _mapper.Map<IList<UsuarioDTO>>(usuarios);
+        }
+        public IList<UsuariosRolesDTO> AsignarRolesAUsuario(List<UsuariosRolesDTO> usuarioRoles)
+        {
+            var roles = _mapper.Map<List<UsuariosRoles>>(usuarioRoles);
+            var result = new List<UsuariosRoles>();
+
+            foreach(UsuariosRoles usuarioRole in roles)
             {
-                result.Add(_usuariosRolesRepository.Guardar(usuarioRole));
+                result.Add(_unidadDeTrabajo.usuariosRolesRepository.Guardar(usuarioRole));
             }
-
-            return result;
+            _unidadDeTrabajo.usuariosRolesRepository.GuardarCambios();
+            return _mapper.Map<List<UsuariosRolesDTO>>(result);
         }
         public IniciarSesionDTO IniciarSesion(UsuarioDTO usuario)
         {
             bool usuarioValido = false;
 
-            Usuario usuarioTemporal = _usuarioRepository.ObtenerTodo().Where(t => t.NombreUsuario.Equals(usuario.NombreUsuario)).FirstOrDefault();
+            Usuario usuarioTemporal = _unidadDeTrabajo.usuarioRepository.ObtenerTodo().Where(t => t.NombreUsuario.Equals(usuario.NombreUsuario)).FirstOrDefault();
 
             if (usuarioTemporal != null)
                 if (usuarioTemporal.NombreUsuario == usuario.NombreUsuario && usuarioTemporal.Clave == usuario.Clave)
@@ -79,8 +97,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
             {
                 IniciarSesionDTO iniciarSesionDTO = new IniciarSesionDTO();
 
-                var responsable = _responsableEmpresaRepository.ObtenerTodo().Where(p => p.UsuarioId.Equals(usuarioTemporal.Id)).FirstOrDefault();
-                var RolesDelUsuario = _usuariosRolesRepository.ObtenerTodo().Where(p => p.UsuarioId.Equals(usuarioTemporal.Id));
+                var responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerTodo().Where(p => p.UsuarioId.Equals(usuarioTemporal.Id)).FirstOrDefault();
+                var RolesDelUsuario = _unidadDeTrabajo.usuariosRolesRepository.ObtenerTodo().Where(p => p.UsuarioId.Equals(usuarioTemporal.Id));
                 var RolesConvertidos = new List<UsuariosRolesDTO>();
                 foreach (var rol in RolesDelUsuario)
                 {
@@ -92,8 +110,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                     RolesConvertidos.Add(rolConvertido);
                 }
 
-                var empresaDistribuidora = _empresaDistribuidoraRepository.ObtenerTodo().Where(p => p.ResponsableId.Equals(responsable.Id)).FirstOrDefault();
-                var empresaCliente = _empresaClienteRepository.ObtenerTodo().Where(p => p.ResponsableId.Equals(responsable.Id)).FirstOrDefault();
+                var empresaDistribuidora = _unidadDeTrabajo.distribuidoraRepository.ObtenerTodo().Where(p => p.ResponsableId.Equals(responsable.Id)).FirstOrDefault();
+                var empresaCliente = _unidadDeTrabajo.empresaClienteRepository.ObtenerTodo().Where(p => p.ResponsableId.Equals(responsable.Id)).FirstOrDefault();
 
                 iniciarSesionDTO.NombreUsuario = usuario.NombreUsuario;
                 iniciarSesionDTO.Clave = usuario.Clave;

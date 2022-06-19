@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Personal;
@@ -14,12 +15,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
     [ApiController]
     public class AdministrarUsuarioController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarUsuarioService _usuarioService;
 
-        public AdministrarUsuarioController(IMapper mapper, IAdministrarUsuarioService usuarioService)
+        public AdministrarUsuarioController( IAdministrarUsuarioService usuarioService)
         {
-            _mapper = mapper;
             _usuarioService = usuarioService;
         }
 
@@ -31,13 +30,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                IList<Usuario> usuarios = _usuarioService.ObtenerTodoUsuario();
-                List<UsuarioDTO> response = new List<UsuarioDTO>();
-
-                foreach (var usuario in usuarios)
-                {
-                    response.Add(_mapper.Map<UsuarioDTO>(usuario));
-                }
+                var response = _usuarioService.ObtenerTodoUsuario().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -63,11 +56,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                Usuario nuevoUsuario = _mapper.Map<Usuario>(usuarioDTO);
 
-                var response = _usuarioService.GuardarUsuario(nuevoUsuario);
+                var response = _usuarioService.GuardarUsuario(usuarioDTO);
 
-                result.Data = _mapper.Map<UsuarioDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -90,10 +82,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
-                Usuario nuevoUsuario = _mapper.Map<Usuario>(_usuarioDTO);
-                var response = _usuarioService.ActualizarUsuario(nuevoUsuario);
+                var response = _usuarioService.ActualizarUsuario(_usuarioDTO);
 
-                result.Data = _mapper.Map<UsuarioDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -142,11 +133,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
 
             try
             {
+                var response = _usuarioService.AsignarRolesAUsuario(UsuarioRoles);
 
-                var usuarioRoles = _mapper.Map<List<UsuariosRoles>>(UsuarioRoles);
-                var response = _usuarioService.AsignarRolesAUsuario(usuarioRoles);
-
-                result.Data = _mapper.Map<List<UsuariosRolesDTO>>(response);
+                result.Data = (List<UsuariosRolesDTO>)response;
                 result.Success = true;
                 result.Message = "Se ha realizado la operacion correctamente.";
 
