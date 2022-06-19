@@ -1,92 +1,80 @@
 ﻿@inject IInventarioServices _inventarioServices
+@inject ILocalStorageService LocalStorage
+@inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
 
-@using Compartido.Dto.Inventario.General
-@using Microsoft.AspNetCore.Components
-@using Compartido
-@inject IInventarioServices _inventarioService
-
-<h3>Modificar stock</h3>
-<!-- Formulario Registro -->
-<div style="display: flex; justify-content: center;">
-    <form style="width: 70%;">
-        <!-- Informacion del responsable -->
-
-        <fieldset class="form-group">
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">Cantidad</label>
-                    <input @bind=StockSeleccionado.Cantidad type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">CantidadPedida</label>
-                    <input @bind=StockSeleccionado.CantidadPedida type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pedida.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">CantidadOrdenada</label>
-                    <input @bind=StockSeleccionado.Cantidad type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pordenada.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">PrecioCompra</label>
-                    <input @bind=StockSeleccionado.PrecioCompraPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio compra.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">PrecioVenta</label>
-                    <input @bind=StockSeleccionado.PrecioVentaPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio venta.">
-                </div>
-                
-                <div class="form-group">
-                    <label for="NombreRubro" class="form-label mt-4">Producto</label>
-                    <select @bind=StockSeleccionado.ProductoId class="form-select" id="rubroNegocio">
-                        @foreach (ProductoDTO producto in ListaProductos)
-                        {
-                            @if (producto.Id == StockSeleccionado.ProductoId)
+@if (ResponseTipoProducto != null)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre del producto</th>
+                <th scope="col">Tipo de Producto</th>
+                <th scope="col">Descripcion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stock in ListaStock.Data)
+            {
+                <tr>
+                    <td><input type="text" @bind=stock.Producto.Nombre/></td>
+                    <td>
+                        <select @bind=stock.Producto.TipoProductoId>
+                            @foreach (var tipoProducto in ResponseTipoProducto.Data)
                             {
-                                <option value=@producto.Id selected="selected">@producto.Nombre</option>
+                                @if (tipoProducto.Id == stock.Producto.TipoProductoId)
+                                {
+                                    <option value="@tipoProducto.Id" selected>@tipoProducto.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@tipoProducto.Id">@tipoProducto.Nombre</option>
+                                }
                             }
-                            else
-                            {
-                                <option value=@producto.Id>@producto.Nombre</option>
-                            }
-                        }
-                    </select>
-                </div>
-                
+                        </select>
+                    </td>
+                    <td><input type="text" @bind=stock.Producto.Descripcion /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-            </fieldset>
-    </form>
-</div>
+    <button @onclick=ActualizarProductos class="btn btn-success"> Guardar Productos</button>
+}
 
-<!-- Boton enviar -->
-
-<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
-    <button @onclick=Modificar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Modificar</button>
-</div>
-
-
-@code {
-
+@code
+{
     [Parameter]
-    public StockDTO StockSeleccionado { get; set; }
+    public ServiceResponse<List<StockDTO>> ListaStock { get; set; }
 
-     [Parameter]
-    public List<ProductoDTO> ListaProductos { get; set; }
+    public ServiceResponse<List<TipoProductoDTO>> ResponseTipoProducto { get; set; }
 
+    public Guid IdEmpresaSesion { get; set; }
 
-    [Parameter]
-    public EventCallback<bool> MostrarModificar { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> MostrarListado { get; set; }
-
-    public ServiceResponse<StockDTO> ResponseStock { get; set; }
-
-
-    public async void Modificar()
+    protected override async Task OnInitializedAsync()
     {
-        ResponseStock = await _inventarioService.ActualizarStock(StockSeleccionado);
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        ResponseTipoProducto = await _inventarioServices.ObtenerTodosLosTipoProducto();
+    }
 
-        if (ResponseStock.Success)
-            await this.MostrarListado.InvokeAsync();
+
+    public async void ActualizarProductos()
+    {
+        List<ProductoDTO> productos = new List<ProductoDTO>();
+        foreach (var stock in ListaStock.Data)
+        {
+            productos.Add(stock.Producto);
+        }
+
+        var response = await _inventarioServices.ActualizarProducto(productos);
+
+        if (response.Success)
+            await JsRuntime.InvokeVoidAsync("alert", "Productos Modificados Correctamente.");
+        else
+            await JsRuntime.InvokeVoidAsync("alert", "No se pudo Modificar correctamente los productos.");
+
+        NavigationManager.NavigateTo("/administrarStock", forceLoad: true);
+
     }
 
 }

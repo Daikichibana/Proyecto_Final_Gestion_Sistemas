@@ -1,10 +1,15 @@
 ﻿@page "/administrarStock"
 @inject IInventarioServices _inventarioServices
 @inject ILocalStorageService LocalStorage
+@inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
 
-@if (ResponseStock != null && ListaFiltradaProductos != null && Paginacion == 1)
+<h3>Administrar Stock</h3>
+
+@if (ResponseStock != null && Paginacion == 1)
 {
-    <h3>Administrar Stock</h3>
+    <button class="btn btn-success mb-2" @onclick=Registrar>Agregar Nuevo Producto</button>
+    <button @onclick="() => Modificar()" type="button" class="btn btn-warning mb-2">Editar Productos</button>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -19,75 +24,53 @@
         </thead>
         <tbody>
 
-            @foreach (var productoStock in ListaFiltradaStock)
+            @foreach (var productoStock in ResponseStock.Data)
             {
 
                 <tr>
-                   
-                    <td>@BuscarNombreProducto(productoStock.ProductoId)</td>
+
+                    <td>@productoStock.Producto.Nombre</td>
                     <td>@productoStock.Cantidad</td>
                     <td>@productoStock.CantidadOrdenada</td>
                     <td>@productoStock.CantidadPedida</td>
                     <td>@productoStock.PrecioCompraPromedio</td>
                     <td>@productoStock.PrecioVentaPromedio</td>
                     <td>
-                        <button @onclick="() => Modificar(productoStock)" type="button" class="btn btn-warning">Editar</button>
                         <button @onclick="() => Eliminar(productoStock)" type="button" class="btn btn-danger ml-3">Eliminar</button>
                     </td>
-                    
-                </tr>
 
+                </tr>
             }
 
         </tbody>
     </table>
-
-    <button @onclick="Registrar" type="button" class="btn btn-primary">Registrar Producto en Stock</button>
 }
 else if (Paginacion == 2)
 {
-    <RegistrarStock ListaProductos="ListaFiltradaProductos" MostrarListado="() => MostrarListado()"/>
+    <RegistrarStock />
 }
 else if (Paginacion == 3)
 {
-    <ModificarStock ListaProductos="ListaFiltradaProductos" StockSeleccionado="StockSeleccionado" />
+    <ModificarStock ListaStock="ResponseStock"/>
 }
 else
 {
     <p>@Loading</p>
 }
-@code {
+
+@code 
+{
     public ServiceResponse<List<StockDTO>> ResponseStock { get; set; }
-    public List<StockDTO> ListaFiltradaStock { get; set; } = new List<StockDTO>();
 
-    public ServiceResponse<List<ProductoDTO>> ResponseProducto { get; set; }
-    public List<ProductoDTO> ListaFiltradaProductos { get; set; } = new List<ProductoDTO>();
-
-    public string Loading { get; set; }
+    public string Loading { get; set; } = "Cargando...";
     public int Paginacion { get; set; } = 1;
-    public StockDTO StockSeleccionado { get; set; }
-
-
-
     public Guid IdEmpresaSesion { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Loading = "Cargando...";
-
-        ResponseStock = await _inventarioServices.ObtenerTodoStock();
-        ResponseProducto = await _inventarioServices.ObtenerTodoProducto();
+        ResponseStock = await _inventarioServices.ObtenerTodosStock();
         IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
-
-
-
-        FiltrarLista();
-    }
-
-    public void MostrarListado()
-    {
-        Paginacion = 1;
-        StateHasChanged();
+        ResponseStock.Data = ResponseStock.Data.Where(p => p.Producto.EmpresaDistribuidoraId.Equals(IdEmpresaSesion)).ToList();
     }
 
     public void Registrar()
@@ -96,32 +79,22 @@ else
         StateHasChanged();
     }
 
-    public void Modificar(StockDTO entidad)
+    public void Modificar()
     {
-        StockSeleccionado = entidad;
         Paginacion = 3;
         StateHasChanged();
     }
 
-    public async void Eliminar(StockDTO entidad)
+    public async void Eliminar(StockDTO stock)
     {
-        await _inventarioServices.EliminarStock(entidad);
-    }
-    
-    public void FiltrarLista()
-    {
-        ListaFiltradaProductos = ResponseProducto.Data.Where(p => p.EmpresaDistribuidoraId.Equals(IdEmpresaSesion)).ToList();
-        foreach (var stock in ResponseStock.Data)
-        {
-            var response = ListaFiltradaProductos.Where(p => p.Id.Equals(stock.ProductoId)).ToList();
-            if(response != null && response.Count > 0)
-                ListaFiltradaStock.Add(stock);
-        }
-    }
+        var response = await _inventarioServices.EliminarProducto(stock.ProductoId);
 
-    public string BuscarNombreProducto(Guid IdProducto)
-    {
-        return ListaFiltradaProductos.Where(p => p.Id.Equals(IdProducto)).FirstOrDefault().Nombre;
-    }
+        if(response.Success)
+            await JsRuntime.InvokeVoidAsync("alert", "Producto Eliminado Correctamente.");
+        else
+            await JsRuntime.InvokeVoidAsync("alert", "No se pudo eliminar correctamente el producto.");
 
+        NavigationManager.NavigateTo("/AdministrarStock", forceLoad: true);
+        StateHasChanged();
+    }
 }

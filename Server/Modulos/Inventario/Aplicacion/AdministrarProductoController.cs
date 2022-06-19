@@ -98,7 +98,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Aplicacion
         }
 
         [HttpDelete]
-        public IActionResult EliminarProducto(List<Guid> id)
+        public IActionResult EliminarProducto(Guid id)
         {
             var result = new ServiceResponse<ProductoDTO>();
 

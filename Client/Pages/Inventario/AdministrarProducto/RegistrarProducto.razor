@@ -1,4 +1,4 @@
-﻿@using Compartido
+﻿@*@using Compartido
 @using Compartido.Dto.Distribuidora.General
 @inject IInventarioServices _inventarioService
 @inject ILocalStorageService LocalStorage
@@ -85,4 +85,4 @@
         if(ResponseProducto.Success)
             await this.MostrarListado.InvokeAsync();
     }
-}
+}*@

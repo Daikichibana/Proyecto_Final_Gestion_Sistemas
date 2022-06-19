@@ -110,37 +110,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-        
-        [HttpPost]
-        public IActionResult InsertarEmpresa(EmpresaClienteDTO Empresa)
-        {
-
-            var result = new ServiceResponse<EmpresaClienteDTO>();
-
-            try
-            {
-               /* NIT nit = new NIT(Empresa.NombreFacturacion, Empresa.NumeroNIT);
-                Usuario usuario = new Usuario(Empresa.NombreUsuario, Empresa.ClaveUsuario);
-                ResponsableEmpresa responsable = new ResponsableEmpresa(Empresa.NombreResponsable, Empresa.ApellidoResponsable, Empresa.CiResponsable, Empresa.FechaNacimientoResponsable, Empresa.EmailEmpresa, Empresa.TelefonoResponsable, usuario);
-                EmpresaCliente nuevaEmpresa = new EmpresaCliente(Empresa.NombreEmpresa, Empresa.RazonSocialEmpresa, Empresa.EmailEmpresa, Empresa.Rubro.Id, nit, responsable);
-               */
-                var response = _administrarClienteService.GuardarCliente(Empresa);
-
-                result.Data = response;
-                result.Message = "Se ha realizado la operacion correctamente.";
-                result.Success = true;
-
-                return Ok(result);
-            }
-            catch (Exception error)
-            {
-                result.Data = null;
-                result.Message = error.Message;
-                result.Success = false;
-
-                return BadRequest(result);
-            }
-        }
 
 
         [HttpGet]

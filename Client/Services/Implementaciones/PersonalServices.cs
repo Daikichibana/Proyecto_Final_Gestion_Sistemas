@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -11,130 +12,197 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
     public class PersonalServices : IPersonalServices
     {
         private readonly HttpClient _http;
-        private string EnlaceRoles = "api/AdministrarRoles";
-        private string EnlaceUsuario = "api/AdministrarUsuario";
-        private string EnlaceConductor = "api/AdministrarConductor";
+        private string BaseRoles = "api/AdministrarRoles";
+        private string BaseUsuario = "api/AdministrarUsuario";
+        private string BaseConductor = "api/AdministrarConductor";
+        private string BaseResponsableEmpresa = "api/AdministrarResponsableEmpresa";
+        private string BaseResponsableAlmacen = "api/AdministrarResponsableAlmacen";
 
         public PersonalServices(HttpClient http)
         {
             _http = http;
         }
-
-        #region Administrar Usuario
-        public async Task<ServiceResponse<UsuarioDTO>> ActualizarUsuario(UsuarioDTO usuario)
+        #region Administrar Usuarios
+        public async Task<ServiceResponse<List<UsuarioDTO>>> ObtenerTodoUsuarios() 
         {
-            var Enlace = EnlaceUsuario + "/ActualizarUsuario";
-            var result = await _http.PutAsJsonAsync(Enlace, usuario);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<UsuarioDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<UsuarioDTO>> CrearUsuario(UsuarioDTO usuario)
-        {
-            var Enlace = EnlaceUsuario + "/InsertarUsuario";
-            var result = await _http.PostAsJsonAsync(Enlace, usuario);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<UsuarioDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<UsuarioDTO>> EliminarUsuario(UsuarioDTO usuario)
-        {
-            var Enlace = $"{EnlaceUsuario}/EliminarUsuario?Id={usuario.Id}";
-            var result = await _http.DeleteAsync(Enlace);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<UsuarioDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<List<UsuarioDTO>>> ObtenerTodoUsuario()
-        {
-            var Enlace = EnlaceUsuario + "/ObtenerTodoUsuarios";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<UsuarioDTO>>>(Enlace);
+            string EnlaceUsuario = BaseUsuario + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<UsuarioDTO>>>(EnlaceUsuario);
             return result;
         }
 
-        public async Task<ServiceResponse<IniciarSesionDTO>> IniciarSesion(UsuarioDTO usuario)
+        public async Task<ServiceResponse<UsuarioDTO>> InsertarUsuario(UsuarioDTO usuarioDTO)
         {
-            var Enlace = EnlaceUsuario + "/IniciarSesion";
-            var result = await _http.PostAsJsonAsync(Enlace, usuario);
+            string EnlaceUsuario = BaseUsuario + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceUsuario, usuarioDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<UsuarioDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<UsuarioDTO>> ActualizarUsuario(UsuarioDTO _usuarioDTO)
+        {
+            string EnlaceUsuario = BaseUsuario + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceUsuario, _usuarioDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<UsuarioDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<UsuarioDTO>> EliminarUsuario(Guid Id)
+        {
+            string EnlaceUsuario = BaseUsuario + "/";
+            var result = await _http.DeleteAsync(EnlaceUsuario);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<UsuarioDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<UsuariosRolesDTO>>> AsignarRolesAUsuario(List<UsuariosRolesDTO> UsuarioRoles)
+        {
+            string EnlaceUsuario = BaseUsuario + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceUsuario, UsuarioRoles);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<UsuariosRolesDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<IniciarSesionDTO>> IniciarSesion(UsuarioDTO user)
+        {
+            string EnlaceUsuario = BaseUsuario + "/IniciarSesion";
+            var result = await _http.PostAsJsonAsync(EnlaceUsuario, user);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<IniciarSesionDTO>>();
 
             return content;
         }
+
         #endregion
 
         #region Administrar Rol
-
-        public async Task<ServiceResponse<RolDTO>> ActualizarRol(RolDTO Rol)
+        public async Task<ServiceResponse<List<RolDTO>>> ObtenerTodoRoles()
         {
-            var result = await _http.PutAsJsonAsync(EnlaceRoles, Rol);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<RolDTO>> CrearRol(RolDTO Rol)
-        {
-            var result = await _http.PostAsJsonAsync(EnlaceRoles, Rol);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<RolDTO>> EliminarRol(RolDTO Rol)
-        {
-            var result = await _http.DeleteAsync($"{EnlaceRoles}/?Id={Rol.Id}");
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<List<RolDTO>>> ObtenerTodoRol()
-        {
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<RolDTO>>>(EnlaceRoles);
+            string EnlaceRol = BaseRoles + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<RolDTO>>>(EnlaceRol);
             return result;
+        }
+        public async Task<ServiceResponse<RolDTO>> InsertarRol(RolDTO _rolDTO)
+        {
+            string EnlaceRol = BaseRoles + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceRol, _rolDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<RolDTO>> ActualizarRol(RolDTO _rolDTO)
+        {
+            string EnlaceRol = BaseRoles + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceRol, _rolDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<RolDTO>> EliminarRol(Guid Id)
+        {
+            string EnlaceRol = BaseRoles + "/";
+            var result = await _http.DeleteAsync(EnlaceRol);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RolDTO>>();
+
+            return content;
         }
         #endregion
 
         #region Administrar Conductor
-        public async Task<ServiceResponse<ConductorDTO>> ActualizarConductor(ConductorDTO conductor)
-        {
-            var result = await _http.PutAsJsonAsync(EnlaceConductor, conductor);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<ConductorDTO>> CrearConductor(ConductorDTO conductor)
-        {
-            var result = await _http.PostAsJsonAsync(EnlaceConductor, conductor);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<ConductorDTO>> EliminarConductor(ConductorDTO conductor)
-        {
-            var result = await _http.DeleteAsync($"{EnlaceConductor}?Id={conductor.Id}");
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
-
-            return content;
-        }
-
         public async Task<ServiceResponse<List<ConductorDTO>>> ObtenerTodosLosConductores()
         {
+            string EnlaceConductor = BaseConductor + "/";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<ConductorDTO>>>(EnlaceConductor);
             return result;
         }
+        public async Task<ServiceResponse<List<ConductorDTO>>> CrearConductor(List<ConductorDTO> conductorDTO)
+        {
+            string EnlaceConductor = BaseConductor + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceConductor, conductorDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ConductorDTO>>>();
 
+            return content;
+        }
+        public async Task<ServiceResponse<List<ConductorDTO>>> ActualizarConductor(List<ConductorDTO> conductorDTO)
+        {
+            string EnlaceConductor = BaseConductor + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceConductor, conductorDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ConductorDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<ConductorDTO>> EliminarConductor(Guid id)
+        {
+            string EnlaceConductor = BaseConductor + "/";
+            var result = await _http.DeleteAsync(EnlaceConductor);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
+
+            return content;
+        }
         #endregion
 
-        #region Administrar responsable almacen
+        #region Administrar Responsable Almacen
+        public async Task<ServiceResponse<List<ResponsableAlmacenDTO>>> ObtenerTodLosResponsablesDeAlmacen()
+        {
+            string EnlaceResponsableAlmacen = BaseResponsableAlmacen + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<ResponsableAlmacenDTO>>>(EnlaceResponsableAlmacen);
+            return result;
+        }
+        public async Task<ServiceResponse<List<ResponsableAlmacenDTO>>> InsertarResponsableAlmacen(List<ResponsableAlmacenDTO> responsableAlmacenDTO)
+        {
+            string EnlaceResponsableAlmacen = BaseResponsableAlmacen + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceResponsableAlmacen, responsableAlmacenDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ResponsableAlmacenDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<ResponsableAlmacenDTO>>> ActualizarResponsableAlmacen(List<ResponsableAlmacenDTO> responsableAlmacenDTO)
+        {
+            string EnlaceResponsableAlmacen = BaseResponsableAlmacen + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceResponsableAlmacen, responsableAlmacenDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ResponsableAlmacenDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<ResponsableAlmacenDTO>> EliminarResponsableAlmacen(Guid id)
+        {
+            string EnlaceResponsableAlmacen = BaseResponsableAlmacen + "/";
+            var result = await _http.DeleteAsync(EnlaceResponsableAlmacen);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ResponsableAlmacenDTO>>();
+
+            return content;
+        }
         #endregion
 
-        #region Administrar responsable Empresa
+        #region Administrar Responsble Empresa
+        public async Task<ServiceResponse<List<ResponsableEmpresaDTO>>> ObtenerTodosLosResponsables()
+        {
+            string EnlaceResponsableEmpresa = BaseResponsableEmpresa + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<ResponsableEmpresaDTO>>>(EnlaceResponsableEmpresa);
+            return result;
+        }
+        public async Task<ServiceResponse<ResponsableEmpresaDTO>> InsertarResponsableEmpresa(ResponsableEmpresaDTO _responsableDTO)
+        {
+            string EnlaceResponsableEmpresa = BaseResponsableEmpresa + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceResponsableEmpresa, _responsableDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ResponsableEmpresaDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<ResponsableEmpresaDTO>> ActualizarResponsableEmpresa(ResponsableEmpresaDTO responsableDTO)
+        {
+            string EnlaceResponsableEmpresa = BaseResponsableEmpresa + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceResponsableEmpresa, responsableDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ResponsableEmpresaDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<ResponsableEmpresaDTO>> EliminarResponsableEmpresa(Guid id)
+        {
+            string EnlaceResponsableEmpresa = BaseResponsableEmpresa + "/";
+            var result = await _http.DeleteAsync(EnlaceResponsableEmpresa);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ResponsableEmpresaDTO>>();
+
+            return content;
+        }
         #endregion
     }
 }

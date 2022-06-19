@@ -1,111 +1,90 @@
-﻿@using Compartido
-@using Compartido.Dto.Inventario.General
-@inject IInventarioServices _inventarioService
+﻿@inject IInventarioServices _inventarioServices
 @inject ILocalStorageService LocalStorage
+@inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
 
-<h3>Registrar Producto</h3>
-
-@if (Stock != null)
+@if (ResponseTipoProducto != null)
 {
-    
-    <!-- Formulario Registro -->
-    <div style="display: flex; justify-content: center;">
-        <form style="width: 70%;">
-            <!-- Informacion del responsable -->
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre del producto</th>
+                <th scope="col">Tipo de Producto</th>
+                <th scope="col">Descripcion</th>
 
-            <fieldset class="form-group">
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">Cantidad</label>
-                    <input @bind=Stock.Cantidad type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">CantidadPedida</label>
-                    <input @bind=Stock.CantidadPedida type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pedida.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">CantidadOrdenada</label>
-                    <input @bind=Stock.CantidadOrdenada type="number" class="form-control" id="nombre" placeholder="Ingrese cantidad pordenada.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">PrecioCompra</label>
-                    <input @bind=Stock.PrecioCompraPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio compra.">
-                </div>
-                <div class="form-group">
-                    <label for="nombre" class="form-label mt-4">PrecioVenta</label>
-                    <input @bind=Stock.PrecioVentaPromedio type="number" class="form-control" id="nombre" placeholder="Ingrese precio venta.">
-                </div>
-                
-                <div class="form-group">
-                    <label for="NombreRubro" class="form-label mt-4">Producto</label>
-                    <select @bind=Stock.ProductoId class="form-select" id="rubroNegocio">
-                        @foreach (ProductoDTO producto in ListaProductos)
-                        {
-                            @if (producto.Id == Stock.ProductoId)
-                            {
-                                <option value=@producto.Id selected="selected">@producto.Nombre</option>
-                            }
-                            else
-                            {
-                                <option value=@producto.Id>@producto.Nombre</option>
-                            }
-                        }
-                    </select>
-                </div>
-                
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in ListaProductos)
+            {
+                producto.EmpresaDistribuidoraId = IdEmpresaSesion;
 
-            </fieldset>
-        </form>
-    </div>
-    
+                <tr>
+                    <td><input type="text" @bind=producto.Nombre /></td>
+                    <td>
+                        <select @bind=producto.TipoProductoId>
+                            @foreach (var tipoProducto in ResponseTipoProducto.Data)
+                            {
+                                <option value="@tipoProducto.Id">@tipoProducto.Nombre</option>
+                            }
+                        </select>
+                    </td>
+                    <td><input type="text" @bind=producto.Descripcion /></td>
+                    <td><button class="btn btn-danger" @onclick="() => QuitarProducto(producto)">Quitar Producto</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button @onclick=AgregarProducto class="btn btn-primary"> Agregar Producto </button>
+    <button @onclick=GuardarProductos class="btn btn-success"> Guardar Productos</button>
 }
-<!-- Boton enviar -->
 
-<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-    <button @onclick="@(() => MostrarListado.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
-    <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
-</div>
-
-
-@code {
-    [Parameter]
-    public EventCallback<bool> MostrarRegistrar { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> MostrarListado { get; set; }
-
-    [Parameter]
-    public List<StockDTO> ListaStock { get; set; }
-    
-    [Parameter]
+@code
+{
+    public ServiceResponse<List<TipoProductoDTO>> ResponseTipoProducto { get; set; }
     public List<ProductoDTO> ListaProductos { get; set; }
-
-    public ServiceResponse<StockDTO> ResponseStock { get; set; }
-
-    public ServiceResponse<ProductoDTO> ResponseProducto { get; set; }
-
-    public StockDTO Stock { get; set; } 
-
-    public string Distribuidora { get; set; }
-
-
-    protected override void OnInitialized()
-    {
-        Stock = new StockDTO();
-        
-    }
+    public Guid IdEmpresaSesion { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        ListaProductos = new List<ProductoDTO>();
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        ResponseTipoProducto = await _inventarioServices.ObtenerTodosLosTipoProducto();
+    }
+
+    public void AgregarProducto()
+    {
+        ProductoDTO producto = new ProductoDTO();
+        ListaProductos.Add(producto);
         StateHasChanged();
     }
 
-
-    public async void Registrar()
+    public void QuitarProducto(ProductoDTO producto)
     {
-        ResponseStock = await _inventarioService.CrearStock(Stock);
-        
-        if(ResponseStock.Success)
-            await this.MostrarListado.InvokeAsync();
+        ListaProductos.Remove(producto);
+        StateHasChanged();
     }
+
+    public async void GuardarProductos()
+    {
+        if (ListaProductos.Count > 0)
+        {
+            var response = await _inventarioServices.InsertarProducto(ListaProductos);
+
+            if (response.Success)
+                await JsRuntime.InvokeVoidAsync("alert", "Productos Agregados Correctamente.");
+            else
+                await JsRuntime.InvokeVoidAsync("alert", "No se pudo agregar correctamente los productos.");
+
+            NavigationManager.NavigateTo("/administrarStock", forceLoad: true);
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Debes agregar productos a la lista.");
+        }
+    }
+
 }
+

@@ -23,10 +23,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
         {
             var productos = _mapper.Map<List<Producto>>(entity);
             var productosActualizados = new List<Producto>();
+            var ProductoExistentes = _unidad.productoRepository.ObtenerTodo();
 
             foreach (var producto in productos)
             {
-                var ProductoExistente = _unidad.productoRepository.ObtenerTodo().Where(p => p.Nombre.Equals(producto.Nombre)).ToList();
+                producto.EmpresaDistribuidora = null;
+                producto.TipoProducto = null;
+
+                var ProductoExistente = ProductoExistentes.Where(p => p.Nombre.Equals(producto.Nombre)).ToList();
 
                 if (ProductoExistente.Count > 0)
                     if (!ProductoExistente.FirstOrDefault().Id.Equals(producto.Id))
@@ -34,22 +38,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
 
                 var productoActualizado = _unidad.productoRepository.Actualizar(producto);
                 productosActualizados.Add(productoActualizado);
-            }
 
+            }
             _unidad.Complete();
+
             return _mapper.Map<List<ProductoDTO>>(productosActualizados);
         }
-        public void EliminarProducto(List<Guid> id)
+        public void EliminarProducto(Guid id)
         {
-            foreach (var idProducto in id)
+
+            var stock = _unidad.stockRepository.ObtenerTodo().Where(p => p.ProductoId.Equals(id)).FirstOrDefault();
+            if (stock != null)
             {
-                var stock = _unidad.stockRepository.ObtenerTodo().Where(p => p.ProductoId.Equals(idProducto)).FirstOrDefault();
-                if (stock != null)
-                {
-                    _unidad.stockRepository.Eliminar(stock.Id);
-                }
-                _unidad.productoRepository.Eliminar(idProducto);
+                _unidad.stockRepository.Eliminar(stock.Id);
             }
+            _unidad.productoRepository.Eliminar(id);
 
             _unidad.Complete();
         }
@@ -104,7 +107,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Serv
                 item.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(item.EmpresaDistribuidora.RubroId);
                 item.TipoProducto = _unidad.tipoProductoRepository.ObtenerPorId(item.TipoProductoId);
             }
-            
+
             return _mapper.Map<IList<ProductoDTO>>(producto);
         }
 

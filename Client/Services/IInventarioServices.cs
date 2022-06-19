@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -11,27 +12,28 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
     public interface IInventarioServices
     {
         #region Actualizar Stock Por Compra
-        Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStock();
-        Task<ServiceResponse<StockDTO>> CrearStock(StockDTO Stock);
-        Task<ServiceResponse<StockDTO>> ActualizarStock(StockDTO Stock);
-        Task<ServiceResponse<StockDTO>> EliminarStock(StockDTO Stock);
+        Task<ServiceResponse<List<StockDTO>>> ObtenerTodosStock();
+        Task<ServiceResponse<StockDTO>> ObtenerPorIdStock(Guid Id);
+        Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStockPorIdEmpresa(Guid Id);
+        Task<ServiceResponse<List<StockDTO>>> ActualizarStock(List<StockDTO> nuevoStock);
         #endregion
 
         #region Admnistrar Nota Recepcion
         #endregion
 
         #region Administrar Producto
-        Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodoProducto();
-        Task<ServiceResponse<ProductoDTO>> CrearProducto(ProductoDTO Producto);
-        Task<ServiceResponse<ProductoDTO>> ActualizarProducto(ProductoDTO Producto);
-        Task<ServiceResponse<ProductoDTO>> EliminarProducto(ProductoDTO Producto);
+        Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodosProductos();
+        Task<ServiceResponse<List<ProductoDTO>>> InsertarProducto(List<ProductoDTO> productoDTO);
+        Task<ServiceResponse<List<ProductoDTO>>> ActualizarProducto(List<ProductoDTO> ProductoDTO);
+        Task<ServiceResponse<ProductoDTO>> EliminarProducto(Guid id);
+        Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodoProductoPorIdEmpresa(Guid idEmpresa);
         #endregion
 
         #region Gestionar Tipo Producto
-        Task<ServiceResponse<List<TipoProductoDTO>>> ObtenerTodoTipoProducto();
-        Task<ServiceResponse<TipoProductoDTO>> CrearTipoProducto(TipoProductoDTO tipoProducto);
-        Task<ServiceResponse<TipoProductoDTO>> ActualizarTipoProducto(TipoProductoDTO tipoProducto);
-        Task<ServiceResponse<TipoProductoDTO>> EliminarTipoProducto(TipoProductoDTO tipoProducto);
+        Task<ServiceResponse<List<TipoProductoDTO>>> ObtenerTodosLosTipoProducto();
+        Task<ServiceResponse<List<TipoProductoDTO>>> InsertarTipoProducto(List<TipoProductoDTO> tipoProductoDTO);
+        Task<ServiceResponse<List<TipoProductoDTO>>> ActualizarTipoProducto(List<TipoProductoDTO> tipoProductoDTO);
+        Task<ServiceResponse<TipoProductoDTO>> EliminarTipoProducto(List<Guid> id);
         #endregion
 
         #region Realizar Pedido A Proveedor

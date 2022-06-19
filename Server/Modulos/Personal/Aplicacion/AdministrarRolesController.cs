@@ -49,7 +49,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult InsertarUsuario(RolDTO _rolDTO)
+        public IActionResult InsertarRol(RolDTO _rolDTO)
         {
 
             var result = new ServiceResponse<RolDTO>();
@@ -76,7 +76,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         }
 
         [HttpPut]
-        public IActionResult ActualizarUsuario(RolDTO _rolDTO)
+        public IActionResult ActualizarRol(RolDTO _rolDTO)
         {
             var result = new ServiceResponse<RolDTO>();
 
@@ -101,9 +101,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Aplicacion
         }
 
         [HttpDelete]
-        public IActionResult EliminarUsuario(Guid id)
+        public IActionResult EliminarRol(Guid id)
         {
-            var result = new ServiceResponse<UsuarioDTO>();
+            var result = new ServiceResponse<RolDTO>();
 
             try
             {
