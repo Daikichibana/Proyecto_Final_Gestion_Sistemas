@@ -15,29 +15,22 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarVechiculoController : ControllerBase
     {
-        IMapper _mapper;
+       
         IAdministrarVehiculoService _administrarVehiculoService;
-        public AdministrarVechiculoController(IMapper mapper, IAdministrarVehiculoService administrarVehiculoService)
+        public AdministrarVechiculoController(IAdministrarVehiculoService administrarVehiculoService)
         {
-            _mapper = mapper;
             _administrarVehiculoService = administrarVehiculoService;           
         }
 
         [HttpGet]
         public IActionResult ObtenerTodosLosVehiculos()
         {
-
-            var result = new ServiceResponse<List<VehiculoDTO>>();
+            ServiceResponse<List<VehiculoDTO>> result = new ServiceResponse<List<VehiculoDTO>>();
+           
 
             try
             {
-                IList<Vechiculo> Vehiculos = _administrarVehiculoService.ObtenerTodoVehiculo();
-                List<VehiculoDTO> response = new List<VehiculoDTO>();
-
-                foreach (var Vehiculo in Vehiculos)
-                {
-                    response.Add(_mapper.Map<VehiculoDTO>(Vehiculo));
-                }
+                var response = _administrarVehiculoService.ObtenerTodoVehiculo().ToList();
 
                 result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -56,18 +49,17 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPost]
-        public IActionResult CrearVehiculo(VehiculoDTO vehiculoDTO)
+        public IActionResult CrearVehiculo(IList<VehiculoDTO> vehiculoDTO)
         {
 
-            var result = new ServiceResponse<VehiculoDTO>();
+            ServiceResponse<IList<VehiculoDTO>> result = new ServiceResponse<IList<VehiculoDTO>>();
 
             try
             {
-                Vechiculo nuevoVehiculo = _mapper.Map<Vechiculo>(vehiculoDTO);
 
-                var response = _administrarVehiculoService.GuardarVehiculo(nuevoVehiculo);
+                var response = _administrarVehiculoService.GuardarVehiculo(vehiculoDTO).ToList();
 
-                result.Data = _mapper.Map<VehiculoDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -84,16 +76,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPut]
-        public IActionResult ActualizarVehiculo(VehiculoDTO vehiculoDTO)
+        public IActionResult ActualizarVehiculo(IList<VehiculoDTO> vehiculoDTO)
         {
-            var result = new ServiceResponse<VehiculoDTO>();
+            ServiceResponse<IList<VehiculoDTO>> result = new ServiceResponse<IList<VehiculoDTO>>();
 
             try
             {
-                Vechiculo nuevoVehiculo = _mapper.Map<Vechiculo>(vehiculoDTO);
-                var response = _administrarVehiculoService.ActualizarVehiculo(nuevoVehiculo);
+                var response = _administrarVehiculoService.ActualizarVehiculo(vehiculoDTO);
 
-                result.Data = _mapper.Map<VehiculoDTO>(response);
+                result.Data = response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -112,7 +103,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         [HttpDelete]
         public IActionResult EliminarVehiculo(Guid id)
         {
-            var result = new ServiceResponse<VehiculoDTO>();
+
+            ServiceResponse<IList<VehiculoDTO>> result = new ServiceResponse<IList<VehiculoDTO>>();
 
             try
             {
@@ -135,16 +127,17 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             }
         }
 
+        
         [HttpPost]
         public IActionResult AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vehiculoDTO)
         {
 
-            var result = new ServiceResponse<AsignacionVechiculoConductorDTO>();
+            ServiceResponse<IList<AsignacionVechiculoConductor>> result = new ServiceResponse<IList<AsignacionVechiculoConductor>>();
 
             try
             {
-                var vhMapeado = _mapper.Map<AsignacionVechiculoConductor>(vehiculoDTO);
-                _administrarVehiculoService.AsignarVehiculoAConductor(vhMapeado);
+                
+                _administrarVehiculoService.AsignarVehiculoAConductor(vehiculoDTO);   
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";
@@ -166,13 +159,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         public IActionResult ObtenerTodoVehiculoConductor()
         {
 
-            var result = new ServiceResponse<List<AsignacionVechiculoConductorDTO>>();
+            ServiceResponse<List<AsignacionVechiculoConductorDTO>> result = new ServiceResponse<List<AsignacionVechiculoConductorDTO>>();
 
             try
             {
                 var response = _administrarVehiculoService.ObtenerTodoAsignacionVechiculo().ToList();
 
-                result.Data = _mapper.Map<List<AsignacionVechiculoConductorDTO>>(response);
+                result.Data =response;
                 result.Message = "Se ha realizado la operacion correctamente.";
                 result.Success = true;
 
@@ -187,6 +180,6 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
                 return BadRequest(result);
             }
         }
-
+        
     }
 }

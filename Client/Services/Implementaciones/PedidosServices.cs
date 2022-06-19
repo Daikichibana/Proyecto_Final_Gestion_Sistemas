@@ -12,7 +12,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
     public class PedidosServices : IPedidosServices
     {
         private readonly HttpClient _http;
-        private string EnlacePedido = "api/AdministrarPedido";
+        private string BasePedido = "api/AdministrarPedido";
 
         public PedidosServices(HttpClient http)
         {
@@ -21,8 +21,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Pedido
         public async Task<ServiceResponse<PedidoDTO>> ActualizarPedido(PedidoDTO pedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/ActualizarPedido";
-            var result = await _http.PutAsJsonAsync(enlaceConcatenado, pedidoDTO);
+            var EnlacePedido = BasePedido + "/ActualizarPedido";
+            var result = await _http.PutAsJsonAsync(EnlacePedido, pedidoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<PedidoDTO>>();
 
             return content;
@@ -30,8 +30,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<PedidoDTO>> CrearPedido(PedidoDTO pedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/InsertarPedido";
-            var result = await _http.PostAsJsonAsync(enlaceConcatenado, pedidoDTO);
+            var EnlacePedido = BasePedido + "/InsertarPedido";
+            var result = await _http.PostAsJsonAsync(EnlacePedido, pedidoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<PedidoDTO>>();
 
             return content;
@@ -39,8 +39,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<PedidoDTO>> EliminarPedido(PedidoDTO pedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/EliminarPedido";
-            var result = await _http.DeleteAsync($"{enlaceConcatenado}?Id={pedidoDTO.Id}");
+            var EnlacePedido = BasePedido + $"/EliminarPedido?Id={pedidoDTO.Id}";
+            var result = await _http.DeleteAsync(EnlacePedido);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<PedidoDTO>>();
 
             return content;
@@ -48,14 +48,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<List<PedidoDTO>>> ObtenerTodosLosPedidos()
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerTodosPedido";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerTodosPedido";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(EnlacePedido);
             return result;
         }
         public async Task<ServiceResponse<OrdenPedidoDTO>> ActualizarOrdenPedido(OrdenPedidoDTO OrdenPedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/ActualizarOrdenPedido";
-            var result = await _http.PutAsJsonAsync(enlaceConcatenado, OrdenPedidoDTO);
+            var EnlacePedido = BasePedido + "/ActualizarOrdenPedido";
+            var result = await _http.PutAsJsonAsync(EnlacePedido, OrdenPedidoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<OrdenPedidoDTO>>();
 
             return content;
@@ -63,8 +63,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<OrdenPedidoDTO>> CrearOrdenPedido(OrdenPedidoDTO OrdenPedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/InsertarOrdenPedido";
-            var result = await _http.PostAsJsonAsync(enlaceConcatenado, OrdenPedidoDTO);
+            var EnlacePedido = BasePedido + "/InsertarOrdenPedido";
+            var result = await _http.PostAsJsonAsync(EnlacePedido, OrdenPedidoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<OrdenPedidoDTO>>();
 
             return content;
@@ -72,8 +72,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<OrdenPedidoDTO>> EliminarOrdenPedido(OrdenPedidoDTO OrdenPedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/EliminarOrdenPedido";
-            var result = await _http.DeleteAsync($"{enlaceConcatenado}?Id={OrdenPedidoDTO.Id}");
+            var EnlacePedido = BasePedido + $"/EliminarOrdenPedido?Id={OrdenPedidoDTO.Id}";
+            var result = await _http.DeleteAsync(EnlacePedido);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<OrdenPedidoDTO>>();
 
             return content;
@@ -81,15 +81,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerTodosLosOrdenPedido()
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerTodosOrdenPedido";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerTodosOrdenPedido";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(EnlacePedido);
             return result;
         }
 
         public async Task<ServiceResponse<DetalleOrdenPedidoDTO>> ActualizarDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/ActualizarDetalleOrdenPedido";
-            var result = await _http.PutAsJsonAsync(enlaceConcatenado, DetalleOrdenPedidoDTO);
+            var EnlacePedido = BasePedido + "/ActualizarDetalleOrdenPedido";
+            var result = await _http.PutAsJsonAsync(EnlacePedido, DetalleOrdenPedidoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<DetalleOrdenPedidoDTO>>();
 
             return content;
@@ -97,8 +97,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<DetalleOrdenPedidoDTO>> CrearDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/InsertarDetalleOrdenPedido";
-            var result = await _http.PostAsJsonAsync(enlaceConcatenado, DetalleOrdenPedidoDTO);
+            var EnlacePedido = BasePedido + "/InsertarDetalleOrdenPedido";
+            var result = await _http.PostAsJsonAsync(EnlacePedido, DetalleOrdenPedidoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<DetalleOrdenPedidoDTO>>();
 
             return content;
@@ -106,8 +106,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<DetalleOrdenPedidoDTO>> EliminarDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO)
         {
-            var enlaceConcatenado = EnlacePedido + "/EliminarDetalleOrdenPedido";
-            var result = await _http.DeleteAsync($"{enlaceConcatenado}?Id={DetalleOrdenPedidoDTO.Id}");
+            var EnlacePedido = BasePedido + $"/EliminarDetalleOrdenPedido?Id={DetalleOrdenPedidoDTO.Id}";
+            var result = await _http.DeleteAsync(EnlacePedido);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<DetalleOrdenPedidoDTO>>();
 
             return content;
@@ -115,43 +115,43 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<List<DetalleOrdenPedidoDTO>>> ObtenerTodosLosDetalleOrdenPedido()
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerDetalleOrdenPedido";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<DetalleOrdenPedidoDTO>>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerDetalleOrdenPedido";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<DetalleOrdenPedidoDTO>>>(EnlacePedido);
             return result;
         }
 
         public async Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id)
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerOrdenesPedidosDistribuidoraPorId?Id=" + Id;
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerOrdenesPedidosDistribuidoraPorId?Id=" + Id;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(EnlacePedido);
             return result;
         }
 
         public async Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerOrdenesPedidosClientePorId(Guid Id)
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerOrdenesPedidosClientePorId?Id=" + Id;
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerOrdenesPedidosClientePorId?Id=" + Id;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(EnlacePedido);
             return result;
         }
 
         public async Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosDistribuidoraPorId(Guid Id)
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerPedidosDistribuidoraPorId?Id=" + Id;
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerPedidosDistribuidoraPorId?Id=" + Id;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(EnlacePedido);
             return result;
         }
 
         public async Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosClientePorId(Guid Id)
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerPedidosClientePorId?Id=" + Id;
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerPedidosClientePorId?Id=" + Id;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(EnlacePedido);
             return result;
         }
 
         public async Task<ServiceResponse<PedidoDTO>> ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmacion)
         {
-            var enlaceConcatenado = EnlacePedido + "/ConfirmarOrdenPedido";
-            var result = await _http.PostAsJsonAsync(enlaceConcatenado, confirmacion);
+            var EnlacePedido = BasePedido + "/ConfirmarOrdenPedido";
+            var result = await _http.PostAsJsonAsync(EnlacePedido, confirmacion);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<PedidoDTO>>();
 
             return content;
@@ -159,15 +159,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
 
         public async Task<ServiceResponse<PedidoDTO>> ObtenerPorIdPedido(Guid Id)
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerPorIdPedido?Id=" + Id;
-            var result = await _http.GetFromJsonAsync<ServiceResponse<PedidoDTO>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerPorIdPedido?Id=" + Id;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<PedidoDTO>>(EnlacePedido);
             return result;
         }
 
         public async Task<ServiceResponse<OrdenPedidoDTO>> ObtenerOrdenesPedidosPorId(Guid Id)
         {
-            var enlaceConcatenado = EnlacePedido + "/ObtenerOrdenesPedidosPorId?Id=" + Id;
-            var result = await _http.GetFromJsonAsync<ServiceResponse<OrdenPedidoDTO>>(enlaceConcatenado);
+            var EnlacePedido = BasePedido + "/ObtenerOrdenesPedidosPorId?Id=" + Id;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<OrdenPedidoDTO>>(EnlacePedido);
             return result;
         }
         #endregion

@@ -1,7 +1,19 @@
 ﻿@page "/registro"
 
-<h3>IndexRegistro</h3>
+<div class="Opciones">
+    <h3>Registrar Empresa</h3>
+</div>
+<div class="Opciones">
 
-@code {
+    <MenuOpcion EnlaceImagen="https://cdn-icons.flaticon.com/png/512/4299/premium/4299051.png?token=exp=1655598252~hmac=6c9c5bfff991db30168ce6f5596d88b3" Texto="Registrar (Distribuidora)" EnlaceDestino="/RegistroDistribuidora" />
+    <MenuOpcion EnlaceImagen="https://cdn-icons.flaticon.com/png/512/3188/premium/3188580.png?token=exp=1655598252~hmac=586144258b1092c05fe2cf33311e92a5" Texto="Registrar (Cliente)" EnlaceDestino="/RegistroCliente" />
+</div>
 
-}
+<style>
+    .Opciones {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

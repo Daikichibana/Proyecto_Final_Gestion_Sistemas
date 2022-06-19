@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Compartido;
 using Compartido.Dto.Distribuidora;
@@ -14,11 +15,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
     [ApiController]
     public class AdministrarRubroController : ControllerBase
     {
-        IMapper _mapper;
         IAdministrarRubroService _administrarRubroService;
-        public AdministrarRubroController(IMapper mapper, IAdministrarRubroService administrarRubroService)
+        public AdministrarRubroController(IAdministrarRubroService administrarRubroService)
         {
-            _mapper = mapper;
             _administrarRubroService = administrarRubroService;
         }
 
@@ -28,9 +27,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
             ServiceResponse<List<RubroDTO>> result = new ServiceResponse<List<RubroDTO>>();
             try
             { 
-                var response = _administrarRubroService.ObtenerTodoRubro();
+                var response = _administrarRubroService.ObtenerTodoRubro().ToList();
 
-                result.Data = _mapper.Map<List<RubroDTO>>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -45,15 +44,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPost]
-        public IActionResult InsertarRubro(RubroDTO _RubroDTO)
+        public IActionResult InsertarRubro(IList<RubroDTO> _RubroDTO)
         {
-            ServiceResponse<RubroDTO> result = new ServiceResponse<RubroDTO>();
+            ServiceResponse<IList<RubroDTO>> result = new ServiceResponse<IList<RubroDTO>>();
             try
             {
-                Rubro nuevoRubro = _mapper.Map<Rubro>(_RubroDTO);
-                var response = _administrarRubroService.GuardarRubro(nuevoRubro);
+                var response = _administrarRubroService.GuardarRubro(_RubroDTO).ToList();
 
-                result.Data = _mapper.Map<RubroDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);
@@ -68,15 +66,15 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         }
 
         [HttpPut]
-        public IActionResult ActualizarRubro(RubroDTO RubroDTO)
+        public IActionResult ActualizarRubro(IList<RubroDTO> rubroDTO)
         {
-            ServiceResponse<RubroDTO> result = new ServiceResponse<RubroDTO>();
+            ServiceResponse<IList<RubroDTO>> result = new ServiceResponse<IList<RubroDTO>>();
             try
             {
-                Rubro nuevoRubro = _mapper.Map<Rubro>(RubroDTO);
-                var response = _administrarRubroService.ActualizarRubro(nuevoRubro);
+                
+                var response = _administrarRubroService.ActualizarRubro(rubroDTO);
 
-                result.Data = _mapper.Map<RubroDTO>(response);
+                result.Data = response;
                 result.Message = "Ok";
                 result.Success = true;
                 return Ok(result);

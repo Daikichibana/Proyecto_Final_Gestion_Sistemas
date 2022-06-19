@@ -1,42 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
+using Compartido.Dto.Distribuidora.General;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.Servicios
 {
     public class AdministrarRubroService : IAdministrarRubroService
     {
-        IRubroRepository _rubroRepository;
-        public AdministrarRubroService(IRubroRepository rubroRepository)
+        IMapper _mapper;
+        UnidadDeTrabajo _unidad;
+        public AdministrarRubroService(IMapper mapper, BaseDatosContext context)
         {
-            _rubroRepository = rubroRepository;
+            _unidad = new UnidadDeTrabajo(context);
+            _mapper = mapper;
         }
 
-        public Rubro ActualizarRubro(Rubro entity)
+        public IList<RubroDTO> ActualizarRubro(IList<RubroDTO> entity)
         {
-            return _rubroRepository.Actualizar(entity);
+            var listaRubroConvertido = _mapper.Map<List<Rubro>>(entity);
+            List<Rubro> result = new List<Rubro>();
+            foreach (var rubro in listaRubroConvertido)
+            {
+                var rubroInsertado = _unidad.rubroRepository.Actualizar(rubro);
+                result.Add(rubroInsertado);
+            }
+            _unidad.Complete();
+            return _mapper.Map<List<RubroDTO>>(result);
         }
 
         public void EliminarRubro(Guid id)
         {
-            _rubroRepository.Eliminar(id);
+            _unidad.rubroRepository.Eliminar(id);
+            _unidad.Complete();
         }
 
-        public Rubro GuardarRubro(Rubro entity)
+        public IList<RubroDTO> GuardarRubro(IList<RubroDTO> entity)
         {
-            return _rubroRepository.Guardar(entity);
+            var listaRubroConvertido = _mapper.Map<List<Rubro>>(entity);
+            List<Rubro> result = new List<Rubro>();
+            foreach (var rubro in listaRubroConvertido)
+            {
+                var rubroInsertado = _unidad.rubroRepository.Guardar(rubro);
+                result.Add(rubroInsertado);
+            }
+            _unidad.Complete();
+            return _mapper.Map<List<RubroDTO>>(result);
+            
         }
 
-        public Rubro ObtenerPorIdRubro(Guid id)
+        public RubroDTO ObtenerPorIdRubro(Guid id)
         {
-            return _rubroRepository.ObtenerPorId(id);
+            var rubro = _unidad.rubroRepository.ObtenerPorId(id);
+
+            return _mapper.Map<RubroDTO>(rubro);
         }
 
-        public IList<Rubro> ObtenerTodoRubro()
+        public IList<RubroDTO> ObtenerTodoRubro()
         {
-            return _rubroRepository.ObtenerTodo();
+            var listaRubro = _unidad.rubroRepository.ObtenerTodo();
+            return _mapper.Map<List<RubroDTO>>(listaRubro);
         }
     }
 }
