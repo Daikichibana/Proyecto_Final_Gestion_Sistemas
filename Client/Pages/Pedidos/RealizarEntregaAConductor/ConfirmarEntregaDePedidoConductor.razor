@@ -1,4 +1,4 @@
-﻿@page "/AsignarEntregaAConductor"
+﻿@page "/ConfirmarEntregaDePedidoConductor"
 @inject IPedidosServices _pedidosServices
 @inject IPersonalServices _personalServices
 @inject IInventarioServices _inventarioServices
@@ -18,7 +18,7 @@
                 <th scope="col">Telefono</th>
                 <th scope="col">Vehiculo</th>
                 <th scope="col">Placa</th>
-                <th scope="col">Asignar pedidos</th>
+                <th scope="col">Pedidos</th>
             </tr>
         </thead>
         <tbody>
@@ -33,7 +33,7 @@
                     <td>@conductor.Vechiculo.Placa</td>
 
                     <td>
-                        <button class="btn btn-success" @onclick="() => AsignarPedido(conductor)">Asignar</button>
+                        <button class="btn btn-success" @onclick="() => ConfirmarPedidos(conductor)">Ver pedidos</button>
                     </td>
                 </tr>
 
@@ -44,7 +44,7 @@
 }
 else if (Paginacion == 2)
 {
-    <PedidosConductor ConductorSeleccionado=ConductorSeleccionado/>
+    <RealizarEntregaAConductor ConductorSeleccionado=ConductorSeleccionado/>
 }
 else
 {
@@ -66,7 +66,7 @@ else
         ResponseConductores = await _distribuidoraServices.ObtenerTodoVehiculoConductor();
     }
 
-    public void AsignarPedido(AsignacionVechiculoConductorDTO conductor)
+    public void ConfirmarPedidos(AsignacionVechiculoConductorDTO conductor)
     {
         ConductorSeleccionado = conductor;
         Paginacion = 2;

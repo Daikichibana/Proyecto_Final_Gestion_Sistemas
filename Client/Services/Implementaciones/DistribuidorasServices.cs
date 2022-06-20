@@ -255,7 +255,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<AsignacionVechiculoConductorDTO>>> ObtenerTodoVehiculoConductor()
         {
-            string EnlaceVehiculo = BaseVehiculo + "/";
+            string EnlaceVehiculo = BaseVehiculo + "/ObtenerTodoVehiculoConductor";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<AsignacionVechiculoConductorDTO>>>(EnlaceVehiculo);
             return result;
         }

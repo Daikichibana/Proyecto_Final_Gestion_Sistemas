@@ -1,22 +1,24 @@
 ﻿using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Tecnica;
+using Proyecto_Final_Gestion_Sistemas.Server.Persistencia;
 using System;
 
 namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servicios
 {
     public class RealizarEntregaDePedidoAConductorService : IRealizarEntregaDePedidoAConductorService
     {
-        IPedidoRepository _pedidoRepository;
+        UnidadDeTrabajo _unidad;
 
-        public RealizarEntregaDePedidoAConductorService(IPedidoRepository pedidoRepository)
+        public RealizarEntregaDePedidoAConductorService(BaseDatosContext contexto)
         {
-            _pedidoRepository = pedidoRepository;
+            _unidad = new UnidadDeTrabajo(contexto);
         }
 
         public void ConfirmarEntregaPedido(Guid IdPedido) {
-            var pedido = _pedidoRepository.ObtenerPorId(IdPedido);
-            pedido.EstadoEnvio = "Producto entregado a conductor";
-            _pedidoRepository.Actualizar(pedido);
+            var pedido = _unidad.pedidoRepository.ObtenerPorId(IdPedido);
+            pedido.EstadoEnvio = "Producto en camino";
+            _unidad.pedidoRepository.Actualizar(pedido);
+            _unidad.Complete();
         }
     }
 }

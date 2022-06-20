@@ -229,6 +229,30 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
             }
         }
 
+        [HttpGet]
+        public IActionResult ObtenerDetalleOrdenPedidoPorIdOrden(Guid Id)
+        {
 
+            var result = new ServiceResponse<List<DetalleOrdenPedidoDTO>>();
+
+            try
+            {
+                var response = _administracionPedidoService.ObtenerDetalleOrdenPedidoPorIdOrden(Id);
+
+                result.Data = response;
+                result.Message = "Se ha realizado la operacion correctamente.";
+                result.Success = true;
+
+                return Ok(result);
+            }
+            catch (Exception error)
+            {
+                result.Data = null;
+                result.Message = error.Message;
+                result.Success = false;
+
+                return BadRequest(result);
+            }
+        }
     }
 }

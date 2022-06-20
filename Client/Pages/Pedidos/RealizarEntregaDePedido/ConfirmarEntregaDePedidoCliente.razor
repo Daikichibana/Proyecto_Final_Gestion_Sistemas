@@ -1,4 +1,5 @@
-﻿@inject IPedidosServices _pedidosServices
+﻿@page "/ConfirmarEntregaDePedidoCliente"
+@inject IPedidosServices _pedidosServices
 @inject IPersonalServices _personalServices
 @inject IInventarioServices _inventarioServices
 @inject IDistribuidorasServices _distribuidoraServices
@@ -8,7 +9,7 @@
 
 @if (ResponsePedido != null)
 {
-    <h4>Entrega de pedidos sin confirmar</h4>
+    <h4>Confirmacion de entregas de pedidos a cliente</h4>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -41,45 +42,6 @@
 
         </tbody>
     </table>
-
-
-    <h4>Entrega de pedidos Confirmados</h4>
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Nombre Cliente</th>
-                <th scope="col">Necesita Factura</th>
-                <th scope="col">Aclaracion cliente</th>
-                <th scope="col">Metodo de Pago</th>
-                <th scope="col">Estado del pago</th>
-                <th scope="col">Estado del envio</th>
-                <th scope="col">Opcion</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var pedido in ListaPedidosConfirmados)
-            {
-                <tr>
-                    <td>@pedido.OrdenPedido.EmpresaCliente.NombreEmpresa</td>
-                    <td>@(pedido.OrdenPedido.DeseaFactura == true ? "Si" : "No")</td>
-                    <td>@pedido.OrdenPedido.AclaracionCliente</td>
-                    <td>@pedido.OrdenPedido.MetodoPago</td>
-                    <td>@pedido.EstadoPago</td>
-                    <td>@pedido.EstadoEnvio</td>
-                    <td>
-                        <button class="btn btn-danger" @onclick="() => QuitarEntregaPedido(pedido)">Quitar</button>
-                    </td>
-                </tr>
-
-            }
-
-        </tbody>
-    </table>
-    @if (ListaPedidosConfirmados.Count > 0)
-    {
-        <button class="btn btn-primary" @onclick=GuardarEntrega>Guardar</button>
-    }
 }
 else
 {
@@ -100,30 +62,13 @@ else
         IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
         EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
         ResponsePedido = await _pedidosServices.ObtenerPedidosDistribuidoraPorId(IdEmpresaSesion);
-        ResponsePedido.Data = ResponsePedido.Data.Where(p => p.EstadoEnvio.Equals("Pedido Asignado")).Where(p => p.ConductorAsignadoId.Equals(ConductorSeleccionado.Id)).ToList();
+        ResponsePedido.Data = ResponsePedido.Data.Where(p => p.EstadoEnvio.Equals("Producto en camino")).ToList();
     }
+
 
     public void ConfirmarEntregaPedido(PedidoDTO pedido)
     {
-        ListaPedidosConfirmados.Add(pedido);
-        ResponsePedido.Data.Remove(pedido);
-        StateHasChanged();
-    }
-
-    public void QuitarEntregaPedido(PedidoDTO pedido)
-    {
-        ListaPedidosConfirmados.Remove(pedido);
-        ResponsePedido.Data.Add(pedido);
-        StateHasChanged();
-    }
-
-    public void GuardarEntrega()
-    {
-        foreach(var pedido in ListaPedidosConfirmados)
-        {
-            _pedidosServices.ConfirmarEntregaPedido(pedido.Id);
-        }
-
+        _pedidosServices.ConfirmarEntregaCliente(pedido.Id);
         NavigationManager.NavigateTo("/", forceLoad: true);
     }
 

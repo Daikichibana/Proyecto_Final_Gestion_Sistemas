@@ -23,7 +23,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             Pedido pedido = _unidad.pedidoRepository.ObtenerPorId(IdPedido);
             pedido.ConductorAsignadoId = IdConductorVehiculo;
             pedido.EstadoEnvio = "Pedido Asignado";
-
+            pedido.OrdenPedido = null;
+            pedido.ConductorAsignado = null;
             _unidad.pedidoRepository.Actualizar(pedido);
             _unidad.Complete();
         }

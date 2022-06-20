@@ -49,6 +49,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
 
             foreach (var stock in ListaStock)
             {
+                stock.Producto = null;
                 _unidad.stockRepository.Actualizar(stock);
             }
 

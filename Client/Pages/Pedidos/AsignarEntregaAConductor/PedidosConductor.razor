@@ -8,7 +8,7 @@
 
 @if (ResponsePedido != null)
 {
-    <h4>Entrega de pedidos sin confirmar</h4>
+    <h4>Pedidos sin asignar</h4>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -33,7 +33,7 @@
                     <td>@pedido.EstadoPago</td>
                     <td>@pedido.EstadoEnvio</td>
                     <td>
-                        <button class="btn btn-success" @onclick="() => ConfirmarEntregaPedido(pedido)">Confirmar entrega</button>
+                        <button class="btn btn-success" @onclick="() => AsignarPedido(pedido)">Asignar</button>
                     </td>
                 </tr>
 
@@ -43,7 +43,7 @@
     </table>
 
 
-    <h4>Entrega de pedidos Confirmados</h4>
+    <h4>Pedidos asignados</h4>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -58,7 +58,7 @@
         </thead>
         <tbody>
 
-            @foreach (var pedido in ListaPedidosConfirmados)
+            @foreach (var pedido in ListaPedidosAsignados)
             {
                 <tr>
                     <td>@pedido.OrdenPedido.EmpresaCliente.NombreEmpresa</td>
@@ -68,7 +68,7 @@
                     <td>@pedido.EstadoPago</td>
                     <td>@pedido.EstadoEnvio</td>
                     <td>
-                        <button class="btn btn-danger" @onclick="() => QuitarEntregaPedido(pedido)">Quitar</button>
+                        <button class="btn btn-danger" @onclick="() => QuitarAsignacion(pedido)">Quitar</button>
                     </td>
                 </tr>
 
@@ -76,9 +76,9 @@
 
         </tbody>
     </table>
-    @if (ListaPedidosConfirmados.Count > 0)
+    @if (ListaPedidosAsignados.Count > 0)
     {
-        <button class="btn btn-primary" @onclick=GuardarEntrega>Guardar</button>
+        <button class="btn btn-primary" @onclick=GuardarAsignacion>Guardar Asignacion</button>
     }
 }
 else
@@ -91,7 +91,7 @@ else
     public AsignacionVechiculoConductorDTO ConductorSeleccionado { get; set; }
 
     public ServiceResponse<List<PedidoDTO>> ResponsePedido { get; set; }
-    public List<PedidoDTO> ListaPedidosConfirmados { get; set; } = new List<PedidoDTO>();
+    public List<PedidoDTO> ListaPedidosAsignados { get; set; } = new List<PedidoDTO>();
     public bool EsDistribuidora { get; set; } = false;
     public Guid IdEmpresaSesion { get; set; }
 
@@ -100,28 +100,31 @@ else
         IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
         EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
         ResponsePedido = await _pedidosServices.ObtenerPedidosDistribuidoraPorId(IdEmpresaSesion);
-        ResponsePedido.Data = ResponsePedido.Data.Where(p => p.EstadoEnvio.Equals("Pedido Asignado")).Where(p => p.ConductorAsignadoId.Equals(ConductorSeleccionado.Id)).ToList();
+        ResponsePedido.Data = ResponsePedido.Data.Where(p => p.EstadoEnvio.Equals("Entrega No Asignada")).ToList();
     }
 
-    public void ConfirmarEntregaPedido(PedidoDTO pedido)
+    public void AsignarPedido(PedidoDTO pedido)
     {
-        ListaPedidosConfirmados.Add(pedido);
+        ListaPedidosAsignados.Add(pedido);
         ResponsePedido.Data.Remove(pedido);
         StateHasChanged();
     }
 
-    public void QuitarEntregaPedido(PedidoDTO pedido)
+    public void QuitarAsignacion(PedidoDTO pedido)
     {
-        ListaPedidosConfirmados.Remove(pedido);
+        ListaPedidosAsignados.Remove(pedido);
         ResponsePedido.Data.Add(pedido);
         StateHasChanged();
     }
 
-    public void GuardarEntrega()
+    public void GuardarAsignacion()
     {
-        foreach(var pedido in ListaPedidosConfirmados)
+        foreach(var pedido in ListaPedidosAsignados)
         {
-            _pedidosServices.ConfirmarEntregaPedido(pedido.Id);
+            AsignacionEntregaConductorDTO asignacion = new AsignacionEntregaConductorDTO();
+            asignacion.IdConductorVehiculo = ConductorSeleccionado.Id;
+            asignacion.IdPedido = pedido.Id;
+            _pedidosServices.AsignarEntregaAconductor(asignacion);
         }
 
         NavigationManager.NavigateTo("/", forceLoad: true);

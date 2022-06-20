@@ -1,6 +1,7 @@
 ﻿using Compartido;
 using Compartido.Dto.Pedidos;
 using Compartido.Dto.Pedidos.General;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -13,9 +14,10 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
     {
         private readonly HttpClient _http;
         private string BasePedido = "api/AdministrarPedido";
-        private string BaseRealizarEntregaAConductor = "";
-        private string BaseRealizarEntregaPedidoConductor = "";
-        private string BaseRealizarFacturacionCliente = "";
+        private string BaseRealizarEntregaAConductor = "api/AsignarEntregaAConductor";
+        private string BaseRealizarEntregaPedidoConductor = "api/RealizarEntregaDePedidoAConductor";
+        private string BaseRealizarEntregaDePedidoACliente = "api/RealizarEntregaDePedidoACliente";
+        private string BaseRealizarFacturacionCliente = "api/RealizarFacturacionCliente";
         private string BaseRealizarPedidoDistribuidora = "api/RealizarPedidoADistribuidora";
         public PedidosServices(HttpClient http)
         {
@@ -64,24 +66,31 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosClientePorId(Guid Id)
         {
-            string EnlacePedido = BasePedido + "/";
+            string EnlacePedido = BasePedido + $"/ObtenerPedidosClientePorId?Id={Id}";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(EnlacePedido);
             return result;
         }
         public async Task<ServiceResponse<PedidoDTO>> ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmarPedidoDTO)
         {
-            string EnlacePedido = BasePedido + "/";
+            string EnlacePedido = BasePedido + "/ConfirmarOrdenPedido";
             var result = await _http.PostAsJsonAsync(EnlacePedido, confirmarPedidoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<PedidoDTO>>();
 
             return content;
+        }
+
+        public async Task<ServiceResponse<List<DetalleOrdenPedidoDTO>>> ObtenerDetalleOrdenPedidoPorIdOrden(Guid Id)
+        {
+            string EnlacePedido = BasePedido + $"/ObtenerDetalleOrdenPedidoPorIdOrden?Id={Id}";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<DetalleOrdenPedidoDTO>>>(EnlacePedido);
+            return result;
         }
         #endregion
 
         #region Asignar Entrega a conductor
         public async Task<ServiceResponse<object>> AsignarEntregaAconductor(AsignacionEntregaConductorDTO asignacion)
         {
-            string EnlaceRealizarEntregaConductor = BaseRealizarEntregaAConductor + "/";
+            string EnlaceRealizarEntregaConductor = BaseRealizarEntregaAConductor + "/AsignarEntregaAconductor";
             var result = await _http.PostAsJsonAsync(EnlaceRealizarEntregaConductor, asignacion);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<object>>();
 
@@ -90,16 +99,20 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #endregion
 
         #region Realizar Entrega de pedido a cliente
+        public async Task<ServiceResponse<object>> ConfirmarEntregaCliente(Guid IdPedido)
+        {
+            string EnlaceRealizarEntregaDePedidoACliente = BaseRealizarEntregaDePedidoACliente + $"/ConfirmarEntregaCliente?IdPedido={IdPedido}";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<object>>(EnlaceRealizarEntregaDePedidoACliente);
+            return result;
+        }
         #endregion
 
         #region Realizar Entrega de pedido a conductor
         public async Task<ServiceResponse<object>> ConfirmarEntregaPedido(Guid IdPedido)
         {
-            string EnlaceRealizarEntregaPedidoConductor = BaseRealizarEntregaPedidoConductor + "/";
-            var result = await _http.PostAsJsonAsync(EnlaceRealizarEntregaPedidoConductor, IdPedido);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<object>>();
-
-            return content;
+            string EnlaceRealizarEntregaPedidoConductor = BaseRealizarEntregaPedidoConductor + $"/ConfirmarEntregaPedido?IdPedido={IdPedido}";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<object>>(EnlaceRealizarEntregaPedidoConductor);
+            return result;
         }
         #endregion
 
@@ -124,13 +137,18 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             var result = await _http.GetFromJsonAsync<ServiceResponse<FacturaDTO>>(EnlaceRealizarFacturacionCliente);
             return result;
         }
-        public async Task<ServiceResponse<object>> ConfirmarPago(Guid IdPedido)
+        public async Task<ServiceResponse<object>> ConfirmarPago(Guid Id)
         {
-            string EnlaceRealizarFacturacionCliente = BaseRealizarFacturacionCliente + "/";
-            var result = await _http.PostAsJsonAsync(EnlaceRealizarFacturacionCliente, IdPedido);
+            /*
+            string EnlaceRealizarFacturacionCliente = BaseRealizarFacturacionCliente + "/ConfirmarPago";
+            var result = await _http.PostAsJsonAsync(EnlaceRealizarFacturacionCliente, Id);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<object>>();
-
             return content;
+            */
+
+            string EnlaceRealizarFacturacionCliente = BaseRealizarFacturacionCliente + $"/ConfirmarPago?IdPedido={Id}";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<object>>(EnlaceRealizarFacturacionCliente);
+            return result;
         }
 
         #endregion

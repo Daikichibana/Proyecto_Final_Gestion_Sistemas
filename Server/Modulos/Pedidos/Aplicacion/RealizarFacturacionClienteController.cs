@@ -93,7 +93,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult ConfirmarPago(Guid IdPedido) 
         {
             var result = new ServiceResponse<Object>();

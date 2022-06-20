@@ -47,16 +47,18 @@
             </tbody>
         </table>
 
-        @*<h4>Pedidos Confirmados</h4>
+        <div class="m-5"></div>
+        <h4>Pedidos Confirmados</h4>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                     <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Nombre Cliente</th>
                     <th scope="col">Necesita Factura</th>
                     <th scope="col">Aclaracion cliente</th>
                     <th scope="col">Metodo de Pago</th>
                     <th scope="col">Estado del pago</th>
                     <th scope="col">Estado del envio</th>
+                    <th scope="col">Conductor</th>
                     <th scope="col">Detalle del pedido</th>
                 </tr>
             </thead>
@@ -64,36 +66,47 @@
 
                 @foreach (var pedido in PedidoResponse.Data)
                 {
-                    var orden = @ObtenerOrdenPedido(pedido);
-                    var detalleOrden = @ObtenerDetalleOrdenPedido(orden);
                     <tr>
-                        <td>@BuscarNombreEmpresaCliente(orden.EmpresaClienteId)</td>
-                        <td>@(orden.DeseaFactura == true ? "Si" : "No")</td>
-                        <td>@orden.AclaracionCliente</td>
-                        <td>@orden.MetodoPago</td>
+                        <td>@pedido.OrdenPedido.EmpresaCliente.NombreEmpresa</td>
+                        <td>@(pedido.OrdenPedido.DeseaFactura == true ? "Si" : "No")</td>
+                        <td>@pedido.OrdenPedido.AclaracionCliente</td>
+                        <td>@pedido.OrdenPedido.MetodoPago</td>
                         <td>@pedido.EstadoPago</td>
                         <td>@pedido.EstadoEnvio</td>
+                        <td>@(pedido.ConductorAsignado.Conductor.Nombre != "" ? pedido.ConductorAsignado.Conductor.Nombre: "N/A")</td>
                         <td>
-                            <button @onclick="() => MostrarDetalle(detalleOrden)" class="btn btn-primary">Ver detalle</button>
+                            <button @onclick="() => MostrarDetalle(pedido.OrdenPedidoId)" class="btn btn-primary">Ver detalle</button>
                         </td>
                     </tr>
+
                 }
 
             </tbody>
-        </table>*@
+        </table>
     }
 }
 else
 {
-    <p>Este apartado solo tiene acceso las empresas distirbuidoras.</p>
+    <p>Cargando...</p>
+}
+
+@if (AbrirModal)
+{
+    <Modal Title="Detalle orden"
+       Lista=@ListaPedido
+       OnClose="@CerrarModal"
+       DialogType="Modal.ModalDialogType.Ok">
+    </Modal>
 }
 
 @code
 {
     public ServiceResponse<List<OrdenPedidoDTO>> OrdenResponse { get; set; }
     public ServiceResponse<List<PedidoDTO>> PedidoResponse { get; set; }
+    public List<DetalleOrdenPedidoDTO> ListaPedido { get; set; }
     public bool EsDistribuidora { get; set; } = false;
     public Guid IdEmpresaSesion { get; set; }
+    public bool AbrirModal { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,7 +116,13 @@ else
         PedidoResponse = await _pedidosServices.ObtenerPedidosDistribuidoraPorId(IdEmpresaSesion);
     }
 
-      public async void AceptarPedido(OrdenPedidoDTO orden)
+    private async Task CerrarModal()
+    {
+        AbrirModal = false;
+        StateHasChanged();
+    }
+
+    public async void AceptarPedido(OrdenPedidoDTO orden)
     {
         ConfirmarPedidoDTO data = new ConfirmarPedidoDTO();
         data.Id = orden.Id;
@@ -111,7 +130,7 @@ else
 
         var response = await _pedidosServices.ConfirmarOrdenPedido(data);
 
-       if(response.Success)
+        if (response.Success)
             await JsRuntime.InvokeVoidAsync("alert", "Se ha aceptado el pedido correctamente.");
         else
             await JsRuntime.InvokeVoidAsync("alert", "Ocurrio un problema.");
@@ -127,192 +146,20 @@ else
 
         var response = await _pedidosServices.ConfirmarOrdenPedido(data);
 
-        if(response.Success)
+        if (response.Success)
             await JsRuntime.InvokeVoidAsync("alert", "Se ha rechazado el pedido correctamente.");
         else
             await JsRuntime.InvokeVoidAsync("alert", "Ocurrio un problema.");
-            
+
 
         StateHasChanged();
     }
 
-}
-
-
-@*@page "/administrarpedido"
-@inject IPedidosServices _pedidosServices
-@inject IInventarioServices _inventarioServices
-@inject IDistribuidorasServices _distribuidoraServices
-@inject IJSRuntime JsRuntime
-@inject ILocalStorageService LocalStorage
-@inject NavigationManager NavigationManager
-
-<h3>Administrar Pedido</h3>
-
-@if (EsDistribuidora)
-{
-    @if (OrdenResponse != null && ClienteResponse != null)
+    public async void MostrarDetalle(Guid Id)
     {
-        <h4>Ordenes de pedido</h4>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Nombre Cliente</th>
-                    <th scope="col">Necesita Factura</th>
-                    <th scope="col">Aclaracion cliente</th>
-                    <th scope="col">Metodo de Pago</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
-            <tbody>
+        var response = await _pedidosServices.ObtenerDetalleOrdenPedidoPorIdOrden(Id);
 
-                @foreach (var orden in OrdenResponse.Data)
-                {
-                    @if (orden.PedidoConfirmado == false)
-                    {
-                        <tr>
-                            <td>@BuscarNombreEmpresaCliente(orden.EmpresaClienteId)</td>
-                            <td>@(orden.DeseaFactura == true ? "Si" : "No")</td>
-                            <td>@orden.AclaracionCliente</td>
-                            <td>@orden.MetodoPago</td>
-                            <td>
-                                <button @onclick="() => AceptarPedido(orden)" type="button" class="btn btn-success">Aceptar Pedido</button>
-                                <button @onclick="() => RechazarPedido(orden)" type="button" class="btn btn-danger ml-3">Rechazar Pedido</button>
-                            </td>
-                        </tr>
-                    }
-
-                }
-
-            </tbody>
-        </table>
-
-        <h4>Pedidos Confirmados</h4>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                     <th scope="col">Nombre Cliente</th>
-                    <th scope="col">Necesita Factura</th>
-                    <th scope="col">Aclaracion cliente</th>
-                    <th scope="col">Metodo de Pago</th>
-                    <th scope="col">Estado del pago</th>
-                    <th scope="col">Estado del envio</th>
-                    <th scope="col">Detalle del pedido</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var pedido in PedidoResponse.Data)
-                {
-                    var orden = @ObtenerOrdenPedido(pedido);
-                    var detalleOrden = @ObtenerDetalleOrdenPedido(orden);
-                    <tr>
-                        <td>@BuscarNombreEmpresaCliente(orden.EmpresaClienteId)</td>
-                        <td>@(orden.DeseaFactura == true ? "Si" : "No")</td>
-                        <td>@orden.AclaracionCliente</td>
-                        <td>@orden.MetodoPago</td>
-                        <td>@pedido.EstadoPago</td>
-                        <td>@pedido.EstadoEnvio</td>
-                        <td>
-                            <button @onclick="() => MostrarDetalle(detalleOrden)" class="btn btn-primary">Ver detalle</button>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
+        ListaPedido = response.Data;
+        AbrirModal = true;
     }
 }
-else
-{
-    <p>Este apartado solo tiene acceso las empresas distirbuidoras.</p>
-}
-
-
-@code {
-    public ServiceResponse<List<OrdenPedidoDTO>> OrdenResponse { get; set; }
-    public ServiceResponse<List<OrdenPedidoDTO>> TodosOrdenResponse { get; set; }
-    public ServiceResponse<List<DetalleOrdenPedidoDTO>> TodosDetalleResponse { get; set; }
-    public ServiceResponse<List<PedidoDTO>> PedidoResponse { get; set; }
-    public ServiceResponse<List<EmpresaClienteDTO>> ClienteResponse { get; set; }
-    public ServiceResponse<List<StockDTO>> TodosStockResponse { get; set; }
-    public ServiceResponse<List<ProductoDTO>> TodosProductoResponse { get; set; }
-
-    public bool EsDistribuidora { get; set; } = false;
-    public Guid IdEmpresaSesion { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
-        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
-        OrdenResponse = await _pedidosServices.ObtenerOrdenesPedidosDistribuidoraPorId(IdEmpresaSesion);
-        TodosOrdenResponse = await _pedidosServices.ObtenerTodosLosOrdenPedido();
-        PedidoResponse = await _pedidosServices.ObtenerPedidosDistribuidoraPorId(IdEmpresaSesion);
-        ClienteResponse = await _distribuidoraServices.ObtenerTodoEmpresaCliente();
-        TodosDetalleResponse = await _pedidosServices.ObtenerTodosLosDetalleOrdenPedido();
-        TodosStockResponse = await _inventarioServices.ObtenerTodoStock();
-        TodosProductoResponse = await _inventarioServices.ObtenerTodoProducto();
-    }
-
-    public async void MostrarDetalle(List<DetalleOrdenPedidoDTO> listaDetalle)
-    {
-        string holamundo = "";
-        decimal totalAPagar = 0;
-
-        foreach (var detalle in listaDetalle)
-        {
-            var stock = TodosStockResponse.Data.Where(p => p.Id.Equals(detalle.StockId)).FirstOrDefault();
-            var producto = TodosProductoResponse.Data.Where(p => p.Id.Equals(stock.ProductoId)).FirstOrDefault();
-            holamundo += "[" + producto.Nombre + ", Cantidad Ordenada: " + detalle.CantidadOrdenada + ", Monto: " + stock.PrecioVentaPromedio * detalle.CantidadOrdenada + "],";
-            totalAPagar += stock.PrecioVentaPromedio*detalle.CantidadOrdenada;
-        }
-
-        holamundo += "[Total a pagar: " + totalAPagar.ToString() + "]";
-        await JsRuntime.InvokeVoidAsync("alert", holamundo);
-    }
-
-    public string BuscarNombreEmpresaCliente(Guid Id)
-    {
-        return ClienteResponse.Data.Where(p => p.Id.Equals(Id)).FirstOrDefault().NombreEmpresa;
-    }
-
-    public OrdenPedidoDTO ObtenerOrdenPedido(PedidoDTO pedido)
-    {
-        return TodosOrdenResponse.Data.Where(p => p.Id.Equals(pedido.OrdenPedidoId)).FirstOrDefault();
-    }
-
-    public List<DetalleOrdenPedidoDTO> ObtenerDetalleOrdenPedido(OrdenPedidoDTO orden)
-    {
-        return TodosDetalleResponse.Data.Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
-    }
-    public async void AceptarPedido(OrdenPedidoDTO orden)
-    {
-        ConfirmarPedidoDTO data = new ConfirmarPedidoDTO();
-        data.Id = orden.Id;
-        data.Aceptado = true;
-        var response = await _pedidosServices.ConfirmarOrdenPedido(data);
-
-        if (response.Success)
-        {
-            Console.WriteLine("Se logro");
-        }
-        StateHasChanged();
-    }
-
-    public async void RechazarPedido(OrdenPedidoDTO orden)
-    {
-        ConfirmarPedidoDTO data = new ConfirmarPedidoDTO();
-        data.Id = orden.Id;
-        data.Aceptado = false;
-        var response = await _pedidosServices.ConfirmarOrdenPedido(data);
-
-        if (response.Success)
-        {
-            Console.WriteLine("Se logro");
-        }
-
-        StateHasChanged();
-    }
-
-
-}*@

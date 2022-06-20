@@ -18,6 +18,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosDistribuidoraPorId(Guid Id);
         Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosClientePorId(Guid Id);
         Task<ServiceResponse<PedidoDTO>> ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmarPedidoDTO);
+        Task<ServiceResponse<List<DetalleOrdenPedidoDTO>>> ObtenerDetalleOrdenPedidoPorIdOrden(Guid Id);
         #endregion
 
         #region Asignar Entrega a conductor
@@ -25,6 +26,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         #endregion
 
         #region Realizar Entrega de pedido a cliente
+        Task<ServiceResponse<object>> ConfirmarEntregaCliente(Guid IdPedido);
         #endregion
 
         #region Realizar Entrega de pedido a conductor
@@ -35,7 +37,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         Task<ServiceResponse<object>> EliminarFactura(Guid Id);
         Task<ServiceResponse<List<FacturaDTO>>> ObtenerTodoFactura();
         Task<ServiceResponse<FacturaDTO>> ObtenerPorIdFactura(Guid Id);
-        Task<ServiceResponse<object>> ConfirmarPago(Guid IdPedido);
+        Task<ServiceResponse<object>> ConfirmarPago(Guid Id);
 
         #endregion
 

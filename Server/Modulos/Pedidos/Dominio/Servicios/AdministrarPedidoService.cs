@@ -70,7 +70,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
         public List<OrdenPedidoDTO> ObtenerOrdenesPedidosClientePorId(Guid Id)
         {
             List<OrdenPedido> listaOrdenPedido = _unidad.ordenPedidoRepository.ObtenerTodo().Where(p => p.EmpresaClienteId.Equals(Id)).ToList();
-            
+
             foreach (var orden in listaOrdenPedido)
             {
                 orden.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(orden.EmpresaClienteId);
@@ -84,7 +84,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
                 orden.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(orden.EmpresaDistribuidora.ResponsableId);
                 orden.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(orden.EmpresaDistribuidora.RubroId);
                 orden.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(orden.EmpresaDistribuidora.Responsable.UsuarioId);
-            
+
             }
 
             return _mapper.Map<List<OrdenPedidoDTO>>(listaOrdenPedido);
@@ -98,26 +98,30 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             foreach (var orden in ordenesPedido)
             {
                 var pedido = _unidad.pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).FirstOrDefault();
-                
-                pedido.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(pedido.OrdenPedidoId);
-                pedido.OrdenPedido.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaClienteId);
-                pedido.OrdenPedido.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.NITId);
-                pedido.OrdenPedido.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.ResponsableId);
-                pedido.OrdenPedido.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.RubroId);
-                pedido.OrdenPedido.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.Responsable.UsuarioId);
-                pedido.OrdenPedido.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidoraId);
-                pedido.OrdenPedido.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.NITId);
-                pedido.OrdenPedido.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.ResponsableId);
-                pedido.OrdenPedido.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.RubroId);
-                pedido.OrdenPedido.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.Responsable.UsuarioId);
+                if (pedido != null)
+                {
+                    pedido.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(pedido.OrdenPedidoId);
+                    pedido.OrdenPedido.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaClienteId);
+                    pedido.OrdenPedido.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.NITId);
+                    pedido.OrdenPedido.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.ResponsableId);
+                    pedido.OrdenPedido.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.RubroId);
+                    pedido.OrdenPedido.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.Responsable.UsuarioId);
+                    pedido.OrdenPedido.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidoraId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.NITId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.ResponsableId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.RubroId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.Responsable.UsuarioId);
 
-                if (pedido.ConductorAsignadoId != null) {
-                    pedido.ConductorAsignado = _unidad.asignacionVechiculoConductorRepository.ObtenerPorId(pedido.ConductorAsignadoId);
-                    pedido.ConductorAsignado.Conductor = _unidad.conductorRepository.ObtenerPorId(pedido.ConductorAsignado.ConductorId);
-                    pedido.ConductorAsignado.Vechiculo = _unidad.vechiculoRepository.ObtenerPorId(pedido.ConductorAsignado.VechiculoId);
-                    pedido.ConductorAsignado.Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.ConductorAsignado.Conductor.UsuarioId);
+                    if (pedido.ConductorAsignadoId != null)
+                    {
+                        pedido.ConductorAsignado = _unidad.asignacionVechiculoConductorRepository.ObtenerPorId(pedido.ConductorAsignadoId);
+                        pedido.ConductorAsignado.Conductor = _unidad.conductorRepository.ObtenerPorId(pedido.ConductorAsignado.ConductorId);
+                        pedido.ConductorAsignado.Vechiculo = _unidad.vechiculoRepository.ObtenerPorId(pedido.ConductorAsignado.VechiculoId);
+                        pedido.ConductorAsignado.Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.ConductorAsignado.Conductor.UsuarioId);
+                    }
+
+                    resultado.Add(pedido);
                 }
-                resultado.Add(pedido);
             }
 
             return _mapper.Map<List<PedidoDTO>>(resultado);
@@ -132,27 +136,29 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             {
                 var pedido = _unidad.pedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).FirstOrDefault();
 
-                pedido.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(pedido.OrdenPedidoId);
-                pedido.OrdenPedido.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaClienteId);
-                pedido.OrdenPedido.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.NITId);
-                pedido.OrdenPedido.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.ResponsableId);
-                pedido.OrdenPedido.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.RubroId);
-                pedido.OrdenPedido.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.Responsable.UsuarioId);
-                pedido.OrdenPedido.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidoraId);
-                pedido.OrdenPedido.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.NITId);
-                pedido.OrdenPedido.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.ResponsableId);
-                pedido.OrdenPedido.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.RubroId);
-                pedido.OrdenPedido.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.Responsable.UsuarioId);
-
-                if (pedido.ConductorAsignadoId != null)
+                if (pedido != null)
                 {
-                    pedido.ConductorAsignado = _unidad.asignacionVechiculoConductorRepository.ObtenerPorId(pedido.ConductorAsignadoId);
-                    pedido.ConductorAsignado.Conductor = _unidad.conductorRepository.ObtenerPorId(pedido.ConductorAsignado.ConductorId);
-                    pedido.ConductorAsignado.Vechiculo = _unidad.vechiculoRepository.ObtenerPorId(pedido.ConductorAsignado.VechiculoId);
-                    pedido.ConductorAsignado.Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.ConductorAsignado.Conductor.UsuarioId);
-                }
+                    pedido.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(pedido.OrdenPedidoId);
+                    pedido.OrdenPedido.EmpresaCliente = _unidad.empresaClienteRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaClienteId);
+                    pedido.OrdenPedido.EmpresaCliente.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.NITId);
+                    pedido.OrdenPedido.EmpresaCliente.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.ResponsableId);
+                    pedido.OrdenPedido.EmpresaCliente.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.RubroId);
+                    pedido.OrdenPedido.EmpresaCliente.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaCliente.Responsable.UsuarioId);
+                    pedido.OrdenPedido.EmpresaDistribuidora = _unidad.distribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidoraId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.NIT = _unidad.nitRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.NITId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.Responsable = _unidad.responsableDistribuidoraRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.ResponsableId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.Rubro = _unidad.rubroRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.RubroId);
+                    pedido.OrdenPedido.EmpresaDistribuidora.Responsable.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.OrdenPedido.EmpresaDistribuidora.Responsable.UsuarioId);
 
-                resultado.Add(pedido);
+                    if (pedido.ConductorAsignadoId != null)
+                    {
+                        pedido.ConductorAsignado = _unidad.asignacionVechiculoConductorRepository.ObtenerPorId(pedido.ConductorAsignadoId);
+                        pedido.ConductorAsignado.Conductor = _unidad.conductorRepository.ObtenerPorId(pedido.ConductorAsignado.ConductorId);
+                        pedido.ConductorAsignado.Vechiculo = _unidad.vechiculoRepository.ObtenerPorId(pedido.ConductorAsignado.VechiculoId);
+                        pedido.ConductorAsignado.Conductor.Usuario = _unidad.usuarioRepository.ObtenerPorId(pedido.ConductorAsignado.Conductor.UsuarioId);
+                    }
+                    resultado.Add(pedido);
+                }
             }
 
             return _mapper.Map<List<PedidoDTO>>(resultado);
@@ -174,9 +180,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
                 orden.PedidoConfirmado = true;
                 _unidad.ordenPedidoRepository.Actualizar(orden);
             }
-            else if(orden != null && !aceptado)
+            else if (orden != null && !aceptado)
             {
-                foreach (var detalle in listaDetalle) 
+                foreach (var detalle in listaDetalle)
                 {
                     _unidad.detalleOrdenPedidoRepository.Eliminar(detalle.Id);
                 }
@@ -185,6 +191,21 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             }
 
             _unidad.Complete();
+        }
+
+        public List<DetalleOrdenPedidoDTO> ObtenerDetalleOrdenPedidoPorIdOrden(Guid Id)
+        {
+            var response = _unidad.detalleOrdenPedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(Id)).ToList();
+
+            foreach (var item in response)
+            {
+                item.Stock = _unidad.stockRepository.ObtenerPorId(item.StockId);
+                item.Stock.Producto = _unidad.productoRepository.ObtenerPorId(item.Stock.ProductoId);
+                item.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(item.OrdenPedidoId);
+                item.Stock.Producto.TipoProducto = _unidad.tipoProductoRepository.ObtenerPorId(item.Stock.Producto.TipoProductoId);
+            }
+
+            return _mapper.Map<List<DetalleOrdenPedidoDTO>>(response);
         }
 
     }

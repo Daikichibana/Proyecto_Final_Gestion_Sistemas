@@ -1,0 +1,79 @@
+﻿@page "/ConfirmarPago"
+@inject IPedidosServices _pedidosServices
+@inject IInventarioServices _inventarioServices
+@inject IDistribuidorasServices _distribuidoraServices
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
+@if (EsDistribuidora)
+{
+    @if (PedidoResponse != null)
+    {
+        <h4>Pedidos Confirmados sin pagar</h4>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Necesita Factura</th>
+                    <th scope="col">Aclaracion cliente</th>
+                    <th scope="col">Metodo de Pago</th>
+                    <th scope="col">Estado del pago</th>
+                    <th scope="col">Estado del envio</th>
+                    <th scope="col">Conductor</th>
+                    <th scope="col">Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var pedido in PedidoResponse.Data)
+                {
+                    <tr>
+                        <td>@pedido.OrdenPedido.EmpresaCliente.NombreEmpresa</td>
+                        <td>@(pedido.OrdenPedido.DeseaFactura == true ? "Si" : "No")</td>
+                        <td>@pedido.OrdenPedido.AclaracionCliente</td>
+                        <td>@pedido.OrdenPedido.MetodoPago</td>
+                        <td>@pedido.EstadoPago</td>
+                        <td>@pedido.EstadoEnvio</td>
+                        <td>@(pedido.ConductorAsignado.Conductor.Nombre != "" ? pedido.ConductorAsignado.Conductor.Nombre: "N/A")</td>
+                        <td>
+                            <button @onclick="() => RegistrarPago(pedido.Id)" class="btn btn-success">Registrar pago</button>
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <p>Cargando...</p>
+}
+
+
+@code
+{
+    public ServiceResponse<List<PedidoDTO>> PedidoResponse { get; set; }
+
+    public bool EsDistribuidora { get; set; } = false;
+    public Guid IdEmpresaSesion { get; set; }
+    public bool AbrirModal { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
+        PedidoResponse = await _pedidosServices.ObtenerPedidosDistribuidoraPorId(IdEmpresaSesion);
+        PedidoResponse.Data = PedidoResponse.Data.Where(p => p.EstadoPago.Equals("No pagado")).ToList();
+    }
+
+
+    public async void RegistrarPago(Guid idPedido)
+    {
+        await _pedidosServices.ConfirmarPago(idPedido);
+
+        NavigationManager.NavigateTo("/", forceLoad: true);
+    }
+}

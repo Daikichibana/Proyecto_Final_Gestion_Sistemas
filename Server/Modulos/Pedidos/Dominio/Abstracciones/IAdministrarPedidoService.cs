@@ -17,6 +17,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstrac
         List<OrdenPedidoDTO> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id);
         List<OrdenPedidoDTO> ObtenerOrdenesPedidosClientePorId(Guid Id);
         void ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmarPedidoDTO);
+        List<DetalleOrdenPedidoDTO> ObtenerDetalleOrdenPedidoPorIdOrden(Guid Id);
 
     }
 }

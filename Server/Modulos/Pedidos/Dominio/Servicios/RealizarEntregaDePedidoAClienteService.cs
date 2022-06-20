@@ -11,18 +11,16 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
 
         UnidadDeTrabajo _unidad;
         IMapper _mapper;
-        IRealizarFacturacionClienteService _facturaService;
-        public RealizarEntregaDePedidoAClienteService(IMapper mapper, BaseDatosContext contexto, IRealizarFacturacionClienteService facturaService)
+        public RealizarEntregaDePedidoAClienteService(IMapper mapper, BaseDatosContext contexto)
         {
             _mapper = mapper;
             _unidad = new UnidadDeTrabajo(contexto);
-            _facturaService = facturaService;
         }
 
         public void ConfirmarEntregaCliente(Guid IdPedido)
         {
             var pedido = _unidad.pedidoRepository.ObtenerPorId(IdPedido);
-            pedido.EstadoEnvio = "Pedido Entregado Al cliente.";
+            pedido.EstadoEnvio = "Entrega Finalizada";
             
             _unidad.pedidoRepository.Actualizar(pedido);
             _unidad.Complete();
