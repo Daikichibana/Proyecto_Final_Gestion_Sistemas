@@ -31,7 +31,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                 throw new Exception("Ya existe un usuario registrado con ese nombre");
 
             var usuarioActualizado = _unidadDeTrabajo.usuarioRepository.Actualizar(usuario);
-            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<UsuarioDTO>(usuarioActualizado);
         }
@@ -40,7 +40,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
         {
             _unidadDeTrabajo.usuarioRepository.Eliminar(id);
 
-            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
         }
 
         public UsuarioDTO GuardarUsuario(UsuarioDTO entity)
@@ -51,7 +51,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                 throw new Exception("Ya existe un usuario con ese nombre");
 
             _unidadDeTrabajo.usuarioRepository.Guardar(usuario);
-            _unidadDeTrabajo.usuarioRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<UsuarioDTO>(usuario);
         }
@@ -78,7 +78,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
             {
                 result.Add(_unidadDeTrabajo.usuariosRolesRepository.Guardar(usuarioRole));
             }
-            _unidadDeTrabajo.usuariosRolesRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
             return _mapper.Map<List<UsuariosRolesDTO>>(result);
         }
         public IniciarSesionDTO IniciarSesion(UsuarioDTO usuario)

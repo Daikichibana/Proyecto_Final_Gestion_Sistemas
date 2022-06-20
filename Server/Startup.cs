@@ -81,11 +81,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             services.AddScoped(typeof(IGestionarTipoProductoService), typeof(GestionarTipoProductoService));
             services.AddScoped(typeof(IAdministrarProductoService), typeof(AdministrarProductoService));
             services.AddScoped(typeof(IActualizarStockPorCompraService), typeof(ActualizarStockPorCompraService));
+            services.AddScoped(typeof(IAdministrarNotaRecepcionService), typeof(AdministrarNotaRecepcionService));
             
             //Repositorios
             services.AddScoped(typeof(ITipoProductoRepository), typeof(TipoProductoRepository));
             services.AddScoped(typeof(IProductoRepository), typeof(ProductoRepository));
             services.AddScoped(typeof(IStockRepository), typeof(StockRepository));
+            services.AddScoped(typeof(INotaRecepcionRepository), typeof(NotaRecepcionRepository));
 
             /*** Modulo Pedidos ***/
             //Servicios

@@ -28,7 +28,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                 throw new Exception("Ya existe un rol registrado con ese nombre");
 
             var rolActualizado = _unidadDeTrabajo.rolRepository.Actualizar(rol);
-            _unidadDeTrabajo.rolRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<RolDTO>(rolActualizado);
 
@@ -38,7 +38,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
         {
             _unidadDeTrabajo.rolRepository.Eliminar(id);
 
-            _unidadDeTrabajo.rolRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
         }
 
         public RolDTO GuardarRol(RolDTO entity)
@@ -49,7 +49,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                 throw new Exception("Ya existe un rol registrado con ese nombre");
 
             var rolActualizado = _unidadDeTrabajo.rolRepository.Guardar(rol);
-            _unidadDeTrabajo.rolRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<RolDTO>(rolActualizado);
         }
