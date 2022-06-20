@@ -1,0 +1,151 @@
+﻿@page "/CatalogoProveedor"
+@inject IJSRuntime JsRuntime
+@inject IInventarioServices _inventarioServices
+@inject IPedidosServices _pedidosServices
+@inject ILocalStorageService LocalStorage
+
+@if (Proveedor != null && StockResponse != null && Paginacion == 1)
+{
+    <h3>Catalogo de productos</h3>
+    <h4>@NombreEmpresaDistribuidora</h4>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre del producto</th>
+                <th scope="col">Descripcion del producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var productoStock in StockResponse.Data)
+            {
+                    <tr>
+                        <td>@productoStock.Producto.Nombre</td>
+                        <td>@productoStock.Producto.Descripcion</td>
+                        <td>@productoStock.PrecioCompraPromedio</td>
+                        <td>
+                            <button @onclick="() => AgregarAlCarrito(productoStock)" type="button" class="btn btn-success">Agregar Al carrito</button>
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Productos en  carrito -->
+    <div class="m-5">
+    </div>
+    <h3>Mi Carrito:</h3>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre del producto</th>
+                <th scope="col">Descripcion del producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in ProductosEnCarrito)
+            {
+
+                <tr>
+                    <td>@producto.Stock.Producto.Nombre</td>
+                    <td>@producto.Stock.Producto.Descripcion</td>
+                    <td>
+                        <input @bind="@producto.Cantidad" type="number" />
+                    </td>
+                    <td>@producto.Stock.PrecioVentaPromedio</td>
+                    <td>@CalcularSubtotal(@producto.Stock.PrecioVentaPromedio, @producto.Cantidad)</td>
+                    <td>
+                        <button @onclick="() => QuitarCarrito(producto)" type="button" class="btn btn-danger">Quitar del carrito</button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    @if (ProductosEnCarrito.Count > 0)
+    {
+        <button @onclick="SeguirCompra" type="button" class="btn btn-primary">Realizar Pedido</button>
+    }
+}
+else if (Paginacion == 2)
+{
+    <RecepcionPedido  ProductosEnCarrito="ProductosEnCarrito" Proveedor="Proveedor" />
+}
+
+@code {
+    [Parameter]
+    public EmpresaProveedorDTO Proveedor { get; set; }
+
+    public string NombreEmpresaDistribuidora { get; set; }
+    public Guid IdEmpresaDistribuidora { get; set; }
+
+    public ServiceResponse<List<StockDTO>> StockResponse { get; set; }
+    public List<DetalleNotaRecepcionDTO> ProductosEnCarrito { get; set; } = new List<DetalleNotaRecepcionDTO>();
+
+    public int Paginacion { get; set; } = 1;
+    public string Distribuidora;
+
+    protected override async Task OnInitializedAsync()
+    {
+        NombreEmpresaDistribuidora = Proveedor.NombreEmpresa;
+        IdEmpresaDistribuidora = Proveedor.Id;
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        Guid dist = new Guid(Distribuidora);
+
+        StockResponse = await _inventarioServices.ObtenerTodoStockPorIdEmpresa(dist);
+        
+    }
+
+    public void AgregarAlCarrito(StockDTO productoStock)
+    {
+        DetalleNotaRecepcionDTO detalle = new DetalleNotaRecepcionDTO();
+        detalle.StockId = productoStock.Id;
+        detalle.Stock = productoStock;
+
+        ProductosEnCarrito.Add(detalle);
+        StockResponse.Data.Remove(productoStock);
+        StateHasChanged();
+    }
+
+    public void QuitarCarrito(DetalleNotaRecepcionDTO producto)
+    {
+        StockResponse.Data.Add(producto.Stock);
+        ProductosEnCarrito.Remove(producto);
+        StateHasChanged();
+    }
+    
+    public decimal CalcularSubtotal(decimal precio, int cantidad)
+    {
+        return precio * cantidad;
+    }
+
+    public async void SeguirCompra()
+    {
+        if (VerificarCantidadesOrdenadas())
+        {
+            Paginacion = 2;
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Para añadir al carrito debe ingresar una cantidad valida.");
+        }
+
+        StateHasChanged();
+    }
+
+    public bool VerificarCantidadesOrdenadas()
+    {
+        foreach (var detalleOrden in ProductosEnCarrito)
+        {
+            if (detalleOrden.Cantidad <= 0)
+                return false;
+        }
+        return true;
+    }
+}

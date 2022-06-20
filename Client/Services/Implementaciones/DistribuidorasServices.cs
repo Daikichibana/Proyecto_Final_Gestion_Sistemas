@@ -264,13 +264,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Proveedor
         public async Task<ServiceResponse<List<EmpresaProveedorDTO>>> ObtenerTodosLosProveedores()
         {
-            string EnlaceProveedor = BaseProveedor + "/";
+            string EnlaceProveedor = BaseProveedor + $"/ObtenerTodosLosProveedores";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>(EnlaceProveedor);
             return result;
         }
         public async Task<ServiceResponse<List<EmpresaProveedorDTO>>> CrearProveedor(List<EmpresaProveedorDTO> empresaProveedorDTO)
         {
-            string EnlaceProveedor = BaseProveedor + "/";
+            string EnlaceProveedor = BaseProveedor + $"/InsertarProveedor";
             var result = await _http.PostAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>();
 
@@ -278,7 +278,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<EmpresaProveedorDTO>>> ActualizarProveedor(List<EmpresaProveedorDTO> empresaProveedorDTO)
         {
-            string EnlaceProveedor = BaseProveedor + "/";
+            string EnlaceProveedor = BaseProveedor + $"/ActualizarProveedor";
             var result = await _http.PutAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>();
 
@@ -286,7 +286,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<EmpresaProveedorDTO>> EliminarProveedor(Guid Id)
         {
-            string EnlaceProveedor = BaseProveedor + "/";
+            string EnlaceProveedor = BaseProveedor + $"/EliminarProveedor";
             var result = await _http.DeleteAsync(EnlaceProveedor);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
 
