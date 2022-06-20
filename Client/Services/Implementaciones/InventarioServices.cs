@@ -16,6 +16,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private string BaseTipoProducto = "api/GestionarTipoProducto";
         private string BaseProducto = "api/AdministrarProducto";
         private string BaseStock = "api/ActualizarStockPorCompra";
+        private string BasePedido = "api/RealizarPedidoAProveedor";
 
         public InventarioServices(HttpClient http)
         {
@@ -127,6 +128,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #endregion
 
         #region Realizar Pedido A Proveedor
+        public async Task<ServiceResponse<object>> RealizarPedidoProveedor(NotaRecepcionDTO registro)
+        {
+            string EnlaceRealizarPedidoProveedor = BasePedido + "/RealizarOrdenPedido";
+            var result = await _http.PostAsJsonAsync(EnlaceRealizarPedidoProveedor, registro);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<object>>();
+
+            return content;
+        }
         #endregion
     }
 }

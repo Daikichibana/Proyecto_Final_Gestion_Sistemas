@@ -37,6 +37,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
         #endregion
 
         #region Realizar Pedido A Proveedor
+        Task<ServiceResponse<object>> RealizarPedidoProveedor(NotaRecepcionDTO registro);
         #endregion
     }
 }
