@@ -1,0 +1,125 @@
+﻿@page "/detalle"
+@inject IPedidosServices _pedidosServices
+@inject IInventarioServices _inventarioServices
+@inject IDistribuidorasServices _distribuidoraServices
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
+@if (FacturaSeleccionada != null && ResponseDetalleOrden != null)
+{
+    <div class="container mt-5">
+        <div class="cabecera">
+            <div class="cabecera-inside3">
+                <h5>@NombreDistribuidora</h5>
+                <p>Santa Cruz de la Sierra - Bolivia</p>
+            </div>
+            <div class="cabecera-inside">
+                <p>NIT: @NITDistribuidora</p>
+                <p>Numero de factura: @NroFactura</p>
+            </div>
+        </div>
+        <h3 style="text-align:center">FACTURA</h3>
+        <div class="cabecera-inside2">
+            <p>Nombre: @NombreCliente</p>
+            <p>NIT: @NITCliente</p>
+            <p>Fecha: @Fecha</p>   
+        </div>
+        <div class="detalle">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio Unitario</th>
+                        <th scope="col">SubTotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var detalle in ResponseDetalleOrden.Data)
+                    {
+                        <tr>
+                            <td>@detalle.Stock.Producto.Nombre</td>
+                            <td>@detalle.CantidadOrdenada</td>
+                            <td>@detalle.Stock.PrecioVentaPromedio</td>
+                            <td>@CalcularSubtotal(@detalle.CantidadOrdenada, @detalle.Stock.PrecioVentaPromedio)</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <p>cargando</p>
+}
+<style>
+    .container{
+        background-color: white;
+        border: 1px solid black;
+    }
+
+    .cabecera {
+        display: flex;
+        justify-content: right;
+        margin-bottom: 30px;
+    }
+
+    .cabecera-inside {
+        padding: 20px;
+        margin: 15px;
+        background-color: white;
+        border: 1px solid black;
+        width: 50%;
+    }
+
+    .cabecera-inside2 {
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: white;
+        border: 1px solid black;
+        width: 100%;
+    }
+
+    .cabecera-inside3 {
+        padding: 20px;
+        background-color: white;
+        width: 50%;
+    }
+</style>
+@code {
+    [Parameter]
+    public FacturaDTO FacturaSeleccionada { get; set; }
+
+    public ServiceResponse<List<DetalleOrdenPedidoDTO>> ResponseDetalleOrden { get; set; }
+
+    public string NombreDistribuidora { get; set; }
+    public string DireccionDistribuidora { get; set; }
+    public string NITDistribuidora { get; set; }
+    public string NroFactura { get; set; }
+
+    public string NombreCliente { get; set; }
+    public string NITCliente { get; set; }
+    public string Fecha { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ResponseDetalleOrden = await _pedidosServices.ObtenerDetalleOrdenPedidoPorIdOrden(FacturaSeleccionada.Pedido.OrdenPedidoId);
+        NombreDistribuidora = FacturaSeleccionada.Pedido.OrdenPedido.EmpresaDistribuidora.NombreEmpresa;
+        NITDistribuidora = FacturaSeleccionada.Pedido.OrdenPedido.EmpresaDistribuidora.NIT.NumeroNIT;
+        NroFactura = FacturaSeleccionada.NroComprobante.ToString();
+        NombreCliente = FacturaSeleccionada.Pedido.OrdenPedido.EmpresaCliente.NIT.NombreFacturacion;
+        NITCliente = FacturaSeleccionada.Pedido.OrdenPedido.EmpresaCliente.NIT.NumeroNIT;
+        Fecha = FacturaSeleccionada.Fecha.ToShortDateString();
+    }
+
+    public decimal CalcularSubtotal(int cantidad, decimal precio)
+    {
+        return cantidad * precio;
+    }
+
+
+}

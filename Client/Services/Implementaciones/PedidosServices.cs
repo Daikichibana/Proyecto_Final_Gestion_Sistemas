@@ -54,7 +54,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerOrdenesPedidosClientePorId(Guid Id)
         {
-            string EnlacePedido = BasePedido + "/";
+            string EnlacePedido = BasePedido + $"/ObtenerOrdenesPedidosClientePorId?Id={Id}";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(EnlacePedido);
             return result;
         }
@@ -127,7 +127,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<FacturaDTO>>> ObtenerTodoFactura()
         {
-            string EnlaceRealizarFacturacionCliente = BaseRealizarFacturacionCliente + "/";
+            string EnlaceRealizarFacturacionCliente = BaseRealizarFacturacionCliente + "/ObtenerTodoFactura";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<FacturaDTO>>>(EnlaceRealizarFacturacionCliente);
             return result;
         }

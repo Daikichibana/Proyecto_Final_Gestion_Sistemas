@@ -1,0 +1,129 @@
+﻿@page "/MisPedidos"
+@inject IPedidosServices _pedidosServices
+@inject IInventarioServices _inventarioServices
+@inject IDistribuidorasServices _distribuidoraServices
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
+
+@if (OrdenResponse != null)
+{
+    <h4>Ordenes de pedido</h4>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre Cliente</th>
+                <th scope="col">Necesita Factura</th>
+                <th scope="col">Aclaracion Cliente</th>
+                <th scope="col">Metodo de Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var orden in OrdenResponse.Data)
+            {
+                @if (orden.PedidoConfirmado == false)
+                {
+                    <tr>
+                        <td>@orden.EmpresaDistribuidora.NombreEmpresa</td>
+                        <td>@(orden.DeseaFactura == true ? "Si" : "No")</td>
+                        <td>@orden.AclaracionCliente</td>
+                        <td>@orden.MetodoPago</td>
+                    </tr>
+                }
+
+            }
+
+        </tbody>
+    </table>
+
+    <div class="m-5"></div>
+    <h4>Pedidos Confirmados</h4>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre Distribuidora</th>
+                <th scope="col">Necesita Factura</th>
+                <th scope="col">Aclaracion cliente</th>
+                <th scope="col">Metodo de Pago</th>
+                <th scope="col">Estado del pago</th>
+                <th scope="col">Estado del envio</th>
+                <th scope="col">Conductor</th>
+                <th scope="col">Detalle del pedido</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var pedido in PedidoResponse.Data)
+            {
+                <tr>
+                    <td>@pedido.OrdenPedido.EmpresaCliente.NombreEmpresa</td>
+                    <td>@(pedido.OrdenPedido.DeseaFactura == true ? "Si" : "No")</td>
+                    <td>@pedido.OrdenPedido.AclaracionCliente</td>
+                    <td>@pedido.OrdenPedido.MetodoPago</td>
+                    <td>@pedido.EstadoPago</td>
+                    <td>@pedido.EstadoEnvio</td>
+                    @if (pedido.ConductorAsignado != null)
+                    {
+                        <td>@pedido.ConductorAsignado.Conductor.Nombre</td>
+                    }
+                    else
+                    {
+                        <td>N/A</td>
+                    }
+                    <td>
+                        <button @onclick="() => MostrarDetalle(pedido.OrdenPedidoId)" class="btn btn-primary">Ver detalle</button>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Cargando...</p>
+}
+
+@if (AbrirModal)
+{
+    <Modal Title="Detalle orden"
+       Lista=@ListaPedido
+       OnClose="@CerrarModal"
+       DialogType="Modal.ModalDialogType.Ok">
+    </Modal>
+}
+
+@code
+{
+    public ServiceResponse<List<OrdenPedidoDTO>> OrdenResponse { get; set; }
+    public ServiceResponse<List<PedidoDTO>> PedidoResponse { get; set; }
+    public List<DetalleOrdenPedidoDTO> ListaPedido { get; set; }
+    public bool EsDistribuidora { get; set; } = false;
+    public Guid IdEmpresaSesion { get; set; }
+    public bool AbrirModal { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
+        OrdenResponse = await _pedidosServices.ObtenerOrdenesPedidosClientePorId(IdEmpresaSesion);
+        PedidoResponse = await _pedidosServices.ObtenerPedidosClientePorId(IdEmpresaSesion);
+    }
+
+    private async Task CerrarModal()
+    {
+        AbrirModal = false;
+        StateHasChanged();
+    }
+
+    public async void MostrarDetalle(Guid Id)
+    {
+        var response = await _pedidosServices.ObtenerDetalleOrdenPedidoPorIdOrden(Id);
+
+        ListaPedido = response.Data;
+        AbrirModal = true;
+    }
+}

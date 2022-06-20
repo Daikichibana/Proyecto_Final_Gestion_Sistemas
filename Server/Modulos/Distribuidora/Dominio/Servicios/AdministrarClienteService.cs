@@ -55,9 +55,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             var clientesExistentes = _unidadDeTrabajo.empresaClienteRepository.ObtenerTodo().Where(p => p.NombreEmpresa.Equals(cliente.NombreEmpresa)).ToList();
             if (clientesExistentes.Count > 0) 
                 throw new Exception("Ya existe un cliente registrado con ese nombre");
-
+            cliente.Rubro = null;
             var clienteResgitrado = _unidadDeTrabajo.empresaClienteRepository.Guardar(cliente);
-            _unidadDeTrabajo.empresaClienteRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<EmpresaClienteDTO>(clienteResgitrado);
         }

@@ -171,10 +171,18 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
 
             OrdenPedido orden = _unidad.ordenPedidoRepository.ObtenerPorId(Id);
             List<DetalleOrdenPedido> listaDetalle = _unidad.detalleOrdenPedidoRepository.ObtenerTodo().Where(p => p.OrdenPedidoId.Equals(orden.Id)).ToList();
+            
             if (orden != null && aceptado)
             {
                 orden.PedidoConfirmado = true;
                 Pedido pedido = new Pedido(null, null, "Entrega No Asignada", "No pagado", orden.Id, null);
+
+                foreach (var detalle in listaDetalle)
+                {
+                    var stock = _unidad.stockRepository.ObtenerPorId(detalle.StockId);
+                    stock.Cantidad -= detalle.CantidadOrdenada;
+                    _unidad.stockRepository.Actualizar(stock);
+                }
 
                 _unidad.pedidoRepository.Guardar(pedido);
                 orden.PedidoConfirmado = true;
@@ -184,6 +192,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             {
                 foreach (var detalle in listaDetalle)
                 {
+                    var stock = _unidad.stockRepository.ObtenerPorId(detalle.StockId);
+                    stock.Cantidad += detalle.CantidadOrdenada;
+                    _unidad.stockRepository.Actualizar(stock);
                     _unidad.detalleOrdenPedidoRepository.Eliminar(detalle.Id);
                 }
 

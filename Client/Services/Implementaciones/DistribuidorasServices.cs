@@ -30,7 +30,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Rubro
         public async Task<ServiceResponse<List<RubroDTO>>> ObtenerTodosLosRubros()
         {
-            string EnlaceRubro = BaseRubro + "/";
+            string EnlaceRubro = BaseRubro + "/ObtenerTodosLosRubros";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<RubroDTO>>>(EnlaceRubro);
             return result;
         }
@@ -69,7 +69,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> InsertarDistribuidora(EmpresaDistribuidoraDTO Empresa)
         {
-            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/";
+            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/InsertarDistribuidora";
             var result = await _http.PostAsJsonAsync(EnlaceEmpresaDistribuidora, Empresa);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaDistribuidoraDTO>>();
 
@@ -77,7 +77,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> ActualizarDistribuidora(EmpresaDistribuidoraDTO Empresa)
         {
-            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/";
+            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/ActualizarDistribuidora";
             var result = await _http.PutAsJsonAsync(EnlaceEmpresaDistribuidora, Empresa);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaDistribuidoraDTO>>();
 
@@ -96,13 +96,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Empresa Cliente
         public async Task<ServiceResponse<List<EmpresaClienteDTO>>> ObtenerTodasLasEmpresaClientes()
         {
-            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/ObtenerTodasLasEmpresaClientes";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaClienteDTO>>>(EnlaceEmpresaCliente);
             return result;
         }
         public async Task<ServiceResponse<EmpresaClienteDTO>> InsertarEmpresaCliente(EmpresaClienteDTO empresaClienteDTO)
         {
-            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/InsertarEmpresaCliente";
             var result = await _http.PostAsJsonAsync(EnlaceEmpresaCliente, empresaClienteDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
 
@@ -110,7 +110,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<EmpresaClienteDTO>> ActualizarEmpresaCliente(EmpresaClienteDTO empresaClienteDTO)
         {
-            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/ActualizarEmpresaCliente";
             var result = await _http.PutAsJsonAsync(EnlaceEmpresaCliente, empresaClienteDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
 

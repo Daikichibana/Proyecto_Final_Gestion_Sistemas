@@ -1,0 +1,98 @@
+﻿@page "/MisFacturas"
+@inject IPedidosServices _pedidosServices
+@inject IInventarioServices _inventarioServices
+@inject IDistribuidorasServices _distribuidoraServices
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
+
+@if (PedidoResponse != null && Paginacion == 1)
+{
+    <div class="m-5"></div>
+    <h4>Pedidos Confirmados</h4>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre Distribuidora</th>
+                <th scope="col">Necesita Factura</th>
+                <th scope="col">Aclaracion cliente</th>
+                <th scope="col">Metodo de Pago</th>
+                <th scope="col">Estado del pago</th>
+                <th scope="col">Estado del envio</th>
+                <th scope="col">Conductor</th>
+                <th scope="col">Factura</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var pedido in PedidoResponse.Data)
+            {
+                <tr>
+                    <td>@pedido.OrdenPedido.EmpresaCliente.NombreEmpresa</td>
+                    <td>@(pedido.OrdenPedido.DeseaFactura == true ? "Si" : "No")</td>
+                    <td>@pedido.OrdenPedido.AclaracionCliente</td>
+                    <td>@pedido.OrdenPedido.MetodoPago</td>
+                    <td>@pedido.EstadoPago</td>
+                    <td>@pedido.EstadoEnvio</td>
+                    @if (pedido.ConductorAsignado != null)
+                    {
+                        <td>@pedido.ConductorAsignado.Conductor.Nombre</td>
+                    }
+                    else
+                    {
+                        <td>N/A</td>
+                    }
+                    <td>
+                        @if (@pedido.EstadoPago.Equals("Pagado"))
+                        {
+                            <button @onclick="() => MostrarFactura(pedido.Id)" class="btn btn-success">Ver factura</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary">Ver factura</button>
+                        }
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+}
+else if(Paginacion == 2)
+{
+    <DetalleFactura FacturaSeleccionada="FacturaSeleccionada" />
+}
+else
+{
+    <p>Cargando...</p>
+}
+
+
+@code
+{
+    public ServiceResponse<List<PedidoDTO>> PedidoResponse { get; set; }
+    public FacturaDTO FacturaSeleccionada { get; set; }
+    public bool EsDistribuidora { get; set; } = false;
+    public Guid IdEmpresaSesion { get; set; }
+    public int Paginacion { get; set; } = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
+        PedidoResponse = await _pedidosServices.ObtenerPedidosClientePorId(IdEmpresaSesion);
+        PedidoResponse.Data = PedidoResponse.Data.Where(p => p.OrdenPedido.DeseaFactura.Equals(true)).ToList();
+    }
+
+    public async void MostrarFactura(Guid Id)
+    {
+        var response = await _pedidosServices.ObtenerTodoFactura();
+        var Factura = response.Data.Where(p => p.PedidoId.Equals(Id)).FirstOrDefault();
+
+        FacturaSeleccionada = Factura;
+        Paginacion = 2;
+        StateHasChanged();
+    }
+}

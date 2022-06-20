@@ -28,11 +28,14 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
         public void ConfirmarPago(Guid IdPedido)
         {
             var pedido = _unidad.pedidoRepository.ObtenerPorId(IdPedido);
+            pedido.OrdenPedido = _unidad.ordenPedidoRepository.ObtenerPorId(pedido.OrdenPedidoId);
             pedido.EstadoPago = "Pagado";
             Random numeroComprobante = new Random();
-            Factura nuevaFactura = new Factura(pedido, DateTime.Now, 0, numeroComprobante.Next(300000000, 400000000), IdPedido);
-
-            _unidad.facturaRepository.Guardar(nuevaFactura);
+            if (pedido.OrdenPedido.DeseaFactura)
+            {
+                Factura nuevaFactura = new Factura(pedido, DateTime.Now, 0, numeroComprobante.Next(300000000, 400000000), IdPedido);
+                _unidad.facturaRepository.Guardar(nuevaFactura);
+            }
             _unidad.pedidoRepository.Actualizar(pedido);
             _unidad.Complete();
         }
