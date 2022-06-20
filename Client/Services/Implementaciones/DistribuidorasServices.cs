@@ -63,7 +63,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Empresa Distribuidora
         public async Task<ServiceResponse<List<EmpresaDistribuidoraDTO>>> ObtenerTodoDistribuidora()
         {
-            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/";
+            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/ObtenerTodoDistribuidora";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaDistribuidoraDTO>>>(EnlaceEmpresaDistribuidora);
             return result;
         }
@@ -126,13 +126,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<ClientesDistribuidoraDTO>>> ObtenerDistribuidorasDeCliente(Guid Id)
         {
-            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + $"/ObtenerDistribuidorasDeCliente?Id={Id}";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<ClientesDistribuidoraDTO>>>(EnlaceEmpresaCliente);
             return result;
         }
         public async Task<ServiceResponse<ClientesDistribuidoraDTO>> InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO clienteDistribuidora)
         {
-            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/InsertarDistribuidorasDeCliente";
             var result = await _http.PostAsJsonAsync(EnlaceEmpresaCliente, clienteDistribuidora);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ClientesDistribuidoraDTO>>();
 
@@ -140,7 +140,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<ClientesDistribuidoraDTO>>> EliminarDistribuidorasDeCliente(Guid Id)
         {
-            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + $"/EliminarDistribuidorasDeCliente?Id={Id}";
             var result = await _http.DeleteAsync(EnlaceEmpresaCliente);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ClientesDistribuidoraDTO>>>();
 

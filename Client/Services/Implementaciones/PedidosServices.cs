@@ -16,7 +16,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         private string BaseRealizarEntregaAConductor = "";
         private string BaseRealizarEntregaPedidoConductor = "";
         private string BaseRealizarFacturacionCliente = "";
-        private string BaseRealizarPedidoDistribuidora = "";
+        private string BaseRealizarPedidoDistribuidora = "api/RealizarPedidoADistribuidora";
         public PedidosServices(HttpClient http)
         {
             _http = http;
@@ -46,7 +46,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id)
         {
-            string EnlacePedido = BasePedido + "/";
+            string EnlacePedido = BasePedido + $"/ObtenerOrdenesPedidosDistribuidoraPorId?Id={Id}";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<OrdenPedidoDTO>>>(EnlacePedido);
             return result;
         }
@@ -58,7 +58,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosDistribuidoraPorId(Guid Id)
         {
-            string EnlacePedido = BasePedido + "/";
+            string EnlacePedido = BasePedido + $"/ObtenerPedidosDistribuidoraPorId?Id={Id}";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<PedidoDTO>>>(EnlacePedido);
             return result;
         }
@@ -138,7 +138,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Realizar Pedido a distribuidora
         public async Task<ServiceResponse<object>> RealizarOrdenPedido(RegistroPedidoDTO registro)
         {
-            string EnlaceRealizarPedidoDistribuidora = BaseRealizarPedidoDistribuidora + "/";
+            string EnlaceRealizarPedidoDistribuidora = BaseRealizarPedidoDistribuidora + "/RealizarOrdenPedido";
             var result = await _http.PostAsJsonAsync(EnlaceRealizarPedidoDistribuidora, registro);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<object>>();
 

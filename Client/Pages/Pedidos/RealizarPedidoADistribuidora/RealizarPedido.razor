@@ -1,4 +1,126 @@
-﻿@*@inject ILocalStorageService LocalStorage
+﻿@inject ILocalStorageService LocalStorage
+@inject IPedidosServices _pedidosService
+@inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
+
+@if (ListaMetodosPago != null && ProductosEnCarrito != null)
+{
+    <div class="m-5">
+    </div>
+    <!-- Productos en  carrito -->
+    <h3>Detalle del pedido</h3>
+    <div style="display: flex; justify-content: center;">
+        <table class="table" style="width: 70%;">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre del producto</th>
+                    <th scope="col">Descripcion del producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var producto in ProductosEnCarrito)
+                {
+                    <tr>
+                        <td>@producto.Stock.Producto.Nombre</td>
+                        <td>@producto.Stock.Producto.Descripcion</td>
+                        <td>@producto.CantidadOrdenada</td>
+                        <td>@producto.Stock.PrecioVentaPromedio</td>
+                        <td>@CalcularSubtotal(@producto.Stock.PrecioVentaPromedio, @producto.CantidadOrdenada)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Formulario de pedido -->
+    <div style="display: flex; justify-content: center;">
+        <form style="width: 70%;">
+            <fieldset class="form-group">
+                <div class="form-group">
+                    <label for="NombreRubro" class="form-label mt-4">Metodo Pago: </label>
+                    <select @bind=MetodoPago class="form-select form-select-lg ml-3">
+                        <option value=@MetodoPago disabled>Tarjeta Credito</option>
+                        <option value=@MetodoPago selected>Transferencia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="NombreRubro" class="form-label mt-4">Desea Factura: </label>
+                    <select @bind=DeseaFactura class="form-select form-select-lg ml-3">
+                        <option value="No" selected>No</option>
+                        <option value="Si" >Si</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="NombreRubro" class="form-label mt-4">Aclaracion</label>
+                    <input @bind="AclaracionCliente" type="text" class="form-control" id="NombreRubro" placeholder="Ingrese si tiene alguna alclaracion sobre el pedido.">
+                </div>
+            </fieldset>
+
+            <button @onclick="() => RealizarOrdenPedido()" type="button" class="btn btn-success">Realizar pedido</button>
+
+        </form>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public List<DetalleOrdenPedidoDTO> ProductosEnCarrito { get; set; }
+
+    [Parameter]
+    public EmpresaDistribuidoraDTO EmpresaDistribuidora { get; set; }
+
+    public string ClienteId { get; set; }
+    public List<string> ListaMetodosPago { get; set; } = new List<string>();
+    public string DeseaFactura { get; set; } = "No";
+    public string AclaracionCliente { get; set; }
+    public string MetodoPago { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ClienteId = await LocalStorage.GetItemAsync<string>("idEmpresa");
+    }
+
+    public decimal CalcularSubtotal(decimal precio, int cantidad)
+    {
+        return precio * cantidad;
+    }
+
+    public async void RealizarOrdenPedido()
+    {
+        List<RegistroPedidoDetalleDTO> ListaDetalles = new List<RegistroPedidoDetalleDTO>();
+
+        foreach (var detalle in ProductosEnCarrito)
+        {
+            RegistroPedidoDetalleDTO registroDetalle = new RegistroPedidoDetalleDTO();
+            registroDetalle.Id = detalle.StockId;
+            registroDetalle.CantidadOrdenada = detalle.CantidadOrdenada;
+
+            ListaDetalles.Add(registroDetalle);
+        }
+
+        RegistroPedidoDTO orden = new RegistroPedidoDTO();
+        orden.EmpresaDistribuidoraId = EmpresaDistribuidora.Id;
+        orden.EmpresaClienteId = new Guid(ClienteId);
+        orden.DeseaFactura = DeseaFactura.Equals("Si") ? true : false;
+        orden.PedidoConfirmado = false;
+        orden.AclaracionDistribuidor = null;
+        orden.AclaracionCliente = AclaracionCliente;
+        orden.CodigoQR = null;
+        orden.MetodoPago = "Transferencia";
+        orden.DetallesOrdenes = ListaDetalles;
+
+        await _pedidosService.RealizarOrdenPedido(orden);
+        await JsRuntime.InvokeVoidAsync("alert", "Pedido Realizado Correctamente!");
+        NavigationManager.NavigateTo("");
+    }
+}
+
+@*@inject ILocalStorageService LocalStorage
 @inject IPedidosServices _pedidosService
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager

@@ -37,7 +37,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStockPorIdEmpresa(Guid Id)
         {
-            string EnlaceStock = BaseStock + "/";
+            string EnlaceStock = BaseStock + $"/ObtenerTodoStockPorIdEmpresa?Id={Id}";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<StockDTO>>>(EnlaceStock);
             return result;
         }
