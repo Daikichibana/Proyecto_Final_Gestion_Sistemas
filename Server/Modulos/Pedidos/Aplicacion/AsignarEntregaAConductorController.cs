@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Compartido;
+using Compartido.Dto.Pedidos;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
 using System;
@@ -18,13 +19,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Aplicacion
         }
 
         [HttpPost]
-        public IActionResult AsignarEntregaAconductor(Guid IdConductorVehiculo, Guid IdPedido)
+        public IActionResult AsignarEntregaAconductor(AsignacionEntregaConductorDTO asignacion)
         {
             var result = new ServiceResponse<Object>();
 
             try
             {
-                _asignarEntregaAConductorService.AsignarEntregaAconductor(IdConductorVehiculo, IdPedido);
+                _asignarEntregaAConductorService.AsignarEntregaAconductor(asignacion);
 
                 result.Data = null;
                 result.Message = "Se ha realizado la operacion correctamente.";

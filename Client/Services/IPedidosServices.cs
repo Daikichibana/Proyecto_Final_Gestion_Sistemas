@@ -10,44 +10,37 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services
     public interface IPedidosServices
     {
         #region Administrar Pedidos
-        Task<ServiceResponse<List<PedidoDTO>>> ObtenerTodosLosPedidos();
-        Task<ServiceResponse<PedidoDTO>> CrearPedido(PedidoDTO PedidoDTO);
-        Task<ServiceResponse<PedidoDTO>> ActualizarPedido(PedidoDTO PedidoDTO);
-        Task<ServiceResponse<PedidoDTO>> EliminarPedido(PedidoDTO PedidoDTO);
-
-        Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerTodosLosOrdenPedido();
-        Task<ServiceResponse<OrdenPedidoDTO>> CrearOrdenPedido(OrdenPedidoDTO OrdenPedidoDTO);
-        Task<ServiceResponse<OrdenPedidoDTO>> ActualizarOrdenPedido(OrdenPedidoDTO OrdenPedidoDTO);
-        Task<ServiceResponse<OrdenPedidoDTO>> EliminarOrdenPedido(OrdenPedidoDTO OrdenPedidoDTO);
-
-        Task<ServiceResponse<List<DetalleOrdenPedidoDTO>>> ObtenerTodosLosDetalleOrdenPedido();
-        Task<ServiceResponse<DetalleOrdenPedidoDTO>> CrearDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO);
-        Task<ServiceResponse<DetalleOrdenPedidoDTO>> ActualizarDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO);
-        Task<ServiceResponse<DetalleOrdenPedidoDTO>> EliminarDetalleOrdenPedido(DetalleOrdenPedidoDTO DetalleOrdenPedidoDTO);
-
+        Task<ServiceResponse<PedidoDTO>> ObtenerPorIdPedido(Guid Id);
+        Task<ServiceResponse<PedidoDTO>> EliminarPedido(Guid Id);
+        Task<ServiceResponse<OrdenPedidoDTO>> EliminarOrdenPedido(Guid Id);
         Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerOrdenesPedidosDistribuidoraPorId(Guid Id);
         Task<ServiceResponse<List<OrdenPedidoDTO>>> ObtenerOrdenesPedidosClientePorId(Guid Id);
         Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosDistribuidoraPorId(Guid Id);
         Task<ServiceResponse<List<PedidoDTO>>> ObtenerPedidosClientePorId(Guid Id);
-        Task<ServiceResponse<PedidoDTO>> ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmacion);
-        Task<ServiceResponse<PedidoDTO>> ObtenerPorIdPedido(Guid Id);
-        Task<ServiceResponse<OrdenPedidoDTO>> ObtenerOrdenesPedidosPorId(Guid Id);
-
+        Task<ServiceResponse<PedidoDTO>> ConfirmarOrdenPedido(ConfirmarPedidoDTO confirmarPedidoDTO);
         #endregion
 
         #region Asignar Entrega a conductor
+        Task<ServiceResponse<object>> AsignarEntregaAconductor(AsignacionEntregaConductorDTO Asignacion);
         #endregion
 
         #region Realizar Entrega de pedido a cliente
         #endregion
 
         #region Realizar Entrega de pedido a conductor
+        Task<ServiceResponse<object>> ConfirmarEntregaPedido(Guid IdPedido);
         #endregion
 
         #region Realizar facturacion cliente
+        Task<ServiceResponse<object>> EliminarFactura(Guid Id);
+        Task<ServiceResponse<List<FacturaDTO>>> ObtenerTodoFactura();
+        Task<ServiceResponse<FacturaDTO>> ObtenerPorIdFactura(Guid Id);
+        Task<ServiceResponse<object>> ConfirmarPago(Guid IdPedido);
+
         #endregion
 
         #region Realizar Pedido a distribuidora
+        Task<ServiceResponse<object>> RealizarOrdenPedido(RegistroPedidoDTO registro);
         #endregion
     }
 }

@@ -132,7 +132,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Aplicacio
         public IActionResult AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vehiculoDTO)
         {
 
-            ServiceResponse<IList<AsignacionVechiculoConductor>> result = new ServiceResponse<IList<AsignacionVechiculoConductor>>();
+            ServiceResponse<IList<AsignacionVechiculoConductorDTO>> result = new ServiceResponse<IList<AsignacionVechiculoConductorDTO>>();
 
             try
             {

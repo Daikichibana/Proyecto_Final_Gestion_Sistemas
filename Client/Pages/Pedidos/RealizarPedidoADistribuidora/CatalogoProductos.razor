@@ -3,7 +3,7 @@
 @inject IInventarioServices _inventarioServices
 @inject IPedidosServices _pedidosServices
 
-@if (EmpresaDistribuidora != null && StockResponse != null && ProductosResponse != null && Paginacion == 1)
+@if (EmpresaDistribuidora != null && StockResponse != null && Paginacion == 1)
 {
     <h3>Catalogo de productos</h3>
     <h4>@NombreEmpresaDistribuidora</h4>
@@ -18,19 +18,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var producto in ProductosResponse.Data)
+            @foreach (var productoStock in StockResponse.Data)
             {
-                @if (ValidarExistenciaProducto(producto.Id) && verificarSiPertenece(producto.EmpresaDistribuidoraId))
-                {
                     <tr>
-                        <td>@producto.Nombre</td>
-                        <td>@producto.Descripcion</td>
-                        <td>@obtenerPrecio(producto.Id)</td>
+                        <td>@productoStock.Producto.Nombre</td>
+                        <td>@productoStock.Producto.Descripcion</td>
+                        <td>@productoStock.PrecioVentaPromedio</td>
                         <td>
-                            <button @onclick="() => AgregarAlCarrito(producto.Id)" type="button" class="btn btn-success">Agregar Al carrito</button>
+                            <button @onclick="() => AgregarAlCarrito(productoStock)" type="button" class="btn btn-success">Agregar Al carrito</button>
                         </td>
                     </tr>
-                }
             }
         </tbody>
     </table>
@@ -80,7 +77,6 @@ else if (Paginacion == 2)
     <RealizarPedido ProductosEnCarrito="ProductosEnCarrito" EmpresaDistribuidora="EmpresaDistribuidora" />
 }
 
-
 @code {
     [Parameter]
     public EmpresaDistribuidoraDTO EmpresaDistribuidora { get; set; }
@@ -89,7 +85,6 @@ else if (Paginacion == 2)
     public Guid IdEmpresaDistribuidora { get; set; }
 
     public ServiceResponse<List<StockDTO>> StockResponse { get; set; }
-    public ServiceResponse<List<ProductoDTO>> ProductosResponse { get; set; }
     public List<DetalleOrdenPedidoDTO> ProductosEnCarrito { get; set; } = new List<DetalleOrdenPedidoDTO>();
 
     public int Paginacion { get; set; } = 1;
@@ -99,41 +94,18 @@ else if (Paginacion == 2)
         NombreEmpresaDistribuidora = EmpresaDistribuidora.NombreEmpresa;
         IdEmpresaDistribuidora = EmpresaDistribuidora.Id;
 
-        StockResponse = await _inventarioServices.ObtenerTodoStock();
-        ProductosResponse = await _inventarioServices.ObtenerTodoProducto();
+        StockResponse = await _inventarioServices.ObtenerTodoStockPorIdEmpresa(IdEmpresaDistribuidora);
     }
 
-    public bool ValidarExistenciaProducto(Guid Id)
+    public void AgregarAlCarrito(StockDTO productoStock)
     {
-        var response = StockResponse.Data.Where(p => p.ProductoId.Equals(Id)).FirstOrDefault();
+        DetalleOrdenPedidoDTO detalle = new DetalleOrdenPedidoDTO();
+        detalle.StockId = productoStock.Id;
+        detalle.Stock = productoStock;
 
-        if (response != null)
-            return true;
-
-        return false;
-    }
-
-    public decimal obtenerPrecio(Guid Id)
-    {
-        var responseStock = StockResponse.Data.Where(p => p.ProductoId.Equals(Id)).FirstOrDefault();
-
-        return responseStock.PrecioVentaPromedio;
-    }
-
-    public void AgregarAlCarrito(Guid Id)
-    {
-        var responseStock = StockResponse.Data.Where(p => p.ProductoId.Equals(Id)).FirstOrDefault();
-        var responseProducto = ProductosResponse.Data.Where(p => p.Id.Equals(Id)).FirstOrDefault();
-
-        DetalleOrdenPedidoDTO aux = new DetalleOrdenPedidoDTO();
-        aux.StockId = responseStock.Id;
-        aux.Stock = responseStock;
-        aux.Stock.Producto = responseProducto;
-
-        ProductosEnCarrito.Add(aux);
-        StockResponse.Data.Remove(responseStock);
+        ProductosEnCarrito.Add(detalle);
+        StockResponse.Data.Remove(productoStock);
         StateHasChanged();
-
     }
 
     public void QuitarCarrito(DetalleOrdenPedidoDTO producto)
@@ -141,6 +113,11 @@ else if (Paginacion == 2)
         StockResponse.Data.Add(producto.Stock);
         ProductosEnCarrito.Remove(producto);
         StateHasChanged();
+    }
+    
+    public decimal CalcularSubtotal(decimal precio, int cantidad)
+    {
+        return precio * cantidad;
     }
 
     public async void SeguirCompra()
@@ -164,20 +141,6 @@ else if (Paginacion == 2)
             if (detalleOrden.CantidadOrdenada <= 0)
                 return false;
         }
-        return true;
-    }
-
-    public decimal CalcularSubtotal(decimal precio, int cantidad)
-    {
-        return precio * cantidad;
-    }
-
-    public bool verificarSiPertenece(Guid Id)
-    {
-       
-        if (IdEmpresaDistribuidora != Id)
-            return false;
-
         return true;
     }
 }

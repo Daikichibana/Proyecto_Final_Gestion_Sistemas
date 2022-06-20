@@ -38,9 +38,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             foreach (var detalle in pedido.DetallesOrdenes)
             {
                 var StockProducto = _mapper.Map<Stock>(_actualizarStockPorCompraService.ObtenerPorIdStock(detalle.Id));
-                var cantidadOrdenada = StockProducto.CantidadOrdenada += detalle.CantidadOrdenada;
+                StockProducto.CantidadPedida += detalle.CantidadOrdenada;
 
-                DetalleOrdenPedido nuevoDetalle = new DetalleOrdenPedido(null, null, cantidadOrdenada, ordenRegistrado.Id, StockProducto.Id);
+                DetalleOrdenPedido nuevoDetalle = new DetalleOrdenPedido(null, null, detalle.CantidadOrdenada, ordenRegistrado.Id, StockProducto.Id);
 
 
                 ListaStock.Add(StockProducto);

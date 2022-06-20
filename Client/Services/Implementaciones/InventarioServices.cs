@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -21,126 +22,111 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             _http = http;
         }
 
-        #region Administrar Tipo Producto
-
-        public async Task<ServiceResponse<TipoProductoDTO>> ActualizarTipoProducto(TipoProductoDTO tipoProducto)
+        #region Actualizar Stock Por Compra
+        public async Task<ServiceResponse<List<StockDTO>>> ObtenerTodosStock()
         {
-            string EnlaceTipoProducto = BaseTipoProducto + "/";
-            var result = await _http.PutAsJsonAsync(EnlaceTipoProducto, tipoProducto);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<TipoProductoDTO>> CrearTipoProducto(TipoProductoDTO tipoProducto)
-        {
-            string EnlaceTipoProducto = BaseTipoProducto + "/";
-            var result = await _http.PostAsJsonAsync(EnlaceTipoProducto, tipoProducto);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<TipoProductoDTO>> EliminarTipoProducto(TipoProductoDTO tipoProducto)
-        {
-            string EnlaceTipoProducto = BaseTipoProducto + $"/?Id={tipoProducto.Id}";
-            var result = await _http.DeleteAsync(EnlaceTipoProducto);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<List<TipoProductoDTO>>> ObtenerTodoTipoProducto()
-        {
-            string EnlaceTipoProducto = BaseTipoProducto + "/";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<TipoProductoDTO>>>(EnlaceTipoProducto);
+            string EnlaceStock = BaseStock + "/ObtenerTodosStock";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<StockDTO>>>(EnlaceStock);
             return result;
         }
+        public async Task<ServiceResponse<StockDTO>> ObtenerPorIdStock(Guid Id)
+        {
+            string EnlaceStock = BaseStock + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<StockDTO>>(EnlaceStock);
+            return result;
+        }
+        public async Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStockPorIdEmpresa(Guid Id)
+        {
+            string EnlaceStock = BaseStock + $"/ObtenerTodoStockPorIdEmpresa?Id={Id}";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<StockDTO>>>(EnlaceStock);
+            return result;
+        }
+        public async Task<ServiceResponse<List<StockDTO>>> ActualizarStock(List<StockDTO> nuevoStock)
+        {
+            string EnlaceStock = BaseStock + "/ActualizarStock";
+            var result = await _http.PutAsJsonAsync(EnlaceStock, nuevoStock);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<StockDTO>>>();
 
+            return content;
+        }
+        #endregion
+
+        #region Admnistrar Nota Recepcion
         #endregion
 
         #region Administrar Producto
-
-        public async Task<ServiceResponse<ProductoDTO>> ActualizarProducto(ProductoDTO Producto)
-        {
-            string EnlaceProducto = BaseProducto + "/";
-            var result = await _http.PutAsJsonAsync(EnlaceProducto, Producto);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<ProductoDTO>> CrearProducto(ProductoDTO Producto)
-        {
-            string EnlaceProducto = BaseProducto + "/";
-            var result = await _http.PostAsJsonAsync(EnlaceProducto, Producto);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<ProductoDTO>> EliminarProducto(ProductoDTO Producto)
-        {
-            string EnlaceProducto = BaseProducto + $"/?Id={Producto.Id}";
-            var result = await _http.DeleteAsync(EnlaceProducto);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodoProducto()
+        public async Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodosProductos()
         {
             string EnlaceProducto = BaseProducto + "/";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<ProductoDTO>>>(EnlaceProducto);
             return result;
         }
-
-        #endregion
-
-        #region Actualizar Stock Por Compra
-
-        public async Task<ServiceResponse<StockDTO>> ActualizarStock(StockDTO Stock)
+        public async Task<ServiceResponse<List<ProductoDTO>>> InsertarProducto(List<ProductoDTO> productoDTO)
         {
-            var EnlaceStock = BaseStock + "/";
-            var result = await _http.PutAsJsonAsync(EnlaceStock, Stock);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
+            string EnlaceProducto = BaseProducto + "/InsertarProducto";
+            var result = await _http.PostAsJsonAsync(EnlaceProducto, productoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ProductoDTO>>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<StockDTO>> CrearStock(StockDTO Stock)
+        public async Task<ServiceResponse<List<ProductoDTO>>> ActualizarProducto(List<ProductoDTO> ProductoDTO)
         {
-            var EnlaceStock = BaseStock + "/";
-            var result = await _http.PostAsJsonAsync(EnlaceStock, Stock);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
+            string EnlaceProducto = BaseProducto + "/ActualizarProducto";
+            var result = await _http.PutAsJsonAsync(EnlaceProducto, ProductoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ProductoDTO>>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<StockDTO>> EliminarStock(StockDTO Stock)
+        public async Task<ServiceResponse<ProductoDTO>> EliminarProducto(Guid id)
         {
-            var EnlaceStock = BaseStock + "/?Id={Stock.Id}";
-
-            var result = await _http.DeleteAsync(EnlaceStock);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<StockDTO>>();
+            string EnlaceProducto = BaseProducto + $"/EliminarProducto?id={id}";
+            var result = await _http.DeleteAsync(EnlaceProducto);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ProductoDTO>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<List<StockDTO>>> ObtenerTodoStock()
+        public async Task<ServiceResponse<List<ProductoDTO>>> ObtenerTodoProductoPorIdEmpresa(Guid idEmpresa)
         {
-            var EnlaceStock = BaseStock + "";
-
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<StockDTO>>>(EnlaceStock);
+            string EnlaceProducto = BaseProducto + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<ProductoDTO>>>(EnlaceProducto);
             return result;
         }
-
         #endregion
 
-        #region Realizar Pedido a Proveedor
+        #region Gestionar Tipo Producto
+        public async Task<ServiceResponse<List<TipoProductoDTO>>> ObtenerTodosLosTipoProducto()
+        {
+            string EnlaceTipoProducto = BaseTipoProducto + "/ObtenerTodosLosTipoProducto";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<TipoProductoDTO>>>(EnlaceTipoProducto);
+            return result;
+        }
+        public async Task<ServiceResponse<List<TipoProductoDTO>>> InsertarTipoProducto(List<TipoProductoDTO> tipoProductoDTO)
+        {
+            string EnlaceTipoProducto = BaseTipoProducto + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceTipoProducto, tipoProductoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<TipoProductoDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<TipoProductoDTO>>> ActualizarTipoProducto(List<TipoProductoDTO> tipoProductoDTO)
+        {
+            string EnlaceTipoProducto = BaseTipoProducto + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceTipoProducto, tipoProductoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<TipoProductoDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<TipoProductoDTO>> EliminarTipoProducto(List<Guid> id)
+        {
+            string EnlaceTipoProducto = BaseTipoProducto + "/";
+            var result = await _http.DeleteAsync(EnlaceTipoProducto);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
+
+            return content;
+        }
         #endregion
 
-        #region Administrar nota de recepcion
+        #region Realizar Pedido A Proveedor
         #endregion
     }
 }

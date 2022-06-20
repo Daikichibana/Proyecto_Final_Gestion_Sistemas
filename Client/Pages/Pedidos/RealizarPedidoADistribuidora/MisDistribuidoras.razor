@@ -1,7 +1,9 @@
 ﻿@page "/MisDistribuidoras"
 @inject IDistribuidorasServices _distribuidoraService
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
 
-@if (ListaDistribuidoras != null && ListaRubros != null && Vista == 1)
+@if (ResponseDistribuidorasDeCliente != null && Vista == 1)
 {
     <h3>Mis Distribuidoras</h3>
     <button @onclick="RegistrarNuevo" type="button" class="btn btn-primary mb-2">Agregar Nueva Distribuidora</button>
@@ -17,20 +19,17 @@
         </thead>
         <tbody>
 
-            @foreach (var distribuidora in ListaDistribuidoras.Data)
+            @foreach (var distCliente in ResponseDistribuidorasDeCliente.Data)
             {
-                @if (verificarSiPertenece(distribuidora.Id))
-                {
-                    <tr>
-                        <td>@distribuidora.NombreEmpresa</td>
-                        <td>@distribuidora.EmailEmpresa</td>
-                        <td>@obtenerNombreRubro(distribuidora.RubroId)</td>
-                        <td>
-                            <button @onclick="() => IrCatalogo(distribuidora)" type="button" class="btn btn-success">Realizar Pedido</button>
-                            <button @onclick="() => eliminarDistribuidora(distribuidora.Id)" type="button" class="btn btn-danger ml-3">Eliminar</button>
-                        </td>
-                    </tr>
-                }
+                <tr>
+                    <td>@distCliente.distribuidoras.NombreEmpresa</td>
+                    <td>@distCliente.distribuidoras.EmailEmpresa</td>
+                    <td>@distCliente.distribuidoras.Rubro.Nombre</td>
+                    <td>
+                        <button @onclick="() => IrCatalogo(distCliente.distribuidoras)" type="button" class="btn btn-success">Realizar Pedido</button>
+                        <button @onclick="() => eliminarDistribuidora(distCliente.Id)" type="button" class="btn btn-danger ml-3">Quitar</button>
+                    </td>
+                </tr>
             }
 
         </tbody>
@@ -38,12 +37,11 @@
 }
 else if (Vista == 2)
 {
-    <RegistrarMisDistribuidoras ListaDistribuidoraFiltrado="@ListaDistribuidoraFiltrado"
-                            Volver="() => Volver()" />
+    <RegistrarMisDistribuidoras />
 }
 else if (Vista == 3)
 {
-    <CatalogoProductos EmpresaDistribuidora="@DistribuidoraSeleccionada" />    
+    <CatalogoProductos EmpresaDistribuidora="@DistribuidoraSeleccionada" /> 
 }
 else
 {
@@ -51,74 +49,33 @@ else
 }
 
 @code {
-    public ServiceResponse<List<ClientesDistribuidoraDTO>> ListaDistribuidorasDeCliente { get; set; }
-    public ServiceResponse<List<EmpresaDistribuidoraDTO>> ListaDistribuidoras { get; set; }
-    public ServiceResponse<List<RubroDTO>> ListaRubros { get; set; }
-    public List<EmpresaDistribuidoraDTO> ListaDistribuidoraFiltrado { get; set; }
+    public ServiceResponse<List<ClientesDistribuidoraDTO>> ResponseDistribuidorasDeCliente { get; set; }
     public EmpresaDistribuidoraDTO DistribuidoraSeleccionada { get; set; } = new EmpresaDistribuidoraDTO();
-    public string Loading { get; set; }
+
+    public Guid IdEmpresaSesion { get; set; }
+    public string Loading { get; set; } = "Cargando...";
     public int Vista { get; set; } = 1;
 
     protected override async Task OnInitializedAsync()
     {
-        Loading = "Cargando...";
-        ListaDistribuidorasDeCliente = await _distribuidoraService.ObtenerDistribuidorasDeCliente();
-        ListaDistribuidoras = await _distribuidoraService.ObtenerTodoDistribuidora();
-        ListaRubros = await _distribuidoraService.ObtenerTodoRubro();
-        filtrarLista();
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        ResponseDistribuidorasDeCliente = await _distribuidoraService.ObtenerDistribuidorasDeCliente(IdEmpresaSesion);
+
         StateHasChanged();
     }
 
-    public string obtenerNombreRubro(Guid Id)
-    {
-        return ListaRubros.Data.Where(p => p.Id.Equals(Id)).FirstOrDefault().Nombre;
-    }
-
-    public bool verificarSiPertenece(Guid Id)
-    {
-        var elemento = ListaDistribuidorasDeCliente.Data.Where(p => p.DistribuidorasId.Equals(Id)).FirstOrDefault();
-
-        if (elemento == null)
-            return false;
-
-        return true;
-    }
 
     public async void eliminarDistribuidora(Guid Id)
     {
-        var elemento = ListaDistribuidorasDeCliente.Data.Where(p => p.DistribuidorasId.Equals(Id)).FirstOrDefault();
+        await _distribuidoraService.EliminarDistribuidorasDeCliente(Id);
 
-        _distribuidoraService.EliminarDistribuidorasDeCliente(elemento.Id);
-        ListaDistribuidorasDeCliente = await _distribuidoraService.ObtenerDistribuidorasDeCliente();
+        NavigationManager.NavigateTo("/MisDistribuidoras", forceLoad:true);
         StateHasChanged();
     }
 
     public void RegistrarNuevo()
     {
         Vista = 2;
-        filtrarLista();
-        StateHasChanged();
-    }
-
-    public async void Volver()
-    {
-        Vista = 1;
-        ListaDistribuidorasDeCliente = await _distribuidoraService.ObtenerDistribuidorasDeCliente();
-        StateHasChanged();
-    }
-
-    public void filtrarLista()
-    {
-        ListaDistribuidoraFiltrado = new List<EmpresaDistribuidoraDTO>();
-
-        foreach (var empresa in ListaDistribuidoras.Data)
-        {
-            if (!this.verificarSiPertenece(empresa.Id))
-            {
-                ListaDistribuidoraFiltrado.Add(empresa);
-            }
-        }
-
         StateHasChanged();
     }
 

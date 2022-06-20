@@ -27,268 +27,271 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
             _http = http;
         }
 
-        #region Adminsitrar Rubro
-
-        public async Task<ServiceResponse<RubroDTO>> ActualizarRubro(RubroDTO Rubro)
+        #region Administrar Rubro
+        public async Task<ServiceResponse<List<RubroDTO>>> ObtenerTodosLosRubros()
         {
-            string EnlaceRubro = BaseRubro + "";
-            var result = await _http.PutAsJsonAsync(EnlaceRubro, Rubro);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RubroDTO>>();
+            string EnlaceRubro = BaseRubro + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<RubroDTO>>>(EnlaceRubro);
+            return result;
+        }
+        public async Task<ServiceResponse<List<RubroDTO>>> InsertarRubro(IList<RubroDTO> rubroDTO)
+        {
+            string EnlaceRubro = BaseRubro + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceRubro, rubroDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<RubroDTO>>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<RubroDTO>> CrearRubro(RubroDTO Rubro)
+        public async Task<ServiceResponse<List<RubroDTO>>> ActualizarRubro(IList<RubroDTO> rubroDTO)
         {
-            string EnlaceRubro = BaseRubro + "";
-            var result = await _http.PostAsJsonAsync(EnlaceRubro, Rubro);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RubroDTO>>();
+            string EnlaceRubro = BaseRubro + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceRubro, rubroDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<RubroDTO>>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<RubroDTO>> EliminarRubro(RubroDTO Rubro)
+        public async Task<ServiceResponse<RubroDTO>> EliminarRubro(Guid Id)
         {
-            string EnlaceRubro = $"{BaseRubro}/?Id={Rubro.Id}";
+            string EnlaceRubro = BaseRubro + "/";
             var result = await _http.DeleteAsync(EnlaceRubro);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RubroDTO>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<List<RubroDTO>>> ObtenerTodoRubro()
-        {
-            string EnlaceRubro = BaseRubro + "";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<RubroDTO>>>(EnlaceRubro);
-            return result;
-        }
-
         #endregion
 
-        #region Adminsitrar Empresa Distribuidora
-        public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> CrearEmpresaDistribuidora(RegistroEmpresaDTO distribuidora)
+        #region Administrar Empresa Distribuidora
+        public async Task<ServiceResponse<List<EmpresaDistribuidoraDTO>>> ObtenerTodoDistribuidora()
         {
-            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "";
-            var result = await _http.PostAsJsonAsync(EnlaceEmpresaDistribuidora, distribuidora);
+            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/ObtenerTodoDistribuidora";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaDistribuidoraDTO>>>(EnlaceEmpresaDistribuidora);
+            return result;
+        }
+        public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> InsertarDistribuidora(EmpresaDistribuidoraDTO Empresa)
+        {
+            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceEmpresaDistribuidora, Empresa);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaDistribuidoraDTO>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<List<EmpresaDistribuidoraDTO>>> ObtenerTodoDistribuidora()
+        public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> ActualizarDistribuidora(EmpresaDistribuidoraDTO Empresa)
         {
-            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaDistribuidoraDTO>>>(EnlaceEmpresaDistribuidora);
-            return result;
+            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceEmpresaDistribuidora, Empresa);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaDistribuidoraDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<EmpresaDistribuidoraDTO>> EliminarDistribuidora(Guid Id)
+        {
+            string EnlaceEmpresaDistribuidora = BaseEmpresaDistribuidora + "/";
+            var result = await _http.DeleteAsync(EnlaceEmpresaDistribuidora);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaDistribuidoraDTO>>();
+
+            return content;
         }
         #endregion
 
         #region Administrar Empresa Cliente
-        public async Task<ServiceResponse<EmpresaClienteDTO>> CrearEmpresaCliente(RegistroEmpresaDTO cliente)
+        public async Task<ServiceResponse<List<EmpresaClienteDTO>>> ObtenerTodasLasEmpresaClientes()
         {
-            var EnlaceEmpresaCliente = BaseEmpresaCliente + "/InsertarEmpresa";
-            var result = await _http.PostAsJsonAsync(EnlaceEmpresaCliente, cliente);
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaClienteDTO>>>(EnlaceEmpresaCliente);
+            return result;
+        }
+        public async Task<ServiceResponse<EmpresaClienteDTO>> InsertarEmpresaCliente(EmpresaClienteDTO empresaClienteDTO)
+        {
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceEmpresaCliente, empresaClienteDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
 
             return content;
         }
-        public async Task<ServiceResponse<List<EmpresaClienteDTO>>> ObtenerTodoEmpresaCliente()
+        public async Task<ServiceResponse<EmpresaClienteDTO>> ActualizarEmpresaCliente(EmpresaClienteDTO empresaClienteDTO)
         {
-            var EnlaceEmpresaCliente = BaseEmpresaCliente + "/ObtenerTodasLasEmpresaClientes";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaClienteDTO>>>(EnlaceEmpresaCliente);
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceEmpresaCliente, empresaClienteDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<EmpresaClienteDTO>> EliminarEmpresaCliente(Guid Id)
+        {
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/";
+            var result = await _http.DeleteAsync(EnlaceEmpresaCliente);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaClienteDTO>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<ClientesDistribuidoraDTO>>> ObtenerDistribuidorasDeCliente(Guid Id)
+        {
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + $"/ObtenerDistribuidorasDeCliente?Id={Id}";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<ClientesDistribuidoraDTO>>>(EnlaceEmpresaCliente);
             return result;
         }
+        public async Task<ServiceResponse<ClientesDistribuidoraDTO>> InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO clienteDistribuidora)
+        {
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + "/InsertarDistribuidorasDeCliente";
+            var result = await _http.PostAsJsonAsync(EnlaceEmpresaCliente, clienteDistribuidora);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ClientesDistribuidoraDTO>>();
 
+            return content;
+        }
+        public async Task<ServiceResponse<List<ClientesDistribuidoraDTO>>> EliminarDistribuidorasDeCliente(Guid Id)
+        {
+            string EnlaceEmpresaCliente = BaseEmpresaCliente + $"/EliminarDistribuidorasDeCliente?Id={Id}";
+            var result = await _http.DeleteAsync(EnlaceEmpresaCliente);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ClientesDistribuidoraDTO>>>();
+
+            return content;
+        }
         #endregion
 
-        #region Adminsitrar Tarjeta Cliente
-
-        public async Task<ServiceResponse<TarjetaClienteDTO>> ActualizarTarjetaCliente(TarjetaClienteDTO TarjetaCliente)
+        #region Administrar Tarjeta Cliente
+        public async Task<ServiceResponse<List<TarjetaClienteDTO>>> ObtenerTodasLasTarjetaClientes()
         {
-            string EnlaceTarjetaCliente = BaseTarjetaCliente + "";
-            var result = await _http.PutAsJsonAsync(EnlaceTarjetaCliente, TarjetaCliente);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TarjetaClienteDTO>>();
+            string EnlaceTarjetaCliente = BaseTarjetaCliente + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<TarjetaClienteDTO>>>(EnlaceTarjetaCliente);
+            return result;
+        }
+        public async Task<ServiceResponse<List<TarjetaClienteDTO>>> InsertarTarjetaCliente(IList<TarjetaClienteDTO> tarjetaClienteDTO)
+        {
+            string EnlaceTarjetaCliente = BaseTarjetaCliente + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceTarjetaCliente, tarjetaClienteDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<TarjetaClienteDTO>>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<TarjetaClienteDTO>> CrearTarjetaCliente(TarjetaClienteDTO TarjetaCliente)
+        public async Task<ServiceResponse<List<TarjetaClienteDTO>>> ActualizarTarjetaCliente(IList<TarjetaClienteDTO> tarjetaClienteDTO)
         {
-            string EnlaceTarjetaCliente = BaseTarjetaCliente + "";
-            var result = await _http.PostAsJsonAsync(EnlaceTarjetaCliente, TarjetaCliente);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TarjetaClienteDTO>>();
+            string EnlaceTarjetaCliente = BaseTarjetaCliente + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceTarjetaCliente, tarjetaClienteDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<TarjetaClienteDTO>>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<TarjetaClienteDTO>> EliminarTarjetaCliente(TarjetaClienteDTO TarjetaCliente)
+        public async Task<ServiceResponse<TarjetaClienteDTO>> EliminarTarjetaCliente(Guid id)
         {
-            string EnlaceTarjetaCliente = $"{BaseTarjetaCliente}/?Id={TarjetaCliente.Id}";
+            string EnlaceTarjetaCliente = BaseTarjetaCliente + "/";
             var result = await _http.DeleteAsync(EnlaceTarjetaCliente);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TarjetaClienteDTO>>();
 
             return content;
         }
-
-        public async Task<ServiceResponse<List<TarjetaClienteDTO>>> ObtenerTodoTarjetaCliente()
-        {
-            string EnlaceTarjetaCliente = BaseTarjetaCliente + "";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<TarjetaClienteDTO>>>(EnlaceTarjetaCliente);
-            return result;
-        }
-
-
-        public async Task<ServiceResponse<ClientesDistribuidoraDTO>> InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO ClienteDistribuidora)
-        {
-            string EnlaceEmpresaCliente = BaseEmpresaCliente + "";
-            var EnlaceArmado = EnlaceEmpresaCliente + "/InsertarDistribuidorasDeCliente";
-            var result = await _http.PostAsJsonAsync(EnlaceArmado, ClienteDistribuidora);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ClientesDistribuidoraDTO>>();
-
-            return content;
-        }
-        public async Task<ServiceResponse<List<ClientesDistribuidoraDTO>>> ObtenerDistribuidorasDeCliente()
-        {
-            var EnlaceEmpresaCliente = BaseEmpresaCliente + "/ObtenerDistribuidorasDeCliente";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<ClientesDistribuidoraDTO>>>(EnlaceEmpresaCliente);
-            return result;
-        }
-
-        public async Task<ServiceResponse<ClientesDistribuidoraDTO>> EliminarDistribuidorasDeCliente(Guid Id)
-        {
-            var EnlaceEmpresaCliente = BaseEmpresaCliente + $"/EliminarDistribuidorasDeCliente?Id={Id}";
-            var result = await _http.DeleteAsync(EnlaceEmpresaCliente);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ClientesDistribuidoraDTO>>();
-
-            return content;
-        }
-
         #endregion
 
         #region Administrar Sucursales
-        public async Task<ServiceResponse<SucursalesDTO>> ActualizarSucursal(SucursalesDTO sucursalesDTO)
-        {
-            string EnlaceSucursal = BaseSucursal + "";
-            var result = await _http.PutAsJsonAsync(EnlaceSucursal, sucursalesDTO);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<SucursalesDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<SucursalesDTO>> CrearSucursal(SucursalesDTO sucursalesDTO)
-        {
-            string EnlaceSucursal = BaseSucursal + "";
-            var result = await _http.PostAsJsonAsync(EnlaceSucursal, sucursalesDTO);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<SucursalesDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<SucursalesDTO>> EliminarSucursal(SucursalesDTO sucursalesDTO)
-        {
-            string EnlaceSucursal = BaseSucursal + $"/?Id={sucursalesDTO.Id}";
-            var result = await _http.DeleteAsync(EnlaceSucursal);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<SucursalesDTO>>();
-
-            return content;
-        }
-
         public async Task<ServiceResponse<List<SucursalesDTO>>> ObtenerTodasLasSucursales()
         {
-            string EnlaceSucursal = BaseSucursal + "";
+            string EnlaceSucursal = BaseSucursal + "/";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>(EnlaceSucursal);
             return result;
+        }
+        public async Task<ServiceResponse<List<SucursalesDTO>>> InsertarSucursal(IList<SucursalesDTO> sucursalesDTO)
+        {
+            string EnlaceSucursal = BaseSucursal + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceSucursal, sucursalesDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<SucursalesDTO>>> ActualizarSucursal(IList<SucursalesDTO> sucursalesDTO)
+        {
+            string EnlaceSucursal = BaseSucursal + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceSucursal, sucursalesDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<SucursalesDTO>>> EliminarSucursal(Guid Id)
+        {
+            string EnlaceSucursal = BaseSucursal + "/";
+            var result = await _http.DeleteAsync(EnlaceSucursal);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>();
+
+            return content;
         }
         #endregion
 
         #region Administrar Vehiculo
-        public async Task<ServiceResponse<VehiculoDTO>> ActualizarVehiculo(VehiculoDTO vehiculoDTO)
-        {
-            var EnlaceVehiculo = BaseVehiculo + "/ActualizarVehiculo";
-            var result = await _http.PutAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<VehiculoDTO>> CrearVehiculo(VehiculoDTO vehiculoDTO)
-        {
-            var EnlaceVehiculo = BaseVehiculo + "/CrearVehiculo";
-            var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<VehiculoDTO>> EliminarVehiculo(VehiculoDTO vehiculoDTO)
-        {
-            var EnlaceVehiculo = BaseVehiculo + $"/EliminarVehiculo?Id={vehiculoDTO.Id}";
-            var result = await _http.DeleteAsync(EnlaceVehiculo);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<VehiculoDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<AsignacionVechiculoConductorDTO>> AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vhconductor)
-        {
-            var EnlaceVehiculo = BaseVehiculo + "/AsignarVehiculoAConductor";
-            var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vhconductor);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<AsignacionVechiculoConductorDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<List<AsignacionVechiculoConductorDTO>>> ObtenerTodoVehiculoConductor()
-        {
-            var EnlaceVehiculo = BaseVehiculo + "/ObtenerTodoVehiculoConductor";
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<AsignacionVechiculoConductorDTO>>>(EnlaceVehiculo);
-            return result;
-        }
         public async Task<ServiceResponse<List<VehiculoDTO>>> ObtenerTodosLosVehiculos()
         {
-            var EnlaceVehiculo = BaseVehiculo + "/ObtenerTodosLosVehiculos";
+            string EnlaceVehiculo = BaseVehiculo + "/";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>(EnlaceVehiculo);
+            return result;
+        }
+        public async Task<ServiceResponse<List<VehiculoDTO>>> CrearVehiculo(IList<VehiculoDTO> vehiculoDTO)
+        {
+            string EnlaceVehiculo = BaseVehiculo + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<VehiculoDTO>>> ActualizarVehiculo(IList<VehiculoDTO> vehiculoDTO)
+        {
+            string EnlaceVehiculo = BaseVehiculo + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<VehiculoDTO>>> EliminarVehiculo(Guid id)
+        {
+            string EnlaceVehiculo = BaseVehiculo + "/";
+            var result = await _http.DeleteAsync(EnlaceVehiculo);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<AsignacionVechiculoConductorDTO>>> AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vehiculoDTO)
+        {
+            string EnlaceVehiculo = BaseVehiculo + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<AsignacionVechiculoConductorDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<List<AsignacionVechiculoConductorDTO>>> ObtenerTodoVehiculoConductor()
+        {
+            string EnlaceVehiculo = BaseVehiculo + "/";
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<AsignacionVechiculoConductorDTO>>>(EnlaceVehiculo);
             return result;
         }
         #endregion
 
-        #region Adminsitrar Proveedor
-        public async Task<ServiceResponse<EmpresaProveedorDTO>> ActualizarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
-        {
-            string EnlaceProveedor = BaseProveedor + "";
-            var result = await _http.PutAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<EmpresaProveedorDTO>> CrearProveedor(EmpresaProveedorDTO empresaProveedorDTO)
-        {
-            string EnlaceProveedor = BaseProveedor + "";
-            var result = await _http.PostAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
-
-            return content;
-        }
-
-        public async Task<ServiceResponse<EmpresaProveedorDTO>> EliminarProveedor(EmpresaProveedorDTO empresaProveedorDTO)
-        {
-            string EnlaceProveedor = BaseProveedor + $"/?Id={empresaProveedorDTO.Id}";
-            var result = await _http.DeleteAsync(EnlaceProveedor);
-            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
-
-            return content;
-        }
-
+        #region Administrar Proveedor
         public async Task<ServiceResponse<List<EmpresaProveedorDTO>>> ObtenerTodosLosProveedores()
         {
             string EnlaceProveedor = BaseProveedor + "/";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>(EnlaceProveedor);
             return result;
         }
-        #endregion
+        public async Task<ServiceResponse<List<EmpresaProveedorDTO>>> CrearProveedor(List<EmpresaProveedorDTO> empresaProveedorDTO)
+        {
+            string EnlaceProveedor = BaseProveedor + "/";
+            var result = await _http.PostAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>();
 
-        #region Administrar NIT
+            return content;
+        }
+        public async Task<ServiceResponse<List<EmpresaProveedorDTO>>> ActualizarProveedor(List<EmpresaProveedorDTO> empresaProveedorDTO)
+        {
+            string EnlaceProveedor = BaseProveedor + "/";
+            var result = await _http.PutAsJsonAsync(EnlaceProveedor, empresaProveedorDTO);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<EmpresaProveedorDTO>>>();
+
+            return content;
+        }
+        public async Task<ServiceResponse<EmpresaProveedorDTO>> EliminarProveedor(Guid Id)
+        {
+            string EnlaceProveedor = BaseProveedor + "/";
+            var result = await _http.DeleteAsync(EnlaceProveedor);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<EmpresaProveedorDTO>>();
+
+            return content;
+        }
         #endregion
     }
 }

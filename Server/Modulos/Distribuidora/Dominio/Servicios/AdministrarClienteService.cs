@@ -90,6 +90,23 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         public IList<ClientesDistribuidoraDTO> ObtenerDistribuidorasDeCliente(Guid id)
         {
             var distribuidoras = _unidadDeTrabajo.clienteDistribuidoraRepository.ObtenerTodo().Where(p => p.ClientesId.Equals(id));
+
+            foreach(var distribuidora in distribuidoras)
+            {
+                distribuidora.Distribuidoras = _unidadDeTrabajo.distribuidoraRepository.ObtenerPorId(distribuidora.DistribuidorasId);
+                distribuidora.Distribuidoras.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(distribuidora.Distribuidoras.RubroId);
+                distribuidora.Distribuidoras.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(distribuidora.Distribuidoras.ResponsableId);
+                distribuidora.Distribuidoras.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(distribuidora.Distribuidoras.Responsable.UsuarioId);
+                distribuidora.Distribuidoras.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(distribuidora.Distribuidoras.NITId);
+
+                distribuidora.Clientes = _unidadDeTrabajo.empresaClienteRepository.ObtenerPorId(distribuidora.ClientesId);
+                distribuidora.Clientes.Rubro = _unidadDeTrabajo.rubroRepository.ObtenerPorId(distribuidora.Clientes.RubroId);
+                distribuidora.Clientes.Responsable = _unidadDeTrabajo.responsableDistribuidoraRepository.ObtenerPorId(distribuidora.Clientes.ResponsableId);
+                distribuidora.Clientes.Responsable.Usuario = _unidadDeTrabajo.usuarioRepository.ObtenerPorId(distribuidora.Clientes.Responsable.UsuarioId);
+                distribuidora.Clientes.NIT = _unidadDeTrabajo.nitRepository.ObtenerPorId(distribuidora.Clientes.NITId);
+
+            }
+
             return _mapper.Map<IList<ClientesDistribuidoraDTO>>(distribuidoras);
         }
 
@@ -97,7 +114,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
         {
             _unidadDeTrabajo.clienteDistribuidoraRepository.Eliminar(Id);
 
-            _unidadDeTrabajo.clienteDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
         }
         
         public ClientesDistribuidoraDTO InsertarDistribuidorasDeCliente(ClientesDistribuidoraDTO clienteDistribuidora)
@@ -105,7 +122,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             var cd = _mapper.Map<ClientesDistribuidora>(clienteDistribuidora);
 
             _unidadDeTrabajo.clienteDistribuidoraRepository.Guardar(cd);
-            _unidadDeTrabajo.clienteDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<ClientesDistribuidoraDTO>(cd);                        
         }

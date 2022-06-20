@@ -7,7 +7,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Abst
 {
     public interface IAdministrarProductoService
     {
-        void EliminarProducto(List<Guid> id);
+        void EliminarProducto(Guid id);
         IList<ProductoDTO> ObtenerTodoProducto();
         ProductoDTO ObtenerPorIdProducto(Guid id);
         IList<ProductoDTO> ObtenerTodoProductoPorIdEmpresa(Guid IdEmpresa);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Compartido.Dto.Distribuidora.General;
 
 namespace Compartido.Dto.Inventario.General
@@ -7,6 +8,7 @@ namespace Compartido.Dto.Inventario.General
     {
         public Guid Id { get; set; }
         public EmpresaDistribuidoraDTO EmpresaDistribuidora { get; set; }
+        [Required]
         public string Nombre { get; set; }
         public TipoProductoDTO TipoProducto { get; set; }
         public string Descripcion { get; set; }

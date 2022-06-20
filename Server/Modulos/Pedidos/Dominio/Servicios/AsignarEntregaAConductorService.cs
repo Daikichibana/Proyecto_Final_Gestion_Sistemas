@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Compartido.Dto.Pedidos;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Abstracciones;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Entidades;
 using Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Tecnica;
@@ -16,7 +17,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Pedidos.Dominio.Servici
             _mapper = mapper;
         }
 
-        public void AsignarEntregaAconductor(Guid IdConductorVehiculo, Guid IdPedido) {
+        public void AsignarEntregaAconductor(AsignacionEntregaConductorDTO asignacion) {
+            Guid IdConductorVehiculo = asignacion.IdConductorVehiculo;
+            Guid IdPedido = asignacion.IdPedido;
             Pedido pedido = _unidad.pedidoRepository.ObtenerPorId(IdPedido);
             pedido.ConductorAsignadoId = IdConductorVehiculo;
             pedido.EstadoEnvio = "Pedido Asignado";

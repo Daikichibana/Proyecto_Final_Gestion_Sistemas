@@ -6,6 +6,147 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 
+
+<h3>Administrar Pedido</h3>
+
+@if (EsDistribuidora)
+{
+    @if (OrdenResponse != null)
+    {
+        <h4>Ordenes de pedido</h4>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Necesita Factura</th>
+                    <th scope="col">Aclaracion Cliente</th>
+                    <th scope="col">Metodo de Pago</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var orden in OrdenResponse.Data)
+                {
+                    @if (orden.PedidoConfirmado == false)
+                    {
+                        <tr>
+                            <td>@orden.EmpresaCliente.NombreEmpresa</td>
+                            <td>@(orden.DeseaFactura == true ? "Si" : "No")</td>
+                            <td>@orden.AclaracionCliente</td>
+                            <td>@orden.MetodoPago</td>
+                            <td>
+                                <button @onclick="() => AceptarPedido(orden)" type="button" class="btn btn-success">Aceptar Pedido</button>
+                                <button @onclick="() => RechazarPedido(orden)" type="button" class="btn btn-danger ml-3">Rechazar Pedido</button>
+                            </td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
+
+        @*<h4>Pedidos Confirmados</h4>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                     <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Necesita Factura</th>
+                    <th scope="col">Aclaracion cliente</th>
+                    <th scope="col">Metodo de Pago</th>
+                    <th scope="col">Estado del pago</th>
+                    <th scope="col">Estado del envio</th>
+                    <th scope="col">Detalle del pedido</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var pedido in PedidoResponse.Data)
+                {
+                    var orden = @ObtenerOrdenPedido(pedido);
+                    var detalleOrden = @ObtenerDetalleOrdenPedido(orden);
+                    <tr>
+                        <td>@BuscarNombreEmpresaCliente(orden.EmpresaClienteId)</td>
+                        <td>@(orden.DeseaFactura == true ? "Si" : "No")</td>
+                        <td>@orden.AclaracionCliente</td>
+                        <td>@orden.MetodoPago</td>
+                        <td>@pedido.EstadoPago</td>
+                        <td>@pedido.EstadoEnvio</td>
+                        <td>
+                            <button @onclick="() => MostrarDetalle(detalleOrden)" class="btn btn-primary">Ver detalle</button>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>*@
+    }
+}
+else
+{
+    <p>Este apartado solo tiene acceso las empresas distirbuidoras.</p>
+}
+
+@code
+{
+    public ServiceResponse<List<OrdenPedidoDTO>> OrdenResponse { get; set; }
+    public ServiceResponse<List<PedidoDTO>> PedidoResponse { get; set; }
+    public bool EsDistribuidora { get; set; } = false;
+    public Guid IdEmpresaSesion { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
+        OrdenResponse = await _pedidosServices.ObtenerOrdenesPedidosDistribuidoraPorId(IdEmpresaSesion);
+        PedidoResponse = await _pedidosServices.ObtenerPedidosDistribuidoraPorId(IdEmpresaSesion);
+    }
+
+      public async void AceptarPedido(OrdenPedidoDTO orden)
+    {
+        ConfirmarPedidoDTO data = new ConfirmarPedidoDTO();
+        data.Id = orden.Id;
+        data.Aceptado = true;
+
+        var response = await _pedidosServices.ConfirmarOrdenPedido(data);
+
+       if(response.Success)
+            await JsRuntime.InvokeVoidAsync("alert", "Se ha aceptado el pedido correctamente.");
+        else
+            await JsRuntime.InvokeVoidAsync("alert", "Ocurrio un problema.");
+
+        StateHasChanged();
+    }
+
+    public async void RechazarPedido(OrdenPedidoDTO orden)
+    {
+        ConfirmarPedidoDTO data = new ConfirmarPedidoDTO();
+        data.Id = orden.Id;
+        data.Aceptado = false;
+
+        var response = await _pedidosServices.ConfirmarOrdenPedido(data);
+
+        if(response.Success)
+            await JsRuntime.InvokeVoidAsync("alert", "Se ha rechazado el pedido correctamente.");
+        else
+            await JsRuntime.InvokeVoidAsync("alert", "Ocurrio un problema.");
+            
+
+        StateHasChanged();
+    }
+
+}
+
+
+@*@page "/administrarpedido"
+@inject IPedidosServices _pedidosServices
+@inject IInventarioServices _inventarioServices
+@inject IDistribuidorasServices _distribuidoraServices
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
 <h3>Administrar Pedido</h3>
 
 @if (EsDistribuidora)
@@ -174,4 +315,4 @@ else
     }
 
 
-}
+}*@

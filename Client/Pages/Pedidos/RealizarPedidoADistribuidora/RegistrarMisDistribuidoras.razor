@@ -1,64 +1,73 @@
 ﻿@inject ILocalStorageService LocalStorage
 @inject IDistribuidorasServices _distribuidoraService
+@inject NavigationManager NavigationManager
 
 <h3>Agregar distribuidora</h3>
 
-@if (ListaDistribuidoraFiltrado != null)
+@if (ResponseEmpresasDistribuidoras != null)
 {
-    <form style="width: 70%;">
-        <fieldset class="form-group">
-            <div class="form-group">
-                <label for="NombreRubro" class="form-label mt-4">Empresa</label>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nombre de la empresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select @bind=EmpresasDistribuidora.Id>
+                        @foreach (var distribuidora in ResponseEmpresasDistribuidoras.Data)
+                        {
+                            <option value="@distribuidora.Id">@distribuidora.NombreEmpresa</option>
+                        }
+                    </select>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
 
-                <select @bind=DistribuidoraSeleccionada.Id class="form-select" id="rubroNegocio">
-                    @foreach (var dist in ListaDistribuidoraFiltrado)
-                    {
-                        <option value=@dist.Id>@dist.NombreEmpresa</option>
-                    }
-                </select>
-
-            </div>
-        </fieldset>
-    </form>
+    <button @onclick=GuardarEmpresa class="btn btn-success"> Guardar Empresa</button>
 }
-<div style="display: flex; justify-content: center; align-items: center; height: 250px;">
-    <button @onclick="@(() => Volver.InvokeAsync())" type="submit" class="btn btn-primary" id="btnVolver" style="font-size: 20px; margin-right: 20px">Volver atras</button>
-    <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
-</div>
 
 
 @code {
+    public ServiceResponse<List<EmpresaDistribuidoraDTO>> ResponseEmpresasDistribuidoras { get; set; }
+    public ServiceResponse<List<ClientesDistribuidoraDTO>> ResponseDistribuidorasDeCliente { get; set; }
 
-    [Parameter]
-    public EventCallback<bool> Volver { get; set; }
-
-    [Parameter]
-    public List<EmpresaDistribuidoraDTO> ListaDistribuidoraFiltrado { get; set; }
-
+    public EmpresaDistribuidoraDTO EmpresasDistribuidora { get; set; } = new EmpresaDistribuidoraDTO();
     public ClientesDistribuidoraDTO ClienteDistribuidora { get; set; } = new ClientesDistribuidoraDTO();
-
-    public ServiceResponse<ClientesDistribuidoraDTO> ReponseClienteDistribuidora { get; set; }
-
-    public EmpresaDistribuidoraDTO DistribuidoraSeleccionada { get; set; } = new EmpresaDistribuidoraDTO();
-
     public Guid IdEmpresaCliente { get; set; }
-
-
 
     protected override async Task OnInitializedAsync()
     {
         IdEmpresaCliente = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        ResponseDistribuidorasDeCliente = await _distribuidoraService.ObtenerDistribuidorasDeCliente(IdEmpresaCliente);
+        ResponseEmpresasDistribuidoras = await _distribuidoraService.ObtenerTodoDistribuidora();
     }
 
-    public async void Registrar()
+    public async void GuardarEmpresa()
     {
         ClienteDistribuidora.ClientesId = IdEmpresaCliente;
-        ClienteDistribuidora.DistribuidorasId = DistribuidoraSeleccionada.Id;
+        ClienteDistribuidora.DistribuidorasId = EmpresasDistribuidora.Id;
 
-        ReponseClienteDistribuidora = await _distribuidoraService.InsertarDistribuidorasDeCliente(ClienteDistribuidora);
+        var response = await _distribuidoraService.InsertarDistribuidorasDeCliente(ClienteDistribuidora);
 
-        if (ReponseClienteDistribuidora.Success)
-            await this.Volver.InvokeAsync();
+        if (response.Success)
+            this.Volver();
+
+    }
+
+    public void CargarDatosEmpresa(EmpresaDistribuidoraDTO distribuidora)
+    {
+        EmpresasDistribuidora.EmailEmpresa = distribuidora.EmailEmpresa;
+        EmpresasDistribuidora.RazonSocial = distribuidora.RazonSocial;
+        StateHasChanged();
+    }
+
+    public void Volver()
+    {
+        NavigationManager.NavigateTo("/MisDistribuidoras", forceLoad: true);
     }
 
 
