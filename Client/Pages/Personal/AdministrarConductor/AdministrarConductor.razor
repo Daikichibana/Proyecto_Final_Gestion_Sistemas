@@ -1,4 +1,4 @@
-﻿@*@page "/AdministrarConductor"
+﻿@page "/AdministrarConductor"
 
 @using System.Reflection
 @using Compartido
@@ -146,9 +146,9 @@ else
 
     public async void EliminarConductor(ConductorDTO conductorDTO)
     {
-        var response = await _personalService.EliminarConductor(conductorDTO);
+        var response = await _personalService.EliminarConductor(conductorDTO.Id);
         
         this.MostrarListado();
     }
 
-}*@
+}

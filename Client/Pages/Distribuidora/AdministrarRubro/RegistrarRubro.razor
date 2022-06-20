@@ -1,4 +1,4 @@
-﻿@*@page "/RegistrarRubro"
+﻿@page "/RegistrarRubro"
 @using Compartido
 @using Compartido.Dto.Distribuidora.General
 @inject IDistribuidorasServices _distribuidorasService
@@ -39,7 +39,7 @@
     public EventCallback<bool> MostrarListado { get; set; }
 
 
-    public ServiceResponse<RubroDTO> ResponseRubro { get; set; }
+    public ServiceResponse<List<RubroDTO>> ResponseRubro { get; set; }
 
     public RubroDTO Rubro { get; set; }
 
@@ -52,10 +52,12 @@
 
     public async void Registrar()
     {
-        ResponseRubro = await _distribuidorasService.CrearRubro(Rubro);
+        List<RubroDTO> lista = new List<RubroDTO>();
+
+        lista.Add(Rubro);
+        ResponseRubro = await _distribuidorasService.InsertarRubro(lista);
         
         if(ResponseRubro.Success)
             await this.MostrarListado.InvokeAsync();
     }
 }
-*@

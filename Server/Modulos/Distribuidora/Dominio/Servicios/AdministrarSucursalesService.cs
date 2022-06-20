@@ -24,6 +24,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             List<Sucursales> result = new List<Sucursales>();
             foreach (var sucursal in listaSucursalesConvertida)
             {
+                sucursal.EmpresaDistribuidora = null;
                 var sucursalInsertada = _unidad.sucursalesRepository.Actualizar(sucursal);
                 result.Add(sucursalInsertada);
             }
@@ -41,6 +42,8 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Distribuidora.Dominio.S
             List<Sucursales> result = new List<Sucursales>();
             foreach (var sucursal in listaSucursalesConvertida)
             {
+                sucursal.EmpresaDistribuidora = null;
+                sucursal.Id = Guid.Empty;
                 var sucursalInsertada = _unidad.sucursalesRepository.Guardar(sucursal);
                 result.Add(sucursalInsertada);
             }

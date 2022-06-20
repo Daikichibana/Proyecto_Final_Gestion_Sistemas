@@ -1,5 +1,4 @@
-﻿@*
-@page "/AdministrarTipoProducto"
+﻿@page "/AdministrarTipoProducto"
 @using System.Reflection
 @using Compartido
 @using Compartido.Dto.Inventario.General
@@ -90,7 +89,7 @@ else
         VisibleListado = true;
         VisibleEditar = false;
         VisibleRegistrar = false;
-        ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
+        ListaTipoProducto = await _inventarioService.ObtenerTodosLosTipoProducto();
     }
 
     public void RedireccionarPagina(string enlace)
@@ -104,7 +103,7 @@ else
         VisibleListado = true;
         VisibleEditar = false;
         VisibleRegistrar = false;
-        ListaTipoProducto = await _inventarioService.ObtenerTodoTipoProducto();
+        ListaTipoProducto = await _inventarioService.ObtenerTodosLosTipoProducto();
 
         StateHasChanged();
     }
@@ -130,10 +129,11 @@ else
 
     public async void EliminarTipoProducto(TipoProductoDTO tipoProducto)
     {
-        var response = await _inventarioService.EliminarTipoProducto(tipoProducto);
+        List<Guid> ids = new List<Guid>();
+        ids.Add(tipoProducto.Id);
+        var response = await _inventarioService.EliminarTipoProducto(ids);
         
         this.MostrarListado();
     }
 
 }
-*@

@@ -1,9 +1,11 @@
-﻿@*@page "/RegistrarVehiculo"
+﻿@page "/RegistrarVehiculo"
 
 @using Compartido
 @using Compartido.Dto.Distribuidora.General
 @inject IDistribuidorasServices _distribuidorasService
 @inject ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+
 
 <h3>Registrar Vehiculos</h3>
 
@@ -45,23 +47,29 @@
     public EventCallback<bool> MostrarListado { get; set; }
 
 
-    public ServiceResponse<VehiculoDTO> ResponseVehiculo { get; set; }
+    public ServiceResponse<List<VehiculoDTO>> ResponseVehiculo { get; set; }
 
     public VehiculoDTO Vehiculo { get; set; }
 
+    public Guid Distribuidora { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         Vehiculo =  new VehiculoDTO();
+        Distribuidora = await LocalStorage.GetItemAsync<Guid>("idEmpresa");
     }
 
 
     public async void Registrar()
     {
-        ResponseVehiculo = await _distribuidorasService.CrearVehiculo(Vehiculo);
+        Vehiculo.EmpresaDistribuidoraId = Distribuidora;
+        List<VehiculoDTO> lista = new List<VehiculoDTO>();
+        lista.Add(Vehiculo);
+
+
+        ResponseVehiculo = await _distribuidorasService.CrearVehiculo(lista);
         
         if(ResponseVehiculo.Success)
             await this.MostrarListado.InvokeAsync();
     }
 }
-*@

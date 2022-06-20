@@ -1,10 +1,11 @@
-﻿@*@page "/AdministrarVechiculo"
+﻿@page "/AdministrarVechiculo"
 
 @using System.Reflection
 @using Compartido
 @using Compartido.Dto.Distribuidora.General
 @inject IDistribuidorasServices _distribuidoraService
 @inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage
 @inject ILocalStorageService LocalStorage
 
 <h3>Administrar Vehiculos</h3>
@@ -85,13 +86,15 @@ else
     public bool VisibleRegistrar { get; set; }
     public bool VisibleEditar { get; set; }
     public bool VisibleListado { get; set; }
-
+    public Guid IdEmpresaSesion { get; set; }
     protected override async Task OnInitializedAsync()
     {
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
         VisibleListado = true;
         VisibleEditar = false;
         VisibleRegistrar = false;
         ListaVehiculo = await _distribuidoraService.ObtenerTodosLosVehiculos();
+        ListaVehiculo.Data = ListaVehiculo.Data.Where(p => p.EmpresaDistribuidoraId.Equals(IdEmpresaSesion)).ToList();
         this.MostrarListado();
         StateHasChanged();
     }
@@ -136,9 +139,9 @@ else
 
     public async void EliminarVehiculo(VehiculoDTO vehiculoDTO)
     {
-        var response = await _distribuidoraService.EliminarVehiculo(vehiculoDTO);
+        var response = await _distribuidoraService.EliminarVehiculo(vehiculoDTO.Id);
         
         this.MostrarListado();
     }
 
-}*@
+}

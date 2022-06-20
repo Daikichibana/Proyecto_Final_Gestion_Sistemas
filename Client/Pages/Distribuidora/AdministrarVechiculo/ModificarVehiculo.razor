@@ -1,4 +1,4 @@
-﻿@*@page "/ModificarVechiculo"
+﻿@page "/ModificarVechiculo"
 
 @using Compartido.Dto.Distribuidora.General
 @using Microsoft.AspNetCore.Components
@@ -47,16 +47,17 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    public ServiceResponse<VehiculoDTO> ResponseVehiculo { get; set; }
+    public ServiceResponse<List<VehiculoDTO>> ResponseVehiculo { get; set; }
 
 
     public async void Modificar()
     {
-        ResponseVehiculo = await _distribuidorasService.ActualizarVehiculo(Vehiculo);
+        List<VehiculoDTO> lista = new List<VehiculoDTO>();
+        lista.Add(Vehiculo);
+        ResponseVehiculo = await _distribuidorasService.ActualizarVehiculo(lista);
 
         if (ResponseVehiculo.Success)
             await this.MostrarListado.InvokeAsync();
     }
 
 }
-*@

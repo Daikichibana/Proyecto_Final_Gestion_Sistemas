@@ -1,9 +1,10 @@
-﻿@*@page "/ModificarConductor"
+﻿@page "/ModificarConductor"
 
 @using Compartido.Dto.Personal.General
 @using Microsoft.AspNetCore.Components
 @using Compartido
 @inject IPersonalServices _personalService
+@inject ILocalStorageService LocalStorage
 
 <h3>ModificarConductor</h3>
 
@@ -59,16 +60,24 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    public ServiceResponse<ConductorDTO> ResponseConductor { get; set; }
+    public ServiceResponse<List<ConductorDTO>> ResponseConductor { get; set; }
+    public string Distribuidora { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        Distribuidora = await LocalStorage.GetItemAsync<string>("idEmpresa");
+        StateHasChanged();
+    }
 
     public async void Modificar()
     {
-        ResponseConductor = await _personalService.ActualizarConductor(Conductor);
+        List<ConductorDTO> Lista = new List<ConductorDTO>();
+        Lista.Add(Conductor);
+
+        ResponseConductor = await _personalService.ActualizarConductor(Lista);
 
         if (ResponseConductor.Success)
             await this.MostrarListado.InvokeAsync();
     }
 
 }
-*@

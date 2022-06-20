@@ -109,13 +109,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Conductor
         public async Task<ServiceResponse<List<ConductorDTO>>> ObtenerTodosLosConductores()
         {
-            string EnlaceConductor = BaseConductor + "/";
+            string EnlaceConductor = BaseConductor + "/ObtenerTodosLosConductores";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<ConductorDTO>>>(EnlaceConductor);
             return result;
         }
         public async Task<ServiceResponse<List<ConductorDTO>>> CrearConductor(List<ConductorDTO> conductorDTO)
         {
-            string EnlaceConductor = BaseConductor + "/";
+            string EnlaceConductor = BaseConductor + "/CrearConductor";
             var result = await _http.PostAsJsonAsync(EnlaceConductor, conductorDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ConductorDTO>>>();
 
@@ -123,7 +123,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<ConductorDTO>>> ActualizarConductor(List<ConductorDTO> conductorDTO)
         {
-            string EnlaceConductor = BaseConductor + "/";
+            string EnlaceConductor = BaseConductor + "/ActualizarConductor";
             var result = await _http.PutAsJsonAsync(EnlaceConductor, conductorDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<ConductorDTO>>>();
 
@@ -131,7 +131,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<ConductorDTO>> EliminarConductor(Guid id)
         {
-            string EnlaceConductor = BaseConductor + "/";
+            string EnlaceConductor = BaseConductor + $"/EliminarConductor?id={id}";
             var result = await _http.DeleteAsync(EnlaceConductor);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<ConductorDTO>>();
 

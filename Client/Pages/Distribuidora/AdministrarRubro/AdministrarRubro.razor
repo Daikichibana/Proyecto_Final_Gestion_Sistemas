@@ -1,4 +1,4 @@
-﻿@*@page "/AdministrarRubro"
+﻿@page "/AdministrarRubro"
 @using Compartido
 @using Compartido.Dto.Distribuidora.General
 @inject IDistribuidorasServices _distribuidorasService
@@ -84,7 +84,7 @@ else
         VisibleListado = true;
         VisibleEditar = false;
         VisibleRegistrar = false;
-        ListaRubro = await _distribuidorasService.ObtenerTodoRubro();
+        ListaRubro = await _distribuidorasService.ObtenerTodosLosRubros();
     }
 
     public async void MostrarListado()
@@ -92,7 +92,7 @@ else
         VisibleListado = true;
         VisibleEditar = false;
         VisibleRegistrar = false;
-        ListaRubro = await _distribuidorasService.ObtenerTodoRubro();
+        ListaRubro = await _distribuidorasService.ObtenerTodosLosRubros();
 
         StateHasChanged();
     }
@@ -118,9 +118,8 @@ else
 
     public async void EliminarRubro(RubroDTO Rubro)
     {
-        var response = await _distribuidorasService.EliminarRubro(Rubro);
+        var response = await _distribuidorasService.EliminarRubro(Rubro.Id);
 
         this.MostrarListado();
     }
 }
-*@

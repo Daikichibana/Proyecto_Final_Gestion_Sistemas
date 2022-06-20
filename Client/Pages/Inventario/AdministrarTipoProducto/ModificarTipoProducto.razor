@@ -1,4 +1,4 @@
-﻿@*
+﻿
 @using Compartido.Dto.Inventario.General
 @using Microsoft.AspNetCore.Components
 @using Compartido
@@ -43,16 +43,17 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    public ServiceResponse<TipoProductoDTO> Response { get; set; }
+    public ServiceResponse<List<TipoProductoDTO>> Response { get; set; }
 
 
     public async void Modificar()
     {
-        Response = await _inventarioService.ActualizarTipoProducto(TipoProducto);
+        List<TipoProductoDTO> lista = new List<TipoProductoDTO>();
+        lista.Add(TipoProducto);
+        Response = await _inventarioService.ActualizarTipoProducto(lista);
         
         if(Response.Success)
             await this.MostrarListado.InvokeAsync();
     }
 }
 
-*@

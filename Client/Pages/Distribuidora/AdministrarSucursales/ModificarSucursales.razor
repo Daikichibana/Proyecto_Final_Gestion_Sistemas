@@ -1,4 +1,4 @@
-﻿@*@page "/ModificarSucursales"
+﻿@page "/ModificarSucursales"
 
 @using Compartido.Dto.Distribuidora.General
 @using Microsoft.AspNetCore.Components
@@ -47,15 +47,18 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    public ServiceResponse<SucursalesDTO> ResponseSucursal { get; set; }
+    public ServiceResponse<List<SucursalesDTO>> ResponseSucursal { get; set; }
 
 
     public async void Modificar()
     {
-        ResponseSucursal = await _distribuidorasService.ActualizarSucursal(Sucursal);
+        List<SucursalesDTO> sucursales = new List<SucursalesDTO>();
+        sucursales.Add(Sucursal);
+
+        ResponseSucursal = await _distribuidorasService.ActualizarSucursal(sucursales);
 
         if (ResponseSucursal.Success)
             await this.MostrarListado.InvokeAsync();
     }
 
-}*@
+}

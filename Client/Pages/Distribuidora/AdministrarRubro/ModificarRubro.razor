@@ -1,4 +1,4 @@
-﻿@*@page "/ModificarRubro"
+﻿@page "/ModificarRubro"
 @using Compartido.Dto.Distribuidora.General
 @using Microsoft.AspNetCore.Components
 @using Compartido
@@ -42,15 +42,18 @@
     [Parameter]
     public EventCallback<bool> MostrarListado { get; set; }
 
-    public ServiceResponse<RubroDTO> ResponseRubro { get; set; }
+    public ServiceResponse<List<RubroDTO>> ResponseRubro { get; set; }
 
 
     public async void Modificar()
     {
-        ResponseRubro = await _distribuidorasService.ActualizarRubro(Rubro);
+        List<RubroDTO> lista = new List<RubroDTO>();
+        lista.Add(Rubro);
+
+        ResponseRubro = await _distribuidorasService.ActualizarRubro(lista);
 
         if (ResponseRubro.Success)
             await this.MostrarListado.InvokeAsync();
     }
 
-}*@
+}

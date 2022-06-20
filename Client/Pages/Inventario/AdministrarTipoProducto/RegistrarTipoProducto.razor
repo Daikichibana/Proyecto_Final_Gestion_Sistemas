@@ -1,4 +1,4 @@
-﻿@*@using Compartido
+﻿@using Compartido
 @using Compartido.Dto.Inventario.General
 
 @inject IInventarioServices _inventarioService
@@ -37,7 +37,7 @@
     public EventCallback<bool> MostrarListado { get; set; }
 
     public TipoProductoDTO TipoProducto { get; set; }
-    public ServiceResponse<TipoProductoDTO> Response { get; set; }
+    public ServiceResponse<List<TipoProductoDTO>> Response { get; set; }
     
     protected override void OnInitialized()
     {
@@ -46,11 +46,13 @@
 
     public async void Registrar()
     {
-        Response = await _inventarioService.CrearTipoProducto(TipoProducto);
+        List<TipoProductoDTO> lista = new List<TipoProductoDTO>();
+        lista.Add(TipoProducto);
+
+        Response = await _inventarioService.InsertarTipoProducto(lista);
         
         if(Response.Success)
             await this.MostrarListado.InvokeAsync();
     }
 
 }
-*@

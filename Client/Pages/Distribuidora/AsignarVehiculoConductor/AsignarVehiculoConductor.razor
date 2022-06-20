@@ -1,12 +1,76 @@
-﻿@*@page "/asignarVechiculoConductor"
+﻿@page "/asignarVechiculoConductor"
 @inject IDistribuidorasServices _distribuidoraService
+@inject IPersonalServices _personalService
+@inject IPedidosServices _pedidoService
+@inject IJSRuntime JsRuntime
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
 
 <h3>Asignar Vehiculo Conductor</h3>
+@if (ResponseConductores != null && ResponseVehiculos != null)
+{
+    <div style="display: flex; justify-content: center;">
+        <form style="width: 70%;">
+            <!-- Informacion del responsable -->
 
+            <fieldset class="form-group">
+                <div class="form-group">
+                    <label>Conductor</label>
+                    <select @bind=ConductorSeleccionado.Id>
+                        @foreach (var conductor in ResponseConductores.Data)
+                        {
+                            <option value="@conductor.Id">@conductor.Nombre</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Vehiculo</label>
+                    <select @bind=VehiculoSeleccionado.Id>
+                        @foreach (var vehiculo in ResponseVehiculos.Data)
+                        {
+                            <option value="@vehiculo.Id">@vehiculo.Marca @vehiculo.Modelo @vehiculo.Placa</option>
+                        }
+                    </select>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- Boton enviar -->
+
+    <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+        <button @onclick=Registrar type="submit" class="btn btn-primary" id="enviarFormulario" style="font-size: 20px;">Registrar</button>
+    </div>
+}
 
 @code {
+
     public ServiceResponse<List<AsignacionVechiculoConductorDTO>> listaAsignacionVechiculo { get; set; }
 
+    public bool EsDistribuidora { get; set; } = false;
+    public Guid IdEmpresaSesion { get; set; }
+    public ConductorDTO ConductorSeleccionado { get; set; } = new ConductorDTO();
+    public VehiculoDTO VehiculoSeleccionado { get; set; } = new VehiculoDTO();
+    public ServiceResponse<List<ConductorDTO>> ResponseConductores { get; set; }
+    public ServiceResponse<List<VehiculoDTO>> ResponseVehiculos { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
+        EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
+        ResponseConductores = await _personalService.ObtenerTodosLosConductores();
+        ResponseConductores.Data = ResponseConductores.Data.Where(p => p.EmpresaDistribuidoraId.Equals(IdEmpresaSesion)).ToList(); 
+        ResponseVehiculos = await _distribuidoraService.ObtenerTodosLosVehiculos();
+        ResponseVehiculos.Data = ResponseVehiculos.Data.Where(p => p.EmpresaDistribuidoraId.Equals(IdEmpresaSesion)).ToList();
+    }
+
+    public void Registrar()
+    {
+        AsignacionVechiculoConductorDTO asignacion = new AsignacionVechiculoConductorDTO();
+        asignacion.ConductorId = ConductorSeleccionado.Id;
+        asignacion.VechiculoId = VehiculoSeleccionado.Id;
+
+
+        _distribuidoraService.AsignarVehiculoAConductor(asignacion);
+    }
 }
-*@

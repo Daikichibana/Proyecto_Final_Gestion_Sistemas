@@ -102,7 +102,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<TipoProductoDTO>>> InsertarTipoProducto(List<TipoProductoDTO> tipoProductoDTO)
         {
-            string EnlaceTipoProducto = BaseTipoProducto + "/";
+            string EnlaceTipoProducto = BaseTipoProducto + "/InsertarTipoProducto";
             var result = await _http.PostAsJsonAsync(EnlaceTipoProducto, tipoProductoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<TipoProductoDTO>>>();
 
@@ -110,7 +110,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<TipoProductoDTO>>> ActualizarTipoProducto(List<TipoProductoDTO> tipoProductoDTO)
         {
-            string EnlaceTipoProducto = BaseTipoProducto + "/";
+            string EnlaceTipoProducto = BaseTipoProducto + "/ActualizarTipoProducto";
             var result = await _http.PutAsJsonAsync(EnlaceTipoProducto, tipoProductoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<TipoProductoDTO>>>();
 
@@ -118,7 +118,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<TipoProductoDTO>> EliminarTipoProducto(List<Guid> id)
         {
-            string EnlaceTipoProducto = BaseTipoProducto + "/";
+            string EnlaceTipoProducto = BaseTipoProducto + $"/EliminarTipoProducto?id={id}";
             var result = await _http.DeleteAsync(EnlaceTipoProducto);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<TipoProductoDTO>>();
 

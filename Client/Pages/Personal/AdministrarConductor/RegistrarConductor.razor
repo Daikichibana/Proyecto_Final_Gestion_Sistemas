@@ -1,4 +1,4 @@
-﻿@*@page "/RegistrarConductor"
+﻿@page "/RegistrarConductor"
 
 @using Compartido
 @using Compartido.Dto.Personal.General
@@ -61,7 +61,7 @@
     public EventCallback<bool> MostrarListado { get; set; }
 
 
-    public ServiceResponse<ConductorDTO> ResponseConductor { get; set; }
+    public ServiceResponse<List<ConductorDTO>> ResponseConductor { get; set; }
 
     public ServiceResponse<UsuarioDTO> ResponseUsuario { get; set; }
 
@@ -94,7 +94,11 @@
         //ResponseUsuario = await _personalService.CrearUsuario(Usuario);
 
         //Conductor.UsuarioId = Usuario.Id;
-        ResponseConductor = await _personalService.CrearConductor(Conductor);
+
+        List<ConductorDTO> Lista = new List<ConductorDTO>();
+        Lista.Add(Conductor);
+
+        ResponseConductor = await _personalService.CrearConductor(Lista);
 
 
         if(ResponseConductor.Success)
@@ -102,4 +106,3 @@
     }
 }
 
-*@

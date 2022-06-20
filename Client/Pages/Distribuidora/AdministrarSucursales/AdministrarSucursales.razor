@@ -1,4 +1,4 @@
-﻿@*@page "/AdministrarSucursales"
+﻿@page "/AdministrarSucursales"
 @using System.Reflection
 @using Compartido
 @using Compartido.Dto.Distribuidora.General
@@ -138,10 +138,9 @@ else
 
     public async void EliminarSucursal(SucursalesDTO sucursalesDTO)
     {
-        var response = await _distribuidoraService.EliminarSucursal(sucursalesDTO);
+        var response = await _distribuidoraService.EliminarSucursal(sucursalesDTO.Id);
         
         this.MostrarListado();
     }
 
 }
-*@

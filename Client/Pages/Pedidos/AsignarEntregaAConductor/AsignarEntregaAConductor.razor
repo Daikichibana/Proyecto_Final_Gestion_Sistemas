@@ -64,6 +64,7 @@ else
         IdEmpresaSesion = new Guid(await LocalStorage.GetItemAsync<string>("idEmpresa"));
         EsDistribuidora = await LocalStorage.GetItemAsync<bool>("EsDistribuidora");
         ResponseConductores = await _distribuidoraServices.ObtenerTodoVehiculoConductor();
+        ResponseConductores.Data = ResponseConductores.Data.Where(p => p.Vechiculo.EmpresaDistribuidoraId.Equals(IdEmpresaSesion)).ToList();
     }
 
     public void AsignarPedido(AsignacionVechiculoConductorDTO conductor)

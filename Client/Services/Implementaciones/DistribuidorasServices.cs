@@ -36,7 +36,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<RubroDTO>>> InsertarRubro(IList<RubroDTO> rubroDTO)
         {
-            string EnlaceRubro = BaseRubro + "/";
+            string EnlaceRubro = BaseRubro + "/InsertarRubro";
             var result = await _http.PostAsJsonAsync(EnlaceRubro, rubroDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<RubroDTO>>>();
 
@@ -44,7 +44,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<RubroDTO>>> ActualizarRubro(IList<RubroDTO> rubroDTO)
         {
-            string EnlaceRubro = BaseRubro + "/";
+            string EnlaceRubro = BaseRubro + "/ActualizarRubro";
             var result = await _http.PutAsJsonAsync(EnlaceRubro, rubroDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<RubroDTO>>>();
 
@@ -52,7 +52,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<RubroDTO>> EliminarRubro(Guid Id)
         {
-            string EnlaceRubro = BaseRubro + "/";
+            string EnlaceRubro = BaseRubro + $"/EliminarRubro?Id={Id}";
             var result = await _http.DeleteAsync(EnlaceRubro);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<RubroDTO>>();
 
@@ -184,13 +184,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Sucursales
         public async Task<ServiceResponse<List<SucursalesDTO>>> ObtenerTodasLasSucursales()
         {
-            string EnlaceSucursal = BaseSucursal + "/";
+            string EnlaceSucursal = BaseSucursal + "/ObtenerTodasLasSucursales";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>(EnlaceSucursal);
             return result;
         }
         public async Task<ServiceResponse<List<SucursalesDTO>>> InsertarSucursal(IList<SucursalesDTO> sucursalesDTO)
         {
-            string EnlaceSucursal = BaseSucursal + "/";
+            string EnlaceSucursal = BaseSucursal + "/InsertarSucursal";
             var result = await _http.PostAsJsonAsync(EnlaceSucursal, sucursalesDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>();
 
@@ -198,7 +198,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<SucursalesDTO>>> ActualizarSucursal(IList<SucursalesDTO> sucursalesDTO)
         {
-            string EnlaceSucursal = BaseSucursal + "/";
+            string EnlaceSucursal = BaseSucursal + "/ActualizarSucursal";
             var result = await _http.PutAsJsonAsync(EnlaceSucursal, sucursalesDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>();
 
@@ -206,7 +206,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<SucursalesDTO>>> EliminarSucursal(Guid Id)
         {
-            string EnlaceSucursal = BaseSucursal + "/";
+            string EnlaceSucursal = BaseSucursal + $"/EliminarSucursal?Id={Id}";
             var result = await _http.DeleteAsync(EnlaceSucursal);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<SucursalesDTO>>>();
 
@@ -217,13 +217,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         #region Administrar Vehiculo
         public async Task<ServiceResponse<List<VehiculoDTO>>> ObtenerTodosLosVehiculos()
         {
-            string EnlaceVehiculo = BaseVehiculo + "/";
+            string EnlaceVehiculo = BaseVehiculo + "/ObtenerTodosLosVehiculos";
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>(EnlaceVehiculo);
             return result;
         }
         public async Task<ServiceResponse<List<VehiculoDTO>>> CrearVehiculo(IList<VehiculoDTO> vehiculoDTO)
         {
-            string EnlaceVehiculo = BaseVehiculo + "/";
+            string EnlaceVehiculo = BaseVehiculo + "/CrearVehiculo";
             var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>();
 
@@ -231,7 +231,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<VehiculoDTO>>> ActualizarVehiculo(IList<VehiculoDTO> vehiculoDTO)
         {
-            string EnlaceVehiculo = BaseVehiculo + "/";
+            string EnlaceVehiculo = BaseVehiculo + "/ActualizarVehiculo";
             var result = await _http.PutAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>();
 
@@ -239,7 +239,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<VehiculoDTO>>> EliminarVehiculo(Guid id)
         {
-            string EnlaceVehiculo = BaseVehiculo + "/";
+            string EnlaceVehiculo = BaseVehiculo + $"/EliminarVehiculo?id={id}";
             var result = await _http.DeleteAsync(EnlaceVehiculo);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<VehiculoDTO>>>();
 
@@ -247,7 +247,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Client.Services.Implementaciones
         }
         public async Task<ServiceResponse<List<AsignacionVechiculoConductorDTO>>> AsignarVehiculoAConductor(AsignacionVechiculoConductorDTO vehiculoDTO)
         {
-            string EnlaceVehiculo = BaseVehiculo + "/";
+            string EnlaceVehiculo = BaseVehiculo + "/AsignarVehiculoAConductor";
             var result = await _http.PostAsJsonAsync(EnlaceVehiculo, vehiculoDTO);
             var content = await result.Content.ReadFromJsonAsync<ServiceResponse<List<AsignacionVechiculoConductorDTO>>>();
 

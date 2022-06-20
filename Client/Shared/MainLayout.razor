@@ -63,5 +63,6 @@
 
         await LocalStorage.RemoveItemsAsync(variableLocalStorage);
         await AuthStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/", forceLoad: true);
     }
 }
