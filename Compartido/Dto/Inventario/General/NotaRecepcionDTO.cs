@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Compartido.Dto.Distribuidora.General;
 
 namespace Compartido.Dto.Inventario.General

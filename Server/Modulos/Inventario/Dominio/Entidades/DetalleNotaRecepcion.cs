@@ -20,11 +20,13 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Inventario.Dominio.Enti
 
         }
 
-        public DetalleNotaRecepcion(NotaRecepcion notaRecepcion, Stock stock, int cantidad)
+        public DetalleNotaRecepcion(NotaRecepcion notaRecepcion, Stock stock, int cantidad, Guid notaId, Guid stockId)
         {
             NotaRecepcion = notaRecepcion;
             Stock = stock;
             Cantidad = cantidad;
+            NotaRecepcionId = notaId;
+            StockId = stockId;
         }
     }
 }

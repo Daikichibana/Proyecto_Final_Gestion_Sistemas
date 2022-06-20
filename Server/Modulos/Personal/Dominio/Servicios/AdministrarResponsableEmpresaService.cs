@@ -28,7 +28,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                 throw new Exception("Ya existe un responsable registrado con ese nombre");
 
             var responsableActualizado = _unidadDeTrabajo.responsableDistribuidoraRepository.Actualizar(reponsable);
-            _unidadDeTrabajo.responsableDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<ResponsableEmpresaDTO>(responsableActualizado);
         }
@@ -36,7 +36,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
         {
             _unidadDeTrabajo.responsableDistribuidoraRepository.Eliminar(id);
 
-            _unidadDeTrabajo.responsableDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
         }
         public ResponsableEmpresaDTO GuardarResponsableEmpresa(ResponsableEmpresaDTO entity)
         {
@@ -46,7 +46,7 @@ namespace Proyecto_Final_Gestion_Sistemas.Server.Modulos.Personal.Dominio.Servic
                 throw new Exception("Ya existe un responsable registrado con ese nombre");
 
             var responsableActualizado = _unidadDeTrabajo.responsableDistribuidoraRepository.Guardar(reponsable);
-            _unidadDeTrabajo.responsableDistribuidoraRepository.GuardarCambios();
+            _unidadDeTrabajo.Complete();
 
             return _mapper.Map<ResponsableEmpresaDTO>(responsableActualizado);
         }

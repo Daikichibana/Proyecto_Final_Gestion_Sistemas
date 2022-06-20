@@ -56,6 +56,9 @@ namespace Proyecto_Final_Gestion_Sistemas.Server
             CreateMap<OrdenPedidoDTO, OrdenPedido>();
             CreateMap<Pedido, PedidoDTO>();
             CreateMap<PedidoDTO, Pedido>();
+            CreateMap<NotaRecepcion, NotaRecepcionDTO>();
+            CreateMap<NotaRecepcionDTO, NotaRecepcion>();
+
 
             // Modulo Personal
             CreateMap<ResponsableEmpresaDTO, ResponsableEmpresa>();
